@@ -251,6 +251,7 @@ export default function ProjectsGrid() {
               alt={selectedProject.title}
               width={400}
               height={250}
+              sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 33vw"
               className="w-full h-auto rounded-lg object-cover mb-4"
             />
             <h3 className="text-2xl font-semibold text-gray-300 mb-4">
