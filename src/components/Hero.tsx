@@ -4,7 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faFileDownload } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import Typewriter from "typewriter-effect";
+import dynamic from "next/dynamic";
+
+const Typewriter = dynamic(() => import("typewriter-effect"), { ssr: false });
 
 export default function Hero() {
   return (
