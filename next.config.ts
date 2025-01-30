@@ -27,6 +27,7 @@ const nextConfig = {
         hostname: "cdn.jsdelivr.net",
       },
     ],
+    minimumCacheTTL: 60,
     formats: ["image/webp"],
     dangerouslyAllowSVG: true, // Enable SVG images
     contentSecurityPolicy: "default-src 'self'; img-src *; media-src *; connect-src *",
