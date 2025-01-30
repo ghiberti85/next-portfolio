@@ -42,7 +42,7 @@ export default function Footer() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 px-3 py-1.5 rounded-full bg-gray-700 text-gray-300 hover:bg-teal-500 hover:text-white transition-transform transform hover:scale-105 shadow-lg"
+          className="fixed bottom-8 right-8 px-3 py-1.5 rounded-full bg-gray-700 text-gray-300 hover:bg-teal-600 hover:text-white transition-transform transform hover:scale-105 shadow-lg"
           aria-label="Back to top"
         >
             <FontAwesomeIcon 

@@ -128,7 +128,7 @@ export default function Timeline() {
       <div className="relative flex flex-col items-center">
         {/* Timeline Line */}
         <div
-          className="absolute h-[calc(100%+4rem)] w-1 bg-teal-500 left-1/2 rounded-full transform -translate-x-1/2"
+          className="absolute h-[calc(100%+4rem)] w-1 bg-teal-600 left-1/2 rounded-full transform -translate-x-1/2"
           style={{
             background: "linear-gradient(to bottom, #14b8a6, rgba(20, 184, 166, 0))",
           }}
@@ -155,7 +155,7 @@ export default function Timeline() {
                 <div
                   className={`p-2 rounded-full mr-4 ${
                     item.type === "professional"
-                      ? "bg-teal-500 text-white"
+                      ? "bg-teal-600 text-white"
                       : "bg-blue-500 text-white"
                   }`}
                 >
