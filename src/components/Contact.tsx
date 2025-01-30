@@ -58,7 +58,7 @@ export default function Contact() {
               border: "1px solid rgba(255, 255, 255, 0.2)",
           }}>
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-600">
+              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-800">
                 <FontAwesomeIcon icon={faWhatsapp} className="text-3xl text-white" />
               </div>
             </div>
@@ -108,7 +108,7 @@ export default function Contact() {
               border: "1px solid rgba(255, 255, 255, 0.2)",
           }}>
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-600">
+              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-800">
                 <FontAwesomeIcon icon={faGithub} className="text-3xl text-white" />
               </div>
             </div>
