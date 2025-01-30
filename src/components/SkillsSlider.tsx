@@ -103,8 +103,10 @@ function SkillCard({ skill }: { skill: Skill }) {
         alt={skill.name}
         width={64}
         height={64}
-        className="w-16 h-16 mb-4 mx-auto"
-        priority
+        sizes="(max-width: 768px) 50px, 64px"
+        className="w-auto h-16 mb-4 mx-auto"
+        loading="lazy"
+
       />
       <h3 className="text-xl font-semibold text-gray-300 text-center">{skill.name}</h3>
       <div className="w-full bg-gray-700 rounded-full h-2.5 mt-4">

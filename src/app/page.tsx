@@ -3,7 +3,7 @@ import Hero from "@/components/Hero";
 import SkillsSlider from "@/components/SkillsSlider";
 import ProjectsGrid from "@/components/ProjectsGrid";
 import Timeline from "@/components/Timeline";
-import ContactForm from "@/components/ContactForm";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
       <SkillsSlider />
       <ProjectsGrid />
       <Timeline />
-      <ContactForm />
+      <Contact />
       <Footer />
     </>
   );

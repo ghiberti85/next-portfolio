@@ -35,6 +35,8 @@ export default function Hero() {
               width={160}
               height={160}
               className="rounded-full"
+              priority
+              loading="eager"
             />
           </div>
         </div>
@@ -58,18 +60,20 @@ export default function Hero() {
         {/* Social Icons */}
         <div className="flex space-x-6 mt-4 text-gray-300">
           {[
-            { icon: faGithub, link: "https://github.com/ghiberti85" },
-            { icon: faLinkedin, link: "https://linkedin.com/in/fernando-ghiberti" },
-            { icon: faEnvelope, link: "mailto:ghiberti85@gmail.com" },
-          ].map(({ icon, link }, idx) => (
+            { icon: faGithub, link: "https://github.com/ghiberti85", label: "GitHub Profile" },
+            { icon: faLinkedin, link: "https://linkedin.com/in/fernando-ghiberti", label: "LinkedIn Profile" },
+            { icon: faEnvelope, link: "mailto:ghiberti85@gmail.com", label: "Send an Email" },
+          ].map(({ icon, link, label }, idx) => (
             <a
               key={idx}
               href={link}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={label}
               className="hover:scale-110 hover:text-teal-400 transition-transform duration-300"
             >
               <FontAwesomeIcon icon={icon} className="w-7 h-7" />
+              <span className="sr-only">{label}</span>
             </a>
           ))}
         </div>

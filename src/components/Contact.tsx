@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faGithub, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
-export default function ContactSection() {
+export default function Contact() {
   return (
     <section id="contact" className="py-16 px-4 lg:px-4 text-center">
       <h2 className="text-4xl font-bold mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
@@ -13,7 +13,7 @@ export default function ContactSection() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Additional Content First on Mobile */}
-        <div className="text-left max-w-lg order-1 lg:order-none">
+        <div className="text-center lg:text-left max-w-lg order-1 lg:order-none">
           <h3 className="text-2xl font-semibold text-gray-300 mb-4">Let&apos;s Collaborate!</h3>
           <p className="text-gray-400 mb-4">
           I am always eager to collaborate on innovative projects, exchange creative ideas, and explore new opportunities. Whether you&apos;re looking to build a cutting-edge web application, enhance user experience, or scale an existing platform, I&apos;d love to be part of your journey. Let&apos;s work together to craft exceptional digital solutions that make an impact.
