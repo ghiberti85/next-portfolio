@@ -211,6 +211,7 @@ export default function ProjectsGrid() {
               height={400}
               sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 33vw"
               priority
+              loading="lazy"
               quality={80}
               className="w-full h-auto rounded-t-lg object-cover"
             />
@@ -254,6 +255,8 @@ export default function ProjectsGrid() {
               alt={selectedProject.title}
               width={400}
               height={250}
+              loading="lazy"
+              quality={80}
               sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 33vw"
               className="w-full h-auto rounded-lg object-cover mb-4"
             />
