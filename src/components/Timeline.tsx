@@ -16,7 +16,7 @@ interface TimelineItem {
 const timelineData: TimelineItem[] = [
   {
     title: "Tech Lead Product Owner",
-    period: "2020 - Present",
+    period: "2022 - Present",
     type: "professional",
     institution: "+A Educação",
     location: "Porto Alegre, Brazil",
