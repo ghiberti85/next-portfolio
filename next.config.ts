@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    modern: true, // ✅ Enables modern JavaScript bundling
+    modern: true, // Enables modern JavaScript bundling
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production", // ✅ Removes console logs in production
+    removeConsole: process.env.NODE_ENV === "production", // Removes console logs in production
   },
-  swcMinify: true, // ✅ Uses Next.js's built-in SWC minifier
+  swcMinify: true, // Uses Next.js's built-in SWC minifier
   images: {
     remotePatterns: [
       {
