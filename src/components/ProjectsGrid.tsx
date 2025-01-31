@@ -157,8 +157,8 @@ export default function ProjectsGrid() {
           }}
           className={`px-5 py-1 rounded-full text-sm font-semibold ${
             isAllProjects
-              ? "bg-teal-800 text-white"
-              : "bg-gray-200 text-gray-600 hover:bg-teal-800 hover:text-white transition"
+              ? "bg-teal-700 text-white"
+              : "bg-gray-200 text-gray-600 hover:bg-teal-700 hover:text-white transition"
           }`}
         >
           All Projects
@@ -172,8 +172,8 @@ export default function ProjectsGrid() {
             }}
             className={`px-5 py-1 rounded-full text-sm font-semibold ${
               activeTag === tag
-                ? "bg-teal-800 text-white"
-                : "bg-gray-200 text-gray-600 hover:bg-teal-800 hover:text-white transition"
+                ? "bg-teal-700 text-white"
+                : "bg-gray-200 text-gray-600 hover:bg-teal-700 hover:text-white transition"
             }`}
           >
             {tag}
@@ -198,7 +198,7 @@ export default function ProjectsGrid() {
               {project.tags.map((tag, idx) => (
                 <span
                   key={idx}
-                  className="px-2 py-1 text-xs bg-teal-800 text-white rounded-full"
+                  className="px-2 py-1 text-xs bg-teal-700 text-white rounded-full"
                 >
                   {tag}
                 </span>

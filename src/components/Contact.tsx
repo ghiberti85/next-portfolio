@@ -43,7 +43,7 @@ export default function Contact() {
             <p className="text-gray-400 text-sm mb-4">Reach me via email for inquiries and opportunities.</p>
             <a
               href="mailto:ghiberti85@gmail.com"
-              className="text-gray-400 hover:text-blue-400"
+              className="text-gray-400 hover:text-blue-500"
             >
               Send an Email
             </a>
@@ -58,7 +58,7 @@ export default function Contact() {
               border: "1px solid rgba(255, 255, 255, 0.2)",
           }}>
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-800">
+              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-400">
                 <FontAwesomeIcon icon={faWhatsapp} className="text-3xl text-white" />
               </div>
             </div>
@@ -93,7 +93,7 @@ export default function Contact() {
               href="https://www.linkedin.com/in/ghiberti85/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-blue-400"
+              className="text-gray-400 hover:text-blue-500"
             >
               Visit my LinkedIn
             </a>
@@ -108,7 +108,7 @@ export default function Contact() {
               border: "1px solid rgba(255, 255, 255, 0.2)",
           }}>
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-800">
+              <div className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-400">
                 <FontAwesomeIcon icon={faGithub} className="text-3xl text-white" />
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function Contact() {
               href="https://github.com/ghiberti85"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-teal-500"
+              className="text-gray-400 hover:text-teal-400"
             >
               Visit my GitHub
             </a>
