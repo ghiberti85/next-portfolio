@@ -210,7 +210,7 @@ export default function ProjectsGrid() {
               width={600}
               height={400}
               sizes="sizes=(max-width: 480px) 100vw, (max-width: 768px) 75vw, (max-width: 1024px) 50vw, 400px"
-              loading="lazy"
+              priority
               quality={75}
               className="w-full h-auto rounded-t-lg object-cover"
             />
