@@ -95,13 +95,14 @@ export default function Hero() {
 
       {/* Right Column */}
       <div className="lg:w-1/2 flex flex-col justify-center items-center text-gray-300 text-center px-4 lg:px-0">
-        <h2 className="text-3xl font-semibold mb-6">
+        {/* Short Text for Mobile */}
+        <h2 className="text-xl font-semibold mb-6 lg:hidden">
           <Typewriter
             options={{
               strings: [
-                "Building modern web applications.",
-                "Specialist in React and Next.js.",
-                "Transforming ideas into reality.",
+                "Creating web apps",
+                "React & Next.js expert",
+                "Bringing ideas to life",
               ],
               autoStart: true,
               loop: true,
@@ -109,6 +110,23 @@ export default function Hero() {
             }}
           />
         </h2>
+
+        {/* Long Text for Desktop */}
+        <h2 className="text-xl lg:text-3xl font-semibold mb-6 hidden lg:block">
+          <Typewriter
+            options={{
+              strings: [
+                "Building modern web applications",
+                "Specialist in React and Next.js",
+                "Transforming ideas into reality",
+              ],
+              autoStart: true,
+              loop: true,
+              delay: 75,
+            }}
+          />
+        </h2>
+
         <p className="text-lg mb-6">
           Crafting high-performance, user-friendly interfaces with a focus on delivering
           exceptional user experiences.
