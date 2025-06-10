@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBriefcase,
+  faGraduationCap,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface TimelineItem {
   title: string;
@@ -15,16 +18,43 @@ interface TimelineItem {
 
 const timelineData: TimelineItem[] = [
   {
-    title: "Tech Lead Product Owner",
+    title: "Senior Software Engineer | Tech Lead",
     period: "2022 - Present",
     type: "professional",
     institution: "+A Educação",
-    location: "Porto Alegre, Brazil",
+    location: "São Paulo, Brazil (Remote)",
     details: [
-      "Directed a team managing 30+ e-commerce websites in medical and education sectors, ensuring excellence and industry compliance.",
-      "Built 70+ components in Duda CMS, achieving a 50% boost in performance, SEO, accessibility, and best practices metrics.",
-      "Orchestrated the migration of 30+ websites from HubSpot to Duda CMS, enhancing performance and showcasing CMS expertise.",
-      "Led the development of 10+ dynamic HubSpot themes, integrating HTML, CSS, JavaScript, and HubDB for improved user experiences.",
+      "Reduced loading time by 38% across institutional websites through a complete front-end rebuild using Next.js (SSR), Tailwind CSS, and lazy loading strategies.",
+      "Created a reusable Design System in React + Tailwind documented in Storybook, accelerating screen delivery by 50% and ensuring UI consistency.",
+      "Developed an automated diagnostics dashboard by integrating Google PageSpeed API and OpenAI API, enabling real-time SEO, accessibility, and performance feedback.",
+      "Standardized SPA promotional modules and cut down campaign delivery time by 42%, supporting seasonal marketing peaks.",
+      "Improved form conversion by 27% and reduced abandonment rate by 25% using Formik, Yup, Axios, and intl-tel-input with dynamic validation and Google Tag Manager integration.",
+    ],
+  },
+  {
+    title: "Software Engineer",
+    period: "2020 - 2022",
+    type: "professional",
+    institution: "EBANX",
+    location: "Curitiba, Brazil (Hybrid)",
+    details: [
+      "Accelerated delivery of promotional landing pages by 32% through the creation of a modular front-end framework in React and Tailwind, supported by Docker and GitHub Actions pipelines.",
+      "Reduced bugs by 45% and increased code reusability via Storybook-based component library tailored for marketing variations.",
+      "Improved engagement reporting by 40% by automating the dataLayer and real-time event tracking via Google Tag Manager.",
+      "Achieved a 28% gain in PageSpeed metrics (LCP and TBT) using server-side rendering with Next.js, WebP image optimization, and modular lazy loading.",
+    ],
+  },
+  {
+    title: "Fullstack Developer",
+    period: "2018 - Present",
+    type: "professional",
+    institution: "Freelance & Personal Projects",
+    location: "Remote",
+    details: [
+      "Developed institutional and e-commerce websites with an average PageSpeed Insight score of 93+ and up to 28% higher conversion rates using Next.js and Tailwind CSS.",
+      "Engineered robust back-end systems with 99.9% uptime using Node.js, TypeScript, PostgreSQL, MongoDB, and GraphQL within Clean Architecture principles.",
+      "Maintained high deployment confidence with >85% test coverage and zero production-critical bugs, leveraging GitHub Actions for automated testing pipelines (Jest and Cypress).",
+      "Implemented dynamic meta tags, JSON-LD, and sitemap configurations to achieve advanced technical SEO optimizations.",
     ],
   },
   {
@@ -41,19 +71,6 @@ const timelineData: TimelineItem[] = [
     ],
   },
   {
-    title: "Software Engineer",
-    period: "2020 - 2022",
-    type: "professional",
-    institution: "EBANX",
-    location: "Curitiba, Brazil",
-    details: [
-      "Website Development and Optimization: Spearheaded the creation and maintenance of EBANX websites using JavaScript, Nunjucks, CSS, and HTML, achieving notable improvements in performance and user experience.",
-      "CMS Proficiency: Developed and maintained EBANX GO on WordPress, leveraging custom themes and JavaScript to ensure a seamless and optimized user experience.",
-      "Frontend Expertise: Refactored and restructured business and career websites with HTML, CSS, JavaScript, and React, leading to enhanced functionality and user engagement.",
-      "Email Marketing Campaigns: Designed and optimized marketing emails using Adobe Campaign, Customer.io, and Litmus, significantly boosting open rates and click-through rates.",
-    ],
-  },
-  {
     title: "MBA in Full Stack Development",
     period: "2019 - 2020",
     type: "education",
@@ -64,19 +81,6 @@ const timelineData: TimelineItem[] = [
       "Front-End Proficiency: Advanced skills in building responsive and user-friendly interfaces using modern frameworks and tools.",
       "Back-End Expertise: Developed server-side applications with Node.js, focusing on scalable and efficient solutions.",
       "Agile Project Management: Applied Kanban methodologies for effective project organization and team collaboration.",
-    ],
-  },
-  {
-    title: "Frontend Developer",
-    period: "2017 - 2022",
-    type: "professional",
-    institution: "Freelancer",
-    location: "Remote",
-    details: [
-      "Custom Website Development: Designed and developed institutional, e-commerce, and blog websites for SMBs using JavaScript, CSS, and HTML, delivering responsive and client-tailored solutions.",
-      "WordPress Expertise: Created unique, custom-coded WordPress themes for all projects, enhancing the personalization and functionality of clients’ websites.",
-      "Performance Optimization: Implemented SEO, accessibility, and Google Page Speed best practices, improving search visibility and ensuring top-tier website performance.",
-      "Ongoing Support: Provided proactive maintenance and updates, ensuring consistent functionality and client satisfaction over the long term.",
     ],
   },
   {
@@ -106,7 +110,6 @@ const timelineData: TimelineItem[] = [
       "Award-Winning Final Project: Led a group final project that won the ABB Award for Best Final Graduation Project, showcasing innovation and excellence in automation engineering.",
     ],
   },
-  
 ];
 
 export default function Timeline() {
@@ -130,7 +133,8 @@ export default function Timeline() {
         <div
           className="absolute h-[calc(100%+4rem)] w-1 bg-teal-400 left-1/2 rounded-full transform -translate-x-1/2"
           style={{
-            background: "linear-gradient(to bottom, #14b8a6, rgba(20, 184, 166, 0))",
+            background:
+              "linear-gradient(to bottom, #14b8a6, rgba(20, 184, 166, 0))",
           }}
         ></div>
 
@@ -160,7 +164,11 @@ export default function Timeline() {
                   }`}
                 >
                   <FontAwesomeIcon
-                    icon={item.type === "professional" ? faBriefcase : faGraduationCap}
+                    icon={
+                      item.type === "professional"
+                        ? faBriefcase
+                        : faGraduationCap
+                    }
                     size="lg"
                   />
                 </div>
@@ -171,11 +179,15 @@ export default function Timeline() {
               {/* Period, Institution and Location */}
               <ul className="text-gray-400 list-disc ml-6 space-y-1 mt-6">
                 <li>
-                  <span className="font-medium text-gray-300">{item.institution}</span>
+                  <span className="font-medium text-gray-300">
+                    {item.institution}
+                  </span>
                 </li>
                 <li>{item.period}</li>
                 <li>
-                  <span className="font-medium text-gray-300">{item.location}</span>
+                  <span className="font-medium text-gray-300">
+                    {item.location}
+                  </span>
                 </li>
               </ul>
               {/* View More */}
