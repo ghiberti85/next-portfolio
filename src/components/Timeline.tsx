@@ -128,7 +128,7 @@ export default function Timeline() {
       <h2 className="text-4xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
         Journey
       </h2>
-      <div className="relative flex flex-col items-center">
+      <div className="relative flex flex-col items-center max-w-6xl mx-auto px-4">
         {/* Timeline Line */}
         <div
           className="absolute h-[calc(100%+4rem)] w-1 bg-teal-400 left-1/2 rounded-full transform -translate-x-1/2"
