@@ -83,7 +83,7 @@ export default function Hero() {
         {/* Download CV Button */}
         <div className="mt-4">
           <a
-            href="/resume-fernando-ghiberti.pdf"
+            href="/fernando-ghiberti-en-cv.pdf"
             download="Fernando_Ghiberti_CV.pdf"
             className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-teal-400 to-blue-500 text-white font-semibold rounded-lg hover:scale-105 hover:shadow-lg transition-transform duration-300"
           >
