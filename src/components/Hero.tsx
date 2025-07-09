@@ -62,9 +62,21 @@ export default function Hero() {
         {/* Social Icons */}
         <div className="flex space-x-6 mt-4 text-gray-300">
           {[
-            { icon: faGithub, link: "https://github.com/ghiberti85", label: "GitHub Profile" },
-            { icon: faLinkedin, link: "https://linkedin.com/in/fernando-ghiberti", label: "LinkedIn Profile" },
-            { icon: faEnvelope, link: "mailto:ghiberti85@gmail.com", label: "Send an Email" },
+            {
+              icon: faGithub,
+              link: "https://github.com/ghiberti85",
+              label: "GitHub Profile",
+            },
+            {
+              icon: faLinkedin,
+              link: "https://linkedin.com/in/fernando-ghiberti",
+              label: "LinkedIn Profile",
+            },
+            {
+              icon: faEnvelope,
+              link: "mailto:ghiberti85@gmail.com",
+              label: "Send an Email",
+            },
           ].map(({ icon, link, label }, idx) => (
             <a
               key={idx}
@@ -83,7 +95,7 @@ export default function Hero() {
         {/* Download CV Button */}
         <div className="mt-4">
           <a
-            href="/fernando-ghiberti-en-cv.pdf"
+            href="/fernando-ghiberti-cv-en.pdf"
             download="Fernando_Ghiberti_CV.pdf"
             className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-teal-400 to-blue-500 text-white font-semibold rounded-lg hover:scale-105 hover:shadow-lg transition-transform duration-300"
           >
@@ -128,8 +140,8 @@ export default function Hero() {
         </h2>
 
         <p className="text-lg mb-6">
-          Crafting high-performance, user-friendly interfaces with a focus on delivering
-          exceptional user experiences.
+          Crafting high-performance, user-friendly interfaces with a focus on
+          delivering exceptional user experiences.
         </p>
       </div>
     </section>
