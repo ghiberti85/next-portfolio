@@ -33,9 +33,10 @@ This portfolio is designed to give recruiters and hiring managers a fast, clear 
 - **Skills Slider** — Dual auto-scrolling carousels (opposite directions) showcasing 19+ technologies with proficiency bars: React, Next.js, TypeScript, JavaScript, Tailwind CSS, Docker, Git, Webpack, Vite, Storybook, Sass, WordPress, HubSpot, Netlify, Vercel, and more.
 - **Projects Grid** — 12 projects displayed in a filterable, paginated grid. Each card opens a modal with description, GitHub link, and live demo when available. Projects can be filtered by technology tag (React, Next.js, Node.js, TypeScript, etc.).
 - **Journey Timeline** — Interactive vertical timeline covering professional experience and education, with modal detail views per entry.
-- **Contact section** — Direct contact form / links.
+- **Contact section** — Direct contact links via Email, WhatsApp, LinkedIn, and GitHub.
 - **Responsive design** — Mobile-first layout; all sections adapt gracefully from small screens to wide desktops.
-- **Performance optimizations** — `next/image` with lazy loading and `priority` on the hero image, SSR via Next.js App Router, WebP-ready image pipeline, and Geist font with `next/font` for zero layout shift.
+- **Performance optimizations** — `next/image` with lazy loading and `priority` on the hero image, SSR via Next.js App Router, WebP image format, and Geist font with `next/font` for zero layout shift.
+- **Security headers** — HTTP security headers configured globally: `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `Strict-Transport-Security`, `Referrer-Policy`, and `Permissions-Policy`.
 
 ---
 
@@ -48,13 +49,13 @@ src/
 │   ├── page.tsx          # Single-page composition
 │   └── globals.css       # Global styles
 └── components/
-    ├── Navbar.tsx
+    ├── Navbar.tsx         # Fixed top nav with smooth scroll
     ├── Hero.tsx           # Profile, social links, CV download
     ├── SkillsSlider.tsx   # Dual auto-scroll skill carousels
     ├── ProjectsGrid.tsx   # Filterable project grid with modals
     ├── Timeline.tsx       # Career & education timeline with modals
-    ├── Contact.tsx
-    └── Footer.tsx
+    ├── Contact.tsx        # Contact links (Email, WhatsApp, LinkedIn, GitHub)
+    └── Footer.tsx         # Back-to-top button and footer
 public/
 └── fernando-ghiberti-cv-en.pdf   # Downloadable CV
 ```
@@ -99,6 +100,21 @@ Key achievements:
 - **MBA in Full Stack Development** — XP Educação (2020)
 - **First Certificate in English (FCE)** — Cambridge Assessment English (2017)
 - **Automation & Control Engineering** — Instituto Mauá de Tecnologia (2014) — *ABB Award for Best Final Graduation Project*
+
+---
+
+## Security
+
+Security headers are configured in `next.config.ts` and applied globally to all routes:
+
+| Header | Value |
+|---|---|
+| `Content-Security-Policy` | Restricts scripts, styles, fonts, and image sources to trusted origins |
+| `X-Frame-Options` | `SAMEORIGIN` — prevents clickjacking |
+| `X-Content-Type-Options` | `nosniff` — blocks MIME-type sniffing |
+| `Strict-Transport-Security` | Forces HTTPS with 2-year max-age and preload |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | Disables camera, microphone, and geolocation access |
 
 ---
 
