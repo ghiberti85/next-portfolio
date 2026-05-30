@@ -94,10 +94,15 @@ Keep the following in sync after every change:
 |---|---|
 | `README.md` | Tech stack, features, project structure, or commands change |
 | `CLAUDE.md` | Workflow, tooling, or project architecture changes |
+| `CHANGELOG.md` | Any change — add entry under `Unreleased` before merging |
+| `docs/ARCHITECTURE.md` | Stack decisions, styling conventions, or security architecture changes |
+| `docs/COMPONENTS.md` | Any component is added, changed, or removed |
+| `docs/adr/` | A new architectural decision is made — create a new ADR |
 | `src/__tests__/` | Any component is added, changed, or removed |
 
-If you add a feature → add it to the README features section.
-If you remove a feature → remove it from README, delete its tests, remove dead code.
+If you add a feature → add it to README, `CHANGELOG.md`, and `docs/COMPONENTS.md`.
+If you remove a feature → remove it from all docs, delete its tests, remove dead code.
+If you make an architectural decision → write an ADR in `docs/adr/NNN-title.md`.
 
 ### 8. Deploy
 The Vercel deployment is triggered automatically when a PR is merged to `main`.
@@ -193,3 +198,26 @@ npm run lint           # ESLint check (must pass before PR)
 npm test               # run all tests (must pass before PR)
 npm run test:coverage  # tests + coverage report
 ```
+
+---
+
+## Slash Commands (AI agents)
+
+| Command | Purpose |
+|---|---|
+| `/new-component` | Scaffold a new section component + test file following project conventions |
+| `/add-project` | Add a project entry to `ProjectsGrid.tsx` and update docs |
+| `/security-check` | Full security audit: deps, headers, secrets, external links |
+
+Full instructions in `.claude/commands/`.
+
+---
+
+## Further Reading
+
+| Document | Purpose |
+|---|---|
+| `docs/ARCHITECTURE.md` | Stack decisions, data layer, styling conventions, CI/CD pipeline |
+| `docs/COMPONENTS.md` | Per-component reference: data shapes, behavior, constraints |
+| `docs/adr/` | Architecture Decision Records — why each major choice was made |
+| `CHANGELOG.md` | Version history and unreleased changes |
