@@ -120,9 +120,16 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — absolute so it doesn't affect nav height or page scroll */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden flex flex-col space-y-5 px-6 py-5">
+        <div
+          className="lg:hidden absolute top-full left-0 w-full flex flex-col space-y-5 px-6 py-5"
+          style={{
+            backgroundColor: "var(--nav-bg)",
+            backdropFilter: "blur(16px)",
+            borderBottom: "1px solid var(--card-border)",
+          }}
+        >
           {links.map(({ name, href }) => (
             <a
               key={name}
