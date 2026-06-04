@@ -11,7 +11,6 @@ import t from "@/lib/translations";
 interface Project {
   title: string;
   image: string;
-  description: string;
   github: string;
   live: string;
   tags: string[];
@@ -22,7 +21,6 @@ const projects: Project[] = [
   {
     title: "DevInterviewLab",
     image: "https://raw.githubusercontent.com/ghiberti85/devinterviewlab/main/public/og-image.png",
-    description: "AI-powered technical interview prep platform. Generate personalized study roadmaps from job descriptions, practice with AI-generated questions, review Flash Topics and track your progress — available in English and Portuguese.",
     github: "https://github.com/ghiberti85/devinterviewlab",
     live: "https://devinterviewlab.vercel.app",
     tags: ["Next.js", "TypeScript", "Supabase", "Groq AI", "PWA", "Radix UI"],
@@ -30,7 +28,6 @@ const projects: Project[] = [
   {
     title: "Interview Command Center",
     image: "https://raw.githubusercontent.com/ghiberti85/interview-command-center/main/public/screenshot.png",
-    description: "A personal CRM for managing job interview pipelines — track processes by stage, generate AI-powered recruiter responses and CV adaptations, and manage next steps across multiple open positions simultaneously.",
     github: "https://github.com/ghiberti85/interview-command-center",
     live: "https://interview-command-center.vercel.app",
     tags: ["React", "TypeScript", "Vite", "Supabase", "Claude AI", "PWA"],
@@ -38,7 +35,6 @@ const projects: Project[] = [
   {
     title: "Ghiberti UI",
     image: "https://raw.githubusercontent.com/ghiberti85/ui/main/apps/docs/public/screenshot.png",
-    description: "A monorepo design system with 5 themed token collections and 30 accessible React components. Built for developers who need a fully themeable, dark-mode-ready component library with CSS custom properties and no runtime dependencies.",
     github: "https://github.com/ghiberti85/ui",
     live: "https://ghiberti-ui.vercel.app",
     tags: ["React", "TypeScript", "Next.js", "Storybook", "Turborepo", "Radix UI"],
@@ -46,7 +42,6 @@ const projects: Project[] = [
   {
     title: "Finanças do Casal",
     image: "https://raw.githubusercontent.com/ghiberti85/financa-casal/main/public/screenshot.png",
-    description: "A collaborative personal finance PWA for couples — track shared expenses, income, budgets, credit card statements and recurring bills in real time, with AI-powered spreadsheet import via Claude Sonnet.",
     github: "https://github.com/ghiberti85/financa-casal",
     live: "https://financa-casal.vercel.app",
     tags: ["React", "TypeScript", "Vite", "Supabase", "Claude AI", "PWA"],
@@ -54,7 +49,6 @@ const projects: Project[] = [
   {
     title: "upload.ai",
     image: "https://github.com/ghiberti85/nlw-ai/raw/main/upload-ai-web/public/screenshot.png",
-    description: "It's an application that allows uploading videos and, through AI, automatically generates catchy titles and descriptions with good indexing.",
     github: "https://github.com/ghiberti85/nlw-ai",
     live: "",
     tags: ["React", "Typescript", "Vite", "Vercel"],
@@ -62,7 +56,6 @@ const projects: Project[] = [
   {
     title: "Ignite Call",
     image: "https://github.com/ghiberti85/ignite-call/raw/main/public/registration-1.png",
-    description: "Full Stack Project with Next.js and React. Seamlessly integrate with Google Calendar to schedule appointments. Simplify time management and enhance communication with this user-friendly scheduling application..",
     github: "https://github.com/ghiberti85/ignite-call",
     live: "https://ignitecall-ghiberti85.vercel.app/",
     tags: ["Next.js", "React", "Typescript"],
@@ -70,7 +63,6 @@ const projects: Project[] = [
   {
     title: "Design System",
     image: "https://github.com/ghiberti85/ignite-design-system/blob/main/design-system.png?raw=true",
-    description: "React Design System Mastery: Crafting, Documenting, and Deploying with Storybook and GitHub Actions",
     github: "https://github.com/ghiberti85/ignite-design-system",
     live: "https://ghiberti85.github.io/ignite-design-system/",
     tags: ["React", "Typescript"],
@@ -78,7 +70,6 @@ const projects: Project[] = [
   {
     title: "Coffee Delivery",
     image: "https://github.com/ghiberti85/ignite-coffee-delivery/blob/main/coffee-delivery.png?raw=true",
-    description: "This application, despite being simple, is an excellent example to practice the development of Shopping Cart manager.",
     github: "https://github.com/ghiberti85/ignite-coffee-delivery",
     live: "",
     tags: ["React", "Typescript", "Vite"],
@@ -86,7 +77,6 @@ const projects: Project[] = [
   {
     title: "ToDo",
     image: "https://github.com/ghiberti85/ignite-todo-list/blob/main/to-do.png?raw=true",
-    description: "This application, despite being simple, is an excellent example to practice the development of CRUD (Create, Read, Update, Delete).",
     github: "https://github.com/ghiberti85/ignite-todo-list",
     live: "",
     tags: ["Typescript", "React", "Vite"],
@@ -94,7 +84,6 @@ const projects: Project[] = [
   {
     title: "Pizza Shop",
     image: "https://github.com/ghiberti85/ignite-pizza-shop-web/raw/main/public/image-3.png",
-    description: "The Pizza Shop Web is a dashboard designed for restaurant owners participating in delivery applications.",
     github: "https://github.com/ghiberti85/ignite-pizza-shop-web",
     live: "",
     tags: ["React", "Typescript", "Vite"],
@@ -102,7 +91,6 @@ const projects: Project[] = [
   {
     title: "Be The Hero",
     image: "https://github.com/ghiberti85/omnistack/blob/master/be-the-hero.png?raw=true",
-    description: "BeTheHero is a project that aims to connect people who want to make monetary contributions to NGOs (Non-Governmental Organizations) that need help.",
     github: "https://github.com/ghiberti85/omnistack",
     live: "",
     tags: ["React", "Node.js", "React Native"],
@@ -110,7 +98,6 @@ const projects: Project[] = [
   {
     title: "Feedget",
     image: "https://github.com/ghiberti85/nlw-return-impulse/raw/main/Capa.png",
-    description: "Available for Web and Mobile applications, Feedget collects feedbacks and storage them into a PostgreSQL database.",
     github: "https://github.com/ghiberti85/nlw-return-impulse",
     live: "",
     tags: ["React", "React Native", "Node.js"],
@@ -118,7 +105,6 @@ const projects: Project[] = [
   {
     title: "Happy",
     image: "https://github.com/ghiberti85/nlw3/blob/master/happy.png?raw=true",
-    description: "Happy is a project that aims to facilitate visits to orphanages near you",
     github: "https://github.com/ghiberti85/nlw3/blob/master/web/src/images/happy.png",
     live: "",
     tags: ["Node.js", "Express", "React"],
@@ -126,7 +112,6 @@ const projects: Project[] = [
   {
     title: "move.it",
     image: "https://placehold.co/300x200?text=move.it",
-    description: "Move.it came to remind you to exercise always! 💜",
     github: "https://github.com/ghiberti85/moveit-next",
     live: "",
     tags: ["Next.js", "Typescript", "React"],
@@ -134,7 +119,6 @@ const projects: Project[] = [
   {
     title: "Ecoleta",
     image: "https://github.com/ghiberti85/nlw/raw/master/public/assets/Home.svg",
-    description: "Ecoleta is a project that aims to connect people to waste collection points efficiently.",
     github: "https://github.com/yourusername/photo-gallery",
     live: "",
     tags: ["Javascript", "Node.js", "React"],
@@ -142,7 +126,6 @@ const projects: Project[] = [
   {
     title: "NLW Esports",
     image: "https://github.com/ghiberti85/nlw-esports/blob/main/nlw-esports.png?raw=true",
-    description: "NLW eSports is a project that aims to connect people who want to find partners to play a specific game online.",
     github: "https://github.com/ghiberti85/nlw-esports",
     live: "",
     tags: ["React", "Node.js", "React Native"],
@@ -201,6 +184,8 @@ export default function ProjectsGrid() {
   const handleShowMore = () => {
     setVisibleProjects((prev) => (prev === 6 ? projects.length : 6));
   };
+
+  const descriptions = t[lang].projectDescriptions;
 
   const handleOpenModal = (project: Project) => {
     setSelectedProject(project);
@@ -342,7 +327,9 @@ export default function ProjectsGrid() {
             <h3 className="text-2xl font-semibold mb-4" style={{ color: "var(--color-heading)" }}>
               {selectedProject.title}
             </h3>
-            <p className="mb-6" style={{ color: "var(--color-text-muted)" }}>{selectedProject.description}</p>
+            <p className="mb-6" style={{ color: "var(--color-text-muted)" }}>
+              {descriptions[projects.indexOf(selectedProject)] ?? ""}
+            </p>
             <div className="flex justify-between">
               <a
                 href={selectedProject.github}

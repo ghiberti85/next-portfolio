@@ -7,116 +7,13 @@ import {
   faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import t, { TimelineItemData as TimelineItem } from "@/lib/translations";
 
-interface TimelineItem {
-  title: string;
-  period: string;
-  type: "professional" | "education";
-  institution: string;
-  location: string;
-  details: string[];
-}
-
-const timelineData: TimelineItem[] = [
-  {
-    title: "Senior Software Engineer | Tech Lead",
-    period: "2022 - Present",
-    type: "professional",
-    institution: "+A Educação",
-    location: "São Paulo, Brazil (Remote)",
-    details: [
-      "Reduced loading time by 38% across institutional websites through a complete front-end rebuild using Next.js (SSR), Tailwind CSS, and lazy loading strategies.",
-      "Created a reusable Design System in React + Tailwind documented in Storybook, accelerating screen delivery by 50% and ensuring UI consistency.",
-      "Developed an automated diagnostics dashboard by integrating Google PageSpeed API and OpenAI API, enabling real-time SEO, accessibility, and performance feedback.",
-      "Standardized SPA promotional modules and cut down campaign delivery time by 42%, supporting seasonal marketing peaks.",
-      "Improved form conversion by 27% and reduced abandonment rate by 25% using Formik, Yup, Axios, and intl-tel-input with dynamic validation and Google Tag Manager integration.",
-    ],
-  },
-  {
-    title: "Especialization in Software Engineering",
-    period: "2025",
-    type: "education",
-    institution: "Universidade Estudual de Campinas - UNICAMP",
-    location: "Campinas, Brazil",
-    details: [
-      "Object-Oriented Analysis and Design: Expertise in designing robust software architectures using object-oriented principles.",
-      "Software Validation and Verification: Skilled in testing methodologies to ensure software quality and reliability.",
-      "Database Modeling and Design: Proficient in creating and optimizing data models for efficient storage and retrieval.",
-      "Service-Oriented Architecture (SOA): Knowledge of implementing scalable, service-based software solutions.",
-    ],
-  },
-  {
-    title: "Software Engineer",
-    period: "2020 - 2022",
-    type: "professional",
-    institution: "EBANX",
-    location: "Curitiba, Brazil (Hybrid)",
-    details: [
-      "Accelerated delivery of promotional landing pages by 32% through the creation of a modular front-end framework in React and Tailwind, supported by Docker and GitHub Actions pipelines.",
-      "Reduced bugs by 45% and increased code reusability via Storybook-based component library tailored for marketing variations.",
-      "Improved engagement reporting by 40% by automating the dataLayer and real-time event tracking via Google Tag Manager.",
-      "Achieved a 28% gain in PageSpeed metrics (LCP and TBT) using server-side rendering with Next.js, WebP image optimization, and modular lazy loading.",
-    ],
-  },
-  {
-    title: "MBA in Full Stack Development",
-    period: "2020",
-    type: "education",
-    institution: "XP Educação",
-    location: "Belo Horizonte, Brazil",
-    details: [
-      "Full-Stack Web Development: Mastered end-to-end web application development, including front-end and back-end technologies.",
-      "Front-End Proficiency: Advanced skills in building responsive and user-friendly interfaces using modern frameworks and tools.",
-      "Back-End Expertise: Developed server-side applications with Node.js, focusing on scalable and efficient solutions.",
-      "Agile Project Management: Applied Kanban methodologies for effective project organization and team collaboration.",
-    ],
-  },
-  {
-    title: "Fullstack Developer",
-    period: "2018 - Present",
-    type: "professional",
-    institution: "Freelance & Personal Projects",
-    location: "Remote",
-    details: [
-      "Developed institutional and e-commerce websites with an average PageSpeed Insight score of 93+ and up to 28% higher conversion rates using Next.js and Tailwind CSS.",
-      "Engineered robust back-end systems with 99.9% uptime using Node.js, TypeScript, PostgreSQL, MongoDB, and GraphQL within Clean Architecture principles.",
-      "Maintained high deployment confidence with >85% test coverage and zero production-critical bugs, leveraging GitHub Actions for automated testing pipelines (Jest and Cypress).",
-      "Implemented dynamic meta tags, JSON-LD, and sitemap configurations to achieve advanced technical SEO optimizations.",
-    ],
-  },
-  {
-    title: "First Certificate in English",
-    period: "2017",
-    type: "education",
-    institution: "Cambridge Assessment English Exams",
-    location: "London, United Kingdom",
-    details: [
-      "Advanced Reading Skills: Developed the ability to comprehend complex texts and identify detailed information across various topics.",
-      "Effective Writing Proficiency: Gained expertise in crafting clear, coherent, and well-structured written communication for different purposes.",
-      "Listening and Comprehension: Improved listening skills for understanding a wide range of spoken materials, from interviews to academic discussions.",
-      "Speaking Fluency: Mastered the art of clear and confident oral communication in English, including interactive and formal conversations.",
-    ],
-  },
-  {
-    title: "Automation & Control Engineering",
-    period: "2014",
-    type: "education",
-    institution: "Instituto Mauá de Tecnologia",
-    location: "São Caetano do Sul, Brazil",
-    details: [
-      "Robotics and Automation: Gained expertise in designing and implementing automated systems and robotic solutions for industrial applications.",
-      "Control Systems: Developed skills in analyzing and optimizing control processes to enhance efficiency and system performance.",
-      "Electrical and Electronic Systems: Proficient in designing and troubleshooting complex electrical and electronic circuits for automation.",
-      "Programming and Simulation: Hands-on experience in programming and simulating automation systems using tools like MATLAB and PLCs.",
-      "Award-Winning Final Project: Led a group final project that won the ABB Award for Best Final Graduation Project, showcasing innovation and excellence in automation engineering.",
-    ],
-  },
-];
 
 export default function Timeline() {
   const { lang } = useLanguage();
   const tr = t[lang].timeline;
+  const timelineItems = tr.items;
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
 
   useEffect(() => {
@@ -150,7 +47,7 @@ export default function Timeline() {
           }}
         ></div>
 
-        {timelineData.map((item, index) => (
+        {timelineItems.map((item, index) => (
           <div
             key={index}
             className={`relative w-full md:w-1/2 mb-12 ${
