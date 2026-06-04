@@ -6,6 +6,8 @@ import {
   faBriefcase,
   faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
+import { useLanguage } from "@/context/LanguageContext";
+import t from "@/lib/translations";
 
 interface TimelineItem {
   title: string;
@@ -113,6 +115,8 @@ const timelineData: TimelineItem[] = [
 ];
 
 export default function Timeline() {
+  const { lang } = useLanguage();
+  const tr = t[lang].timeline;
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
 
   useEffect(() => {
@@ -134,7 +138,7 @@ export default function Timeline() {
   return (
     <section id="timeline" className="py-20 px-0">
       <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
-        Journey
+        {tr.title}
       </h2>
       <div className="relative flex flex-col items-center max-w-6xl mx-auto px-4">
         {/* Timeline Line */}
@@ -203,7 +207,7 @@ export default function Timeline() {
                 className="text-base text-gray-400 mt-4 mx-2.5 cursor-pointer hover:text-teal-400 transition"
                 onClick={() => handleOpenModal(item)}
               >
-                View more
+                {tr.viewMore}
               </p>
             </div>
           </div>
@@ -217,7 +221,8 @@ export default function Timeline() {
           onClick={handleCloseModal}
         >
           <div
-            className="relative p-5 sm:p-8 bg-gray-900 rounded-lg shadow-lg max-w-md w-full sm:max-w-lg mx-4 max-h-[85vh] overflow-y-auto"
+            className="relative p-5 sm:p-8 rounded-lg shadow-lg max-w-md w-full sm:max-w-lg mx-4 max-h-[85vh] overflow-y-auto"
+            style={{ backgroundColor: "var(--nav-bg)", border: "1px solid var(--card-border)" }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -226,10 +231,10 @@ export default function Timeline() {
             >
               ✕
             </button>
-            <h3 className="text-xl md:text-2xl font-semibold text-gray-300 mb-4">
+            <h3 className="text-xl md:text-2xl font-semibold mb-4" style={{ color: "var(--color-heading)" }}>
               {selectedItem.title}
             </h3>
-            <p className="text-gray-400 mb-4">{selectedItem.period}</p>
+            <p className="mb-4" style={{ color: "var(--color-text-muted)" }}>{selectedItem.period}</p>
             <ul className="text-gray-300 list-disc ml-5 space-y-2">
               {selectedItem.details.map((detail, index) => (
                 <li key={index}>{detail}</li>

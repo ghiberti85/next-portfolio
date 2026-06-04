@@ -4,7 +4,7 @@ import Timeline from "@/components/Timeline";
 describe("Timeline", () => {
   it("renders the Journey section heading", () => {
     render(<Timeline />);
-    expect(screen.getByText("Journey")).toBeInTheDocument();
+    expect(screen.getByText("Experiência & Formação")).toBeInTheDocument();
   });
 
   it("renders professional experience entries", () => {
@@ -22,13 +22,13 @@ describe("Timeline", () => {
 
   it("opens modal with details when a timeline item is clicked", () => {
     render(<Timeline />);
-    fireEvent.click(screen.getAllByText("View more")[0]);
+    fireEvent.click(screen.getAllByText("Ver mais")[0]);
     expect(screen.getByRole("button", { name: /✕/ })).toBeInTheDocument();
   });
 
   it("closes the modal when the close button is clicked", () => {
     render(<Timeline />);
-    fireEvent.click(screen.getAllByText("View more")[0]);
+    fireEvent.click(screen.getAllByText("Ver mais")[0]);
     fireEvent.click(screen.getByRole("button", { name: /✕/ }));
     expect(screen.queryByRole("button", { name: /✕/ })).not.toBeInTheDocument();
   });

@@ -5,6 +5,8 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { useLanguage } from "@/context/LanguageContext";
+import t from "@/lib/translations";
 
 interface Project {
   title: string;
@@ -149,6 +151,8 @@ const projects: Project[] = [
 
 
 export default function ProjectsGrid() {
+  const { lang } = useLanguage();
+  const tr = t[lang].projects;
   const [visibleProjects, setVisibleProjects] = useState(6);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -215,7 +219,7 @@ export default function ProjectsGrid() {
   return (
     <section id="projects" className="py-20 px-4">
       <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
-        Projects
+        {tr.title}
       </h2>
 
       {/* Filter Tags */}
@@ -225,13 +229,14 @@ export default function ProjectsGrid() {
             setActiveTag(null);
             setVisibleProjects(6);
           }}
-          className={`px-5 py-1 rounded-full text-sm font-semibold ${
+          className={`px-5 py-1 rounded-full text-sm font-semibold transition ${
             isAllProjects
               ? "bg-teal-700 text-white"
-              : "bg-gray-200 text-gray-600 hover:bg-teal-700 hover:text-white transition"
+              : "hover:bg-teal-700 hover:text-white"
           }`}
+          style={!isAllProjects ? { background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--color-text)" } : {}}
         >
-          All Projects
+          {tr.all}
         </button>
         {uniqueTags.map((tag, index) => (
           <button
@@ -240,11 +245,12 @@ export default function ProjectsGrid() {
               setActiveTag(tag);
               setVisibleProjects(filteredProjects.length);
             }}
-            className={`px-5 py-1 rounded-full text-sm font-semibold ${
+            className={`px-5 py-1 rounded-full text-sm font-semibold transition ${
               activeTag === tag
                 ? "bg-teal-700 text-white"
-                : "bg-gray-200 text-gray-600 hover:bg-teal-700 hover:text-white transition"
+                : "hover:bg-teal-700 hover:text-white"
             }`}
+            style={activeTag !== tag ? { background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--color-text)" } : {}}
           >
             {tag}
           </button>
@@ -257,11 +263,8 @@ export default function ProjectsGrid() {
           <div
             key={index}
             ref={(el) => { cardRefs.current[index] = el; }}
-            className="group rounded-lg shadow-lg relative cursor-pointer"
+            className="group rounded-lg shadow-lg relative cursor-pointer glass-card"
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
               ...(tiltStyles.current[index] ?? { transform: "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)", transition: "transform 0.4s ease-out" }),
             }}
             onMouseMove={(e) => handleTiltMove(e, index)}
@@ -297,7 +300,7 @@ export default function ProjectsGrid() {
                 className="text-sm text-gray-400 mt-2 cursor-pointer hover:text-teal-400 transition"
                 onClick={() => handleOpenModal(project)}
               >
-                View more
+                {tr.viewMore}
               </p>
             </div>
           </div>
@@ -310,7 +313,7 @@ export default function ProjectsGrid() {
             onClick={handleShowMore}
             className="px-6 py-3 rounded-lg bg-gradient-to-r from-teal-400 to-blue-500 text-white font-semibold hover:scale-105 transition-transform"
           >
-            {visibleProjects === 6 ? "See More" : "Show Less"}
+            {visibleProjects === 6 ? tr.showMore : tr.showLess}
           </button>
         </div>
       )}
@@ -321,7 +324,8 @@ export default function ProjectsGrid() {
           onClick={handleCloseModal}
         >
           <div
-            className="relative p-6 bg-gray-900 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto"
+            className="relative p-6 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto glass-card"
+            style={{ backgroundColor: "var(--nav-bg)" }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative w-full h-48 rounded-lg overflow-hidden mb-4">
@@ -335,10 +339,10 @@ export default function ProjectsGrid() {
                 className="object-cover object-top"
               />
             </div>
-            <h3 className="text-2xl font-semibold text-gray-300 mb-4">
+            <h3 className="text-2xl font-semibold mb-4" style={{ color: "var(--color-heading)" }}>
               {selectedProject.title}
             </h3>
-            <p className="text-gray-400 mb-6">{selectedProject.description}</p>
+            <p className="mb-6" style={{ color: "var(--color-text-muted)" }}>{selectedProject.description}</p>
             <div className="flex justify-between">
               <a
                 href={selectedProject.github}
@@ -361,7 +365,7 @@ export default function ProjectsGrid() {
                     size="lg"
                     className="mr-2"
                   />
-                  Live Site
+                  {tr.liveSite}
                 </a>
               )}
             </div>
