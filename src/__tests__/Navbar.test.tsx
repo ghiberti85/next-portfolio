@@ -19,7 +19,7 @@ describe("Navbar", () => {
 
   it("renders all navigation links on desktop", () => {
     renderWithProviders(<Navbar />);
-    const links = ["Home", "Skills", "Projects", "Timeline", "Contact"];
+    const links = ["Início", "Habilidades", "Projetos", "Carreira", "Contato"];
     links.forEach((name) => {
       expect(screen.getAllByText(name).length).toBeGreaterThan(0);
     });
@@ -29,7 +29,7 @@ describe("Navbar", () => {
     renderWithProviders(<Navbar />);
     const toggleButton = screen.getByLabelText("Toggle menu");
     fireEvent.click(toggleButton);
-    expect(screen.getAllByText("Home").length).toBeGreaterThan(1);
+    expect(screen.getAllByText("Início").length).toBeGreaterThan(1);
     fireEvent.click(toggleButton);
   });
 

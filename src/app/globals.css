@@ -15,6 +15,8 @@
   --color-text-muted: #9ca3af;
   --color-heading: #f1f5f9;
   --blob-opacity: 0.18;
+  --modal-bg: rgba(15, 23, 42, 0.95);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* ── CSS variables – light ──────────────────────────────────────── */
@@ -27,7 +29,9 @@
   --color-text: #334155;
   --color-text-muted: #64748b;
   --color-heading: #0f172a;
-  --blob-opacity: 0.10;
+  --blob-opacity: 0.08;
+  --modal-bg: rgba(248, 250, 252, 0.98);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.10);
 }
 
 /* ── Base ───────────────────────────────────────────────────────── */
@@ -54,10 +58,19 @@ html {
 [data-theme="light"] .text-gray-300 { color: #334155 !important; }
 [data-theme="light"] .text-gray-400 { color: #64748b !important; }
 [data-theme="light"] .text-gray-500 { color: #94a3b8 !important; }
-[data-theme="light"] .text-white    { color: #0f172a !important; }
 [data-theme="light"] .bg-gray-700   { background-color: #cbd5e1 !important; }
 [data-theme="light"] .bg-gray-900   { background-color: rgba(248,250,252,0.92) !important; }
 [data-theme="light"] .text-gray-200 { color: #1e293b !important; }
+
+/* ── Light mode nav shadow ──────────────────────────────────────── */
+[data-theme="light"] nav {
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Light mode glass-card shadow ──────────────────────────────── */
+[data-theme="light"] .glass-card {
+  box-shadow: var(--shadow-card);
+}
 
 /* ── Glass card utility ─────────────────────────────────────────── */
 .glass-card {
