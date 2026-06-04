@@ -244,7 +244,7 @@ export default function ProjectsGrid() {
                 sizes="(max-width: 480px) 100vw, (max-width: 768px) 75vw, (max-width: 1024px) 50vw, 400px"
                 loading="lazy"
                 quality={70}
-                className="object-cover"
+                className="object-cover object-top"
               />
             </div>
             <div className="p-4">
@@ -275,23 +275,24 @@ export default function ProjectsGrid() {
 
       {selectedProject && (
         <div
-          className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75"
+          className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75 px-4"
           onClick={handleCloseModal}
         >
           <div
-            className="relative p-6 bg-gray-900 rounded-lg shadow-lg max-w-md w-full"
+            className="relative p-6 bg-gray-900 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={selectedProject.image}
-              alt={selectedProject.title}
-              width={400}
-              height={250}
-              loading="lazy"
-              quality={80}
-              sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 33vw"
-              className="w-full h-auto rounded-lg object-cover mb-4"
-            />
+            <div className="relative w-full h-48 rounded-lg overflow-hidden mb-4">
+              <Image
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                fill
+                loading="lazy"
+                quality={80}
+                sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 400px"
+                className="object-cover object-top"
+              />
+            </div>
             <h3 className="text-2xl font-semibold text-gray-300 mb-4">
               {selectedProject.title}
             </h3>
