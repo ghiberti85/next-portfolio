@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
@@ -114,6 +114,14 @@ const timelineData: TimelineItem[] = [
 
 export default function Timeline() {
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedItem(null);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const handleOpenModal = (item: TimelineItem) => {
     setSelectedItem(item);

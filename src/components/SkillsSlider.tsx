@@ -62,7 +62,7 @@ export default function SkillsSlider() {
   };
 
   return (
-    <section id="skills" className="relative pt-8 pb-16 px-4">
+    <section id="skills" className="relative py-20 px-4">
       <h2 className="text-4xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
         Skills
       </h2>

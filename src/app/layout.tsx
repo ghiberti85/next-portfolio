@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import MouseSpotlight from "@/components/MouseSpotlight";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
+        <a href="#hero" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-teal-500 focus:text-white focus:rounded-lg focus:shadow-lg">
+          Skip to main content
+        </a>
+        <MouseSpotlight />
         <div className="container mx-auto px-4 lg:px-8">{children}</div>
       </body>
     </html>
