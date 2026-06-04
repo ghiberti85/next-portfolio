@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, CSSProperties } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
@@ -161,6 +161,36 @@ export default function ProjectsGrid() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const tiltStyles = useRef<CSSProperties[]>([]);
+  const [, forceUpdate] = useState(0);
+  const prefersReducedMotion = useRef(false);
+  useEffect(() => {
+    prefersReducedMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
+
+  const handleTiltMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    if (prefersReducedMotion.current) return;
+    const card = cardRefs.current[index];
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    tiltStyles.current[index] = {
+      transform: `perspective(600px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.03)`,
+      transition: "transform 0.1s ease-out",
+    };
+    forceUpdate((n) => n + 1);
+  };
+
+  const handleTiltLeave = (index: number) => {
+    tiltStyles.current[index] = {
+      transform: "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)",
+      transition: "transform 0.4s ease-out",
+    };
+    forceUpdate((n) => n + 1);
+  };
+
   // Extract unique tags dynamically
   const uniqueTags = Array.from(new Set(projects.flatMap((project) => project.tags)));
 
@@ -226,12 +256,16 @@ export default function ProjectsGrid() {
         {filteredProjects.slice(0, visibleProjects).map((project, index) => (
           <div
             key={index}
-            className="group rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl relative"
+            ref={(el) => { cardRefs.current[index] = el; }}
+            className="group rounded-lg shadow-lg relative cursor-pointer"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.1)",
               backdropFilter: "blur(12px)",
               border: "1px solid rgba(255, 255, 255, 0.2)",
+              ...(tiltStyles.current[index] ?? { transform: "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)", transition: "transform 0.4s ease-out" }),
             }}
+            onMouseMove={(e) => handleTiltMove(e, index)}
+            onMouseLeave={() => handleTiltLeave(index)}
             onClick={() => handleOpenModal(project)}
           >
             <div className="absolute top-4 left-4 flex flex-wrap gap-2">

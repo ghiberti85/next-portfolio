@@ -36,3 +36,48 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Animated mesh background blobs */
+@keyframes blob-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.08); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.mesh-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.18;
+  pointer-events: none;
+  animation: blob-drift 18s ease-in-out infinite;
+  z-index: 0;
+}
+
+.mesh-blob-1 {
+  width: 500px;
+  height: 500px;
+  top: -100px;
+  left: -100px;
+  background: radial-gradient(circle, #14b8a6, transparent 70%);
+  animation-delay: 0s;
+}
+
+.mesh-blob-2 {
+  width: 600px;
+  height: 600px;
+  bottom: -150px;
+  right: -150px;
+  background: radial-gradient(circle, #3b82f6, transparent 70%);
+  animation-delay: -6s;
+}
+
+.mesh-blob-3 {
+  width: 400px;
+  height: 400px;
+  top: 40%;
+  left: 50%;
+  background: radial-gradient(circle, #9333ea, transparent 70%);
+  animation-delay: -12s;
+  opacity: 0.10;
+}
