@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "placehold.co" },
       { protocol: "https", hostname: "cdn.jsdelivr.net" },
     ],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 3600,
     formats: ["image/webp"],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'none'; img-src 'self' data:; script-src 'none'",
