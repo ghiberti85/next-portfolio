@@ -43,6 +43,11 @@ body {
   background-attachment: fixed;
   color: var(--color-text);
   transition: background 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 /* ── Light mode text overrides ──────────────────────────────────── */

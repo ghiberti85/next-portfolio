@@ -18,11 +18,11 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="min-h-screen flex flex-col lg:flex-row items-center justify-between px-4 py-16 gap-20"
+      className="min-h-screen flex flex-col lg:flex-row items-center justify-between px-4 pt-24 pb-12 lg:py-16 gap-8 lg:gap-16"
     >
       {/* Left Column */}
       <div
-        className="lg:w-1/2 flex flex-col justify-center items-center space-y-6 py-8 px-4 rounded-lg shadow-lg glass-card"
+        className="w-full lg:w-1/2 flex flex-col justify-center items-center space-y-5 py-8 px-4 rounded-lg shadow-lg glass-card"
       >
         {/* Profile Picture */}
         <div
@@ -44,7 +44,7 @@ export default function Hero() {
 
         <span className="text-4xl font-extrabold leading-none text-center">{tr.greeting}</span>
         <h1
-          className="text-4xl font-extrabold text-center text-transparent bg-clip-text"
+          className="text-3xl lg:text-4xl font-extrabold text-center text-transparent bg-clip-text"
           style={{ backgroundImage: "linear-gradient(135deg, #14b8a6, #6366f1)" }}
         >
           I&apos;m Fernando Ghiberti
@@ -88,7 +88,7 @@ export default function Hero() {
       </div>
 
       {/* Right Column */}
-      <div className="lg:w-1/2 flex flex-col justify-center items-center text-center px-4 lg:px-0">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center text-center px-2 lg:px-0">
         {/* Mobile typewriter */}
         <h2 className="text-xl font-semibold mb-6 lg:hidden" style={{ color: "var(--color-text)" }}>
           <Typewriter

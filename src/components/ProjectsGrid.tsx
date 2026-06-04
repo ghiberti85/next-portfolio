@@ -213,8 +213,8 @@ export default function ProjectsGrid() {
   const isAllProjects = !activeTag;
 
   return (
-    <section id="projects" className="py-20 px-4 lg:px-4">
-      <h2 className="text-4xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+    <section id="projects" className="py-20 px-4">
+      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
         Projects
       </h2>
 

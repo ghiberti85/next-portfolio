@@ -92,8 +92,8 @@ export default function TerminalIntro({ onDone }: TerminalIntroProps) {
 
         {/* Terminal body */}
         <div
-          className="font-mono text-sm p-5 space-y-1 overflow-y-auto"
-          style={{ background: "rgba(0,0,0,0.6)", minHeight: "260px", maxHeight: "360px" }}
+          className="font-mono text-xs sm:text-sm p-4 sm:p-5 space-y-1 overflow-y-auto overflow-x-hidden"
+          style={{ background: "rgba(0,0,0,0.6)", minHeight: "220px", maxHeight: "340px" }}
         >
           {lines.map((l, i) => (
             <div key={i}>
@@ -101,7 +101,7 @@ export default function TerminalIntro({ onDone }: TerminalIntroProps) {
                 <span className="text-teal-400">➜ </span>
                 <span className="text-gray-200">{l.cmd}</span>
               </p>
-              <p className="text-gray-400 pl-4">{l.out}</p>
+              <p className="text-gray-400 pl-4 break-words">{l.out}</p>
             </div>
           ))}
 
