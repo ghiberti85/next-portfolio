@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MouseSpotlight from "@/components/MouseSpotlight";
 import AskFernando from "@/components/AskFernando";
+import { LanguageProvider } from "@/context/LanguageContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +17,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fernando Ghiberti's Portfolio",
-  description: "Showcasing the portfolio of Fernando Ghiberti, a senior frontend engineer.",
+  title: "Fernando Ghiberti — Senior Fullstack Developer",
+  description:
+    "Portfolio of Fernando Ghiberti, Senior Fullstack Developer specializing in React, Next.js, TypeScript, and AI integrations. Available for new opportunities.",
+  keywords: ["Fernando Ghiberti", "Senior Fullstack Developer", "React", "Next.js", "TypeScript", "Supabase", "AI"],
+  authors: [{ name: "Fernando Ghiberti", url: "https://github.com/ghiberti85" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://next-portfolio-ghiberti85.vercel.app",
+    siteName: "Fernando Ghiberti Portfolio",
+    title: "Fernando Ghiberti — Senior Fullstack Developer",
+    description:
+      "Portfolio of Fernando Ghiberti, Senior Fullstack Developer specializing in React, Next.js, TypeScript, and AI integrations.",
+    images: [
+      {
+        url: "https://github.com/ghiberti85.png",
+        width: 400,
+        height: 400,
+        alt: "Fernando Ghiberti",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fernando Ghiberti — Senior Fullstack Developer",
+    description:
+      "Portfolio of Fernando Ghiberti, Senior Fullstack Developer specializing in React, Next.js, TypeScript, and AI integrations.",
+    images: ["https://github.com/ghiberti85.png"],
+  },
 };
 
 export default function RootLayout({
@@ -32,15 +61,22 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
-        <a href="#hero" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-teal-500 focus:text-white focus:rounded-lg focus:shadow-lg">
-          Skip to main content
-        </a>
-        <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
-        <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
-        <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
-        <MouseSpotlight />
-        <div className="container mx-auto px-4 lg:px-8 relative z-10">{children}</div>
-        <AskFernando />
+        <ThemeProvider>
+          <LanguageProvider>
+            <a
+              href="#hero"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-teal-500 focus:text-white focus:rounded-lg focus:shadow-lg"
+            >
+              Skip to main content
+            </a>
+            <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
+            <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
+            <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
+            <MouseSpotlight />
+            <div className="container mx-auto px-4 lg:px-8 relative z-10">{children}</div>
+            <AskFernando />
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

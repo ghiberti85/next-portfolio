@@ -5,10 +5,16 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faFileDownload } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { useLanguage } from "@/context/LanguageContext";
+import t from "@/lib/translations";
+import StatsCounter from "@/components/StatsCounter";
 
 const Typewriter = dynamic(() => import("typewriter-effect"), { ssr: false });
 
 export default function Hero() {
+  const { lang } = useLanguage();
+  const tr = t[lang].hero;
+
   return (
     <section
       id="hero"
@@ -16,19 +22,12 @@ export default function Hero() {
     >
       {/* Left Column */}
       <div
-        className="lg:w-1/2 flex flex-col justify-center items-center space-y-6 py-8 px-4 rounded-lg shadow-lg"
-        style={{
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
-          backdropFilter: "blur(12px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-        }}
+        className="lg:w-1/2 flex flex-col justify-center items-center space-y-6 py-8 px-4 rounded-lg shadow-lg glass-card"
       >
         {/* Profile Picture */}
         <div
           className="relative w-40 h-40 rounded-full p-1"
-          style={{
-            background: "linear-gradient(135deg, #9333ea, #3b82f6)",
-          }}
+          style={{ background: "linear-gradient(135deg, #9333ea, #3b82f6)" }}
         >
           <div className="rounded-full bg-gray-900 p-1">
             <Image
@@ -43,40 +42,23 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Info */}
-        <span className="text-4xl text-gray-300 font-extrabold leading-none text-center">
-          Hi! 👋
-        </span>
+        <span className="text-4xl font-extrabold leading-none text-center">{tr.greeting}</span>
         <h1
           className="text-4xl font-extrabold text-center text-transparent bg-clip-text"
-          style={{
-            backgroundImage: "linear-gradient(135deg, #14b8a6, #6366f1)",
-          }}
+          style={{ backgroundImage: "linear-gradient(135deg, #14b8a6, #6366f1)" }}
         >
           I&apos;m Fernando Ghiberti
         </h1>
-        <p className="text-xl text-gray-300 text-center">
-          Software Engineer | Senior Fullstack Expert
+        <p className="text-xl text-center" style={{ color: "var(--color-text)" }}>
+          {tr.role}
         </p>
 
         {/* Social Icons */}
-        <div className="flex space-x-6 mt-4 text-gray-300">
+        <div className="flex space-x-6 mt-4" style={{ color: "var(--color-text)" }}>
           {[
-            {
-              icon: faGithub,
-              link: "https://github.com/ghiberti85",
-              label: "GitHub Profile",
-            },
-            {
-              icon: faLinkedin,
-              link: "https://linkedin.com/in/fernando-ghiberti",
-              label: "LinkedIn Profile",
-            },
-            {
-              icon: faEnvelope,
-              link: "mailto:ghiberti85@gmail.com",
-              label: "Send an Email",
-            },
+            { icon: faGithub, link: "https://github.com/ghiberti85", label: "GitHub Profile" },
+            { icon: faLinkedin, link: "https://linkedin.com/in/fernando-ghiberti", label: "LinkedIn Profile" },
+            { icon: faEnvelope, link: "mailto:ghiberti85@gmail.com", label: "Send an Email" },
           ].map(({ icon, link, label }, idx) => (
             <a
               key={idx}
@@ -92,7 +74,7 @@ export default function Hero() {
           ))}
         </div>
 
-        {/* Download CV Button */}
+        {/* Download CV */}
         <div className="mt-4">
           <a
             href="/fernando-ghiberti-cv-en.pdf"
@@ -100,49 +82,32 @@ export default function Hero() {
             className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-teal-400 to-blue-500 text-white font-semibold rounded-lg hover:scale-105 hover:shadow-lg transition-transform duration-300"
           >
             <FontAwesomeIcon icon={faFileDownload} className="w-5 h-5" />
-            <span>Download CV</span>
+            <span>{tr.downloadCV}</span>
           </a>
         </div>
       </div>
 
       {/* Right Column */}
-      <div className="lg:w-1/2 flex flex-col justify-center items-center text-gray-300 text-center px-4 lg:px-0">
-        {/* Short Text for Mobile */}
-        <h2 className="text-xl font-semibold mb-6 lg:hidden">
+      <div className="lg:w-1/2 flex flex-col justify-center items-center text-center px-4 lg:px-0">
+        {/* Mobile typewriter */}
+        <h2 className="text-xl font-semibold mb-6 lg:hidden" style={{ color: "var(--color-text)" }}>
           <Typewriter
-            options={{
-              strings: [
-                "Creating web apps",
-                "React & Next.js expert",
-                "Bringing ideas to life",
-              ],
-              autoStart: true,
-              loop: true,
-              delay: 75,
-            }}
+            options={{ strings: tr.typewriterMobile, autoStart: true, loop: true, delay: 75 }}
           />
         </h2>
 
-        {/* Long Text for Desktop */}
-        <h2 className="text-xl lg:text-3xl font-semibold mb-6 hidden lg:block">
+        {/* Desktop typewriter */}
+        <h2 className="text-xl lg:text-3xl font-semibold mb-6 hidden lg:block" style={{ color: "var(--color-text)" }}>
           <Typewriter
-            options={{
-              strings: [
-                "Building modern web applications",
-                "Specialist in React and Next.js",
-                "Transforming ideas into reality",
-              ],
-              autoStart: true,
-              loop: true,
-              delay: 75,
-            }}
+            options={{ strings: tr.typewriterDesktop, autoStart: true, loop: true, delay: 75 }}
           />
         </h2>
 
-        <p className="text-lg mb-6">
-          Crafting high-performance, user-friendly interfaces with a focus on
-          delivering exceptional user experiences.
+        <p className="text-lg mb-6" style={{ color: "var(--color-text-muted)" }}>
+          {tr.description}
         </p>
+
+        <StatsCounter />
       </div>
     </section>
   );

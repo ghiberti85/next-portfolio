@@ -1,0 +1,58 @@
+"use client";
+
+import {
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import { useLanguage } from "@/context/LanguageContext";
+import t from "@/lib/translations";
+
+export default function SkillsRadar() {
+  const { lang } = useLanguage();
+  const tr = t[lang].skills;
+
+  return (
+    <div className="mt-16">
+      <h3 className="text-2xl font-semibold text-center text-gray-300 mb-8">{tr.radarTitle}</h3>
+      <div
+        className="max-w-lg mx-auto rounded-xl p-6"
+        style={{
+          background: "var(--card-bg)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid var(--card-border)",
+        }}
+      >
+        <ResponsiveContainer width="100%" height={320}>
+          <RadarChart data={tr.radarData}>
+            <PolarGrid stroke="rgba(255,255,255,0.15)" />
+            <PolarAngleAxis
+              dataKey="subject"
+              tick={{ fill: "#9ca3af", fontSize: 13, fontWeight: 500 }}
+            />
+            <Tooltip
+              contentStyle={{
+                background: "rgba(15,23,42,0.9)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                borderRadius: "8px",
+                color: "#d1d5db",
+                fontSize: "13px",
+              }}
+              formatter={(value) => [`${value}%`, ""]}
+            />
+            <Radar
+              dataKey="value"
+              stroke="#14b8a6"
+              fill="#14b8a6"
+              fillOpacity={0.25}
+              dot={{ fill: "#14b8a6", r: 4 }}
+            />
+          </RadarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}

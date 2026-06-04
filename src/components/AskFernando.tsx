@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots, faTimes, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useLanguage } from "@/context/LanguageContext";
+import t from "@/lib/translations";
 
 interface Message {
   role: "user" | "assistant";
@@ -10,14 +12,23 @@ interface Message {
 }
 
 export default function AskFernando() {
+  const { lang } = useLanguage();
+  const tr = t[lang].askFernando;
+
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi! I'm Fernando's AI assistant. Ask me anything about his skills, projects, or experience." },
+    { role: "assistant", content: tr.greeting },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Reset greeting when language changes
+  useEffect(() => {
+    setMessages([{ role: "assistant", content: tr.greeting }]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
   useEffect(() => {
     if (open) {
@@ -47,7 +58,10 @@ export default function AskFernando() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages.filter((m) => m.role !== "assistant" || newMessages.indexOf(m) > 0) }),
+        body: JSON.stringify({
+          messages: newMessages.filter((m) => m.role !== "assistant" || newMessages.indexOf(m) > 0),
+          lang,
+        }),
       });
       const data = await res.json();
       setMessages([...newMessages, { role: "assistant", content: data.reply ?? "Sorry, I couldn't respond right now." }]);
@@ -68,7 +82,7 @@ export default function AskFernando() {
         style={{ background: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
       >
         <FontAwesomeIcon icon={faCommentDots} />
-        <span className="hidden sm:inline text-sm">Ask Fernando</span>
+        <span className="hidden sm:inline text-sm">{tr.title}</span>
       </button>
 
       {/* Chat modal */}
@@ -89,7 +103,7 @@ export default function AskFernando() {
             className="flex items-center justify-between px-4 py-3"
             style={{ background: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
           >
-            <span className="font-semibold text-white text-sm">Ask Fernando AI</span>
+            <span className="font-semibold text-white text-sm">{tr.title}</span>
             <button
               onClick={() => setOpen(false)}
               aria-label="Close chat"
@@ -102,15 +116,10 @@ export default function AskFernando() {
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" style={{ minHeight: 0 }}>
             {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-              >
+              <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
                   className={`max-w-[80%] px-3 py-2 rounded-xl text-sm leading-relaxed ${
-                    msg.role === "user"
-                      ? "text-white rounded-br-none"
-                      : "text-gray-200 rounded-bl-none"
+                    msg.role === "user" ? "text-white rounded-br-none" : "text-gray-200 rounded-bl-none"
                   }`}
                   style={{
                     background:
@@ -129,7 +138,7 @@ export default function AskFernando() {
                   className="px-3 py-2 rounded-xl rounded-bl-none text-gray-400 text-sm"
                   style={{ background: "rgba(255,255,255,0.1)" }}
                 >
-                  Thinking…
+                  {tr.thinking}
                 </div>
               </div>
             )}
@@ -145,7 +154,7 @@ export default function AskFernando() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                placeholder="Ask something…"
+                placeholder={tr.placeholder}
                 disabled={loading}
                 className="flex-1 px-3 py-2 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400 disabled:opacity-50"
                 style={{ background: "rgba(255,255,255,0.08)" }}

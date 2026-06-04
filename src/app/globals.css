@@ -1,22 +1,69 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "slick-carousel/slick/slick.css"; 
+@import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 
+/* ── CSS variables – dark (default) ────────────────────────────── */
+:root {
+  --bg-from: #0f172a;
+  --bg-to: #1e293b;
+  --card-bg: rgba(255, 255, 255, 0.1);
+  --card-border: rgba(255, 255, 255, 0.2);
+  --nav-bg: rgba(17, 24, 39, 0.9);
+  --color-text: #d1d5db;
+  --color-text-muted: #9ca3af;
+  --color-heading: #f1f5f9;
+  --blob-opacity: 0.18;
+}
+
+/* ── CSS variables – light ──────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-from: #f0f9ff;
+  --bg-to: #dbeafe;
+  --card-bg: rgba(255, 255, 255, 0.72);
+  --card-border: rgba(148, 163, 184, 0.35);
+  --nav-bg: rgba(248, 250, 252, 0.92);
+  --color-text: #334155;
+  --color-text-muted: #64748b;
+  --color-heading: #0f172a;
+  --blob-opacity: 0.10;
+}
+
+/* ── Base ───────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
 }
 
-/* Add any custom global styles here */
 body {
   font-family: var(--font-geist-sans), sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: #333;
+  background: linear-gradient(135deg, var(--bg-from), var(--bg-to));
+  background-attachment: fixed;
+  color: var(--color-text);
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
+/* ── Light mode text overrides ──────────────────────────────────── */
+[data-theme="light"] .text-gray-300 { color: #334155 !important; }
+[data-theme="light"] .text-gray-400 { color: #64748b !important; }
+[data-theme="light"] .text-gray-500 { color: #94a3b8 !important; }
+[data-theme="light"] .text-white    { color: #0f172a !important; }
+[data-theme="light"] .bg-gray-700   { background-color: #cbd5e1 !important; }
+[data-theme="light"] .bg-gray-900   { background-color: rgba(248,250,252,0.92) !important; }
+[data-theme="light"] .text-gray-200 { color: #1e293b !important; }
+
+/* ── Glass card utility ─────────────────────────────────────────── */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+/* ── Focus styles ───────────────────────────────────────────────── */
 *:focus {
   outline: none;
 }
@@ -27,6 +74,7 @@ body {
   border-radius: 4px;
 }
 
+/* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -37,21 +85,22 @@ body {
   }
 }
 
-/* Animated mesh background blobs */
+/* ── Animated mesh background blobs ────────────────────────────── */
 @keyframes blob-drift {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(40px, -30px) scale(1.08); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
+  33%  { transform: translate(40px, -30px) scale(1.08); }
+  66%  { transform: translate(-20px, 20px) scale(0.95); }
 }
 
 .mesh-blob {
   position: fixed;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.18;
+  opacity: var(--blob-opacity);
   pointer-events: none;
   animation: blob-drift 18s ease-in-out infinite;
   z-index: 0;
+  transition: opacity 0.4s ease;
 }
 
 .mesh-blob-1 {
@@ -79,5 +128,5 @@ body {
   left: 50%;
   background: radial-gradient(circle, #9333ea, transparent 70%);
   animation-delay: -12s;
-  opacity: 0.10;
+  opacity: calc(var(--blob-opacity) * 0.6);
 }
