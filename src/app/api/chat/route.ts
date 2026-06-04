@@ -29,11 +29,16 @@ Answer factual questions about Fernando. If asked something you don't know about
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json();
+    const { messages, lang } = await req.json();
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: "Invalid messages" }, { status: 400 });
     }
+
+    const langInstruction =
+      lang === "pt"
+        ? "\n\nIMPORTANT: The user has the site in Portuguese. Always respond in Brazilian Portuguese."
+        : "\n\nIMPORTANT: The user has the site in English. Always respond in English.";
 
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
@@ -45,7 +50,7 @@ export async function POST(req: NextRequest) {
     const completion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: SYSTEM_PROMPT + langInstruction },
         ...messages.slice(-10),
       ],
       max_tokens: 512,
