@@ -56,7 +56,7 @@ export default function Hero() {
           I&apos;m Fernando Ghiberti
         </h1>
         <p className="text-xl text-gray-300 text-center">
-          Software Engineer | Frontend Expert
+          Software Engineer | Senior Fullstack Expert
         </p>
 
         {/* Social Icons */}
