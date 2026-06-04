@@ -6,7 +6,7 @@ import { faLinkedin, faGithub, faWhatsapp } from "@fortawesome/free-brands-svg-i
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-16 px-4 lg:px-4 text-center">
+    <section id="contact" className="py-20 px-4 lg:px-4 text-center">
       <h2 className="text-4xl font-bold mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
         Get in Touch
       </h2>

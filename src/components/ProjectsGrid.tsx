@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
@@ -153,6 +153,14 @@ export default function ProjectsGrid() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedProject(null);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   // Extract unique tags dynamically
   const uniqueTags = Array.from(new Set(projects.flatMap((project) => project.tags)));
 
@@ -175,7 +183,7 @@ export default function ProjectsGrid() {
   const isAllProjects = !activeTag;
 
   return (
-    <section id="projects" className="py-16 px-4 lg:px-4">
+    <section id="projects" className="py-20 px-4 lg:px-4">
       <h2 className="text-4xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
         Projects
       </h2>
