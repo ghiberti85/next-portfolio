@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MouseSpotlight from "@/components/MouseSpotlight";
+import AskFernando from "@/components/AskFernando";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,12 @@ export default function RootLayout({
         <a href="#hero" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-teal-500 focus:text-white focus:rounded-lg focus:shadow-lg">
           Skip to main content
         </a>
+        <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
+        <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
+        <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
         <MouseSpotlight />
-        <div className="container mx-auto px-4 lg:px-8">{children}</div>
+        <div className="container mx-auto px-4 lg:px-8 relative z-10">{children}</div>
+        <AskFernando />
       </body>
     </html>
   );

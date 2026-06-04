@@ -55,10 +55,15 @@ export default function Footer() {
       )}
 
       {/* Footer */}
-      <footer className="py-2 px-4 text-center text-gray-400">
-        <p className="text-sm">
-          Developed with <span className="text-teal-700">💚</span> by{" "}
+      <footer className="py-6 px-4 text-center text-gray-400 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+        <p className="text-sm mb-1">
+          Developed with <span className="text-teal-400">💚</span> by{" "}
           <span className="font-semibold text-gray-300">Fernando Ghiberti</span>
+        </p>
+        <p className="text-xs text-gray-500">
+          © {new Date().getFullYear()} Fernando Ghiberti · Built with{" "}
+          <span className="text-gray-400">Next.js 15</span> · Deployed on{" "}
+          <span className="text-gray-400">Vercel</span>
         </p>
       </footer>
     </>
