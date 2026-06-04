@@ -36,8 +36,8 @@ const t = {
       ],
     },
     stats: [
-      { value: 10, suffix: "+", label: "Years of Experience" },
-      { value: 20, suffix: "+", label: "Projects Delivered" },
+      { value: 9, suffix: "+", label: "Years of Experience" },
+      { value: 100, suffix: "+", label: "Projects Delivered" },
       { value: 38, suffix: "%", label: "Avg. Performance Gain" },
       { value: 45, suffix: "%", label: "Avg. Bug Reduction" },
     ],
@@ -245,8 +245,8 @@ const t = {
       ],
     },
     stats: [
-      { value: 10, suffix: "+", label: "Anos de Experiência" },
-      { value: 20, suffix: "+", label: "Projetos Entregues" },
+      { value: 9, suffix: "+", label: "Anos de Experiência" },
+      { value: 100, suffix: "+", label: "Projetos Entregues" },
       { value: 38, suffix: "%", label: "Ganho Médio de Performance" },
       { value: 45, suffix: "%", label: "Redução Média de Bugs" },
     ],
