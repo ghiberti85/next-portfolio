@@ -93,7 +93,7 @@ export default function AskFernando() {
             backgroundColor: "rgba(15, 23, 42, 0.95)",
             backdropFilter: "blur(16px)",
             border: "1px solid rgba(255,255,255,0.15)",
-            maxHeight: "70vh",
+            maxHeight: "min(70vh, calc(100dvh - 8rem))",
           }}
           role="dialog"
           aria-label="Ask Fernando chat"
@@ -156,8 +156,8 @@ export default function AskFernando() {
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                 placeholder={tr.placeholder}
                 disabled={loading}
-                className="flex-1 px-3 py-2 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400 disabled:opacity-50"
-                style={{ background: "rgba(255,255,255,0.08)" }}
+                className="flex-1 px-3 py-2 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400 disabled:opacity-50"
+                style={{ background: "rgba(255,255,255,0.08)", fontSize: "16px" }}
               />
               <button
                 onClick={sendMessage}
