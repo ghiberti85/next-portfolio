@@ -6,9 +6,10 @@ import t from "@/lib/translations";
 
 interface TerminalIntroProps {
   onDone: () => void;
+  exiting?: boolean;
 }
 
-export default function TerminalIntro({ onDone }: TerminalIntroProps) {
+export default function TerminalIntro({ onDone, exiting = false }: TerminalIntroProps) {
   const { lang } = useLanguage();
   const tr = t[lang].terminal;
   const [lines, setLines] = useState<{ cmd: string; out: string; doneCmd: boolean; doneOut: boolean }[]>([]);
@@ -73,7 +74,12 @@ export default function TerminalIntro({ onDone }: TerminalIntroProps) {
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-      style={{ background: "linear-gradient(135deg, #0f172a, #1e293b)" }}
+      style={{
+        background: "linear-gradient(135deg, #0f172a, #1e293b)",
+        opacity: exiting ? 0 : 1,
+        transition: "opacity 0.8s ease",
+        pointerEvents: exiting ? "none" : "auto",
+      }}
     >
       <div
         className="w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden"

@@ -13,6 +13,7 @@ import TerminalIntro from "@/components/TerminalIntro";
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(false);
+  const [exiting, setExiting] = useState(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -26,15 +27,21 @@ export default function Home() {
 
   const handleIntroDone = () => {
     sessionStorage.setItem("portfolio-intro-seen", "1");
-    setShowIntro(false);
+    setExiting(true);
     setReady(true);
+    // Remove terminal from DOM after fade-out completes
+    setTimeout(() => setShowIntro(false), 900);
   };
 
   return (
     <>
-      {showIntro && <TerminalIntro onDone={handleIntroDone} />}
       {ready && (
-        <>
+        <div
+          style={{
+            opacity: showIntro && !exiting ? 0 : 1,
+            transition: exiting ? "opacity 0.8s ease 0.2s" : "none",
+          }}
+        >
           <Navbar />
           <AnimatedSection delay={0}><Hero /></AnimatedSection>
           <AnimatedSection delay={0.05}><SkillsSlider /></AnimatedSection>
@@ -42,8 +49,9 @@ export default function Home() {
           <AnimatedSection delay={0.05}><Timeline /></AnimatedSection>
           <AnimatedSection delay={0.05}><Contact /></AnimatedSection>
           <AnimatedSection delay={0.05}><Footer /></AnimatedSection>
-        </>
+        </div>
       )}
+      {showIntro && <TerminalIntro onDone={handleIntroDone} exiting={exiting} />}
     </>
   );
 }
