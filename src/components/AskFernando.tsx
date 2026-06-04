@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots, faTimes, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
+import { useTheme } from "@/context/ThemeContext";
 import t from "@/lib/translations";
 
 interface Message {
@@ -13,6 +14,8 @@ interface Message {
 
 export default function AskFernando() {
   const { lang } = useLanguage();
+  const { theme } = useTheme();
+  const isLight = theme === "light";
   const tr = t[lang].askFernando;
 
   const [open, setOpen] = useState(false);
@@ -90,9 +93,9 @@ export default function AskFernando() {
         <div
           className="fixed bottom-24 left-4 sm:left-8 z-50 w-[calc(100vw-2rem)] sm:w-96 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           style={{
-            backgroundColor: "rgba(15, 23, 42, 0.95)",
+            backgroundColor: isLight ? "rgba(248,250,252,0.98)" : "rgba(15,23,42,0.95)",
             backdropFilter: "blur(16px)",
-            border: "1px solid rgba(255,255,255,0.15)",
+            border: `1px solid ${isLight ? "rgba(148,163,184,0.4)" : "rgba(255,255,255,0.15)"}`,
             maxHeight: "min(70vh, calc(100dvh - 8rem))",
           }}
           role="dialog"
@@ -119,13 +122,14 @@ export default function AskFernando() {
               <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
                   className={`max-w-[80%] px-3 py-2 rounded-xl text-sm leading-relaxed ${
-                    msg.role === "user" ? "text-white rounded-br-none" : "text-gray-200 rounded-bl-none"
+                    msg.role === "user" ? "text-white rounded-br-none" : "rounded-bl-none"
                   }`}
                   style={{
                     background:
                       msg.role === "user"
                         ? "linear-gradient(135deg, #14b8a6, #3b82f6)"
-                        : "rgba(255,255,255,0.1)",
+                        : isLight ? "rgba(15,23,42,0.08)" : "rgba(255,255,255,0.1)",
+                    color: msg.role === "user" ? "#fff" : isLight ? "#1e293b" : "#e5e7eb",
                   }}
                 >
                   {msg.content}
@@ -135,8 +139,11 @@ export default function AskFernando() {
             {loading && (
               <div className="flex justify-start">
                 <div
-                  className="px-3 py-2 rounded-xl rounded-bl-none text-gray-400 text-sm"
-                  style={{ background: "rgba(255,255,255,0.1)" }}
+                  className="px-3 py-2 rounded-xl rounded-bl-none text-sm"
+                  style={{
+                    background: isLight ? "rgba(15,23,42,0.08)" : "rgba(255,255,255,0.1)",
+                    color: isLight ? "#64748b" : "#9ca3af",
+                  }}
                 >
                   {tr.thinking}
                 </div>
@@ -146,7 +153,7 @@ export default function AskFernando() {
           </div>
 
           {/* Input */}
-          <div className="px-3 py-3 border-t" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
+          <div className="px-3 py-3 border-t" style={{ borderColor: isLight ? "rgba(148,163,184,0.3)" : "rgba(255,255,255,0.1)" }}>
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -156,8 +163,12 @@ export default function AskFernando() {
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                 placeholder={tr.placeholder}
                 disabled={loading}
-                className="flex-1 px-3 py-2 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400 disabled:opacity-50"
-                style={{ background: "rgba(255,255,255,0.08)", fontSize: "16px" }}
+                className="flex-1 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 disabled:opacity-50"
+                style={{
+                  background: isLight ? "rgba(15,23,42,0.06)" : "rgba(255,255,255,0.08)",
+                  color: isLight ? "#1e293b" : "#fff",
+                  fontSize: "16px",
+                }}
               />
               <button
                 onClick={sendMessage}
