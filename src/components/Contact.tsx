@@ -95,7 +95,7 @@ export default function Contact() {
           {cards.map(({ icon, iconBg, title, description, linkLabel, href, linkColor, external }) => (
             <div
               key={title}
-              className="flex flex-col p-6 rounded-lg shadow-lg hover:scale-105 transition-transform"
+              className="flex flex-col items-center p-6 rounded-lg shadow-lg hover:scale-105 transition-transform text-center"
               style={{
                 background: "rgba(255, 255, 255, 0.1)",
                 backdropFilter: "blur(12px)",
