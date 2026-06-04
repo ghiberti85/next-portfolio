@@ -18,6 +18,38 @@ interface Project {
 // Define projects with deterministic tags
 const projects: Project[] = [
   {
+    title: "DevInterviewLab",
+    image: "https://raw.githubusercontent.com/ghiberti85/devinterviewlab/main/public/og-image.png",
+    description: "AI-powered technical interview prep platform. Generate personalized study roadmaps from job descriptions, practice with AI-generated questions, review Flash Topics and track your progress — available in English and Portuguese.",
+    github: "https://github.com/ghiberti85/devinterviewlab",
+    live: "https://devinterviewlab.vercel.app",
+    tags: ["Next.js", "TypeScript", "Supabase", "Groq AI", "PWA", "Radix UI"],
+  },
+  {
+    title: "Interview Command Center",
+    image: "https://raw.githubusercontent.com/ghiberti85/interview-command-center/main/public/screenshot.png",
+    description: "A personal CRM for managing job interview pipelines — track processes by stage, generate AI-powered recruiter responses and CV adaptations, and manage next steps across multiple open positions simultaneously.",
+    github: "https://github.com/ghiberti85/interview-command-center",
+    live: "https://interview-command-center.vercel.app",
+    tags: ["React", "TypeScript", "Vite", "Supabase", "Claude AI", "PWA"],
+  },
+  {
+    title: "Ghiberti UI",
+    image: "https://raw.githubusercontent.com/ghiberti85/ui/main/apps/docs/public/screenshot.png",
+    description: "A monorepo design system with 5 themed token collections and 30 accessible React components. Built for developers who need a fully themeable, dark-mode-ready component library with CSS custom properties and no runtime dependencies.",
+    github: "https://github.com/ghiberti85/ui",
+    live: "https://ghiberti-ui.vercel.app",
+    tags: ["React", "TypeScript", "Next.js", "Storybook", "Turborepo", "Radix UI"],
+  },
+  {
+    title: "Finanças do Casal",
+    image: "https://raw.githubusercontent.com/ghiberti85/financa-casal/main/public/screenshot.png",
+    description: "A collaborative personal finance PWA for couples — track shared expenses, income, budgets, credit card statements and recurring bills in real time, with AI-powered spreadsheet import via Claude Sonnet.",
+    github: "https://github.com/ghiberti85/financa-casal",
+    live: "https://financa-casal.vercel.app",
+    tags: ["React", "TypeScript", "Vite", "Supabase", "Claude AI", "PWA"],
+  },
+  {
     title: "upload.ai",
     image: "https://github.com/ghiberti85/nlw-ai/raw/main/upload-ai-web/public/screenshot.png",
     description: "It's an application that allows uploading videos and, through AI, automatically generates catchy titles and descriptions with good indexing.",

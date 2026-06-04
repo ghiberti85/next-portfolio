@@ -66,13 +66,15 @@ public/
 
 | Project | Stack | Description |
 |---|---|---|
+| **DevInterviewLab** | Next.js, TypeScript, Supabase, Groq AI, PWA | AI-powered technical interview prep platform with study roadmaps and live coding practice |
+| **Interview Command Center** | React, TypeScript, Vite, Supabase, Claude AI | Personal CRM for managing job interview pipelines with AI-powered recruiter responses |
+| **Ghiberti UI** | React, TypeScript, Next.js, Storybook, Turborepo | Monorepo design system with 5 token themes and 30 accessible components |
+| **Finanças do Casal** | React, TypeScript, Vite, Supabase, Claude AI, PWA | Collaborative personal finance PWA for couples with AI-powered spreadsheet import |
 | **upload.ai** | React, TypeScript, Vite | AI-powered video title & description generator |
 | **Ignite Call** | Next.js, React, TypeScript | Google Calendar scheduling integration |
 | **Design System** | React, TypeScript, Storybook | Component library with GitHub Actions CD |
-| **Coffee Delivery** | React, TypeScript, Vite | Shopping cart manager |
 | **Pizza Shop** | React, TypeScript, Vite | Restaurant owner dashboard |
 | **Feedget** | React, React Native, Node.js | Cross-platform feedback widget with PostgreSQL |
-| **Be The Hero** | React, Node.js, React Native | NGO donation connector (OmniStack) |
 | **NLW Esports** | React, Node.js, React Native | Gaming partner finder |
 
 ---
