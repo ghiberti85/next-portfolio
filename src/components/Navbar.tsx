@@ -40,11 +40,11 @@ export default function Navbar() {
       className="fixed top-0 left-0 w-full z-50 px-4 lg:px-8 text-gray-300 transition-colors duration-300"
       style={{ backgroundColor: "var(--nav-bg)", backdropFilter: "blur(16px)", borderBottom: "1px solid var(--card-border)" }}
     >
-      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto py-3 flex justify-between items-center gap-2">
         {/* Logo */}
         <a
           href="#hero"
-          className="text-xl font-bold text-transparent bg-clip-text"
+          className="text-base sm:text-xl font-bold text-transparent bg-clip-text truncate"
           style={{ backgroundImage: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
           onClick={(e) => { e.preventDefault(); handleScroll("#hero"); }}
         >

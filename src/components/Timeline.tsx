@@ -133,7 +133,7 @@ export default function Timeline() {
 
   return (
     <section id="timeline" className="py-20 px-0">
-      <h2 className="text-4xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
         Journey
       </h2>
       <div className="relative flex flex-col items-center max-w-6xl mx-auto px-4">
@@ -154,7 +154,7 @@ export default function Timeline() {
             }`}
           >
             <div
-              className="relative max-w-xl p-6 mx-5 rounded-lg shadow-lg hover:scale-105 transition-transform cursor-pointer"
+              className="relative max-w-xl p-4 sm:p-6 mx-2 sm:mx-5 rounded-lg shadow-lg hover:scale-105 transition-transform cursor-pointer"
               style={{
                 background: "rgba(255, 255, 255, 0.1)",
                 backdropFilter: "blur(12px)",
@@ -217,7 +217,7 @@ export default function Timeline() {
           onClick={handleCloseModal}
         >
           <div
-            className="relative p-8 bg-gray-900 rounded-lg shadow-lg max-w-md w-full sm:max-w-lg"
+            className="relative p-5 sm:p-8 bg-gray-900 rounded-lg shadow-lg max-w-md w-full sm:max-w-lg mx-4 max-h-[85vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button

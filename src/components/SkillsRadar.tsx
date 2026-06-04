@@ -19,14 +19,14 @@ export default function SkillsRadar() {
     <div className="mt-16">
       <h3 className="text-2xl font-semibold text-center text-gray-300 mb-8">{tr.radarTitle}</h3>
       <div
-        className="max-w-lg mx-auto rounded-xl p-6"
+        className="max-w-lg mx-auto rounded-xl p-3 sm:p-6 w-full"
         style={{
           background: "var(--card-bg)",
           backdropFilter: "blur(12px)",
           border: "1px solid var(--card-border)",
         }}
       >
-        <ResponsiveContainer width="100%" height={320}>
+        <ResponsiveContainer width="100%" height={260}>
           <RadarChart data={tr.radarData}>
             <PolarGrid stroke="rgba(255,255,255,0.15)" />
             <PolarAngleAxis

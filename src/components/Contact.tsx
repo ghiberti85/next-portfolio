@@ -28,7 +28,7 @@ export default function Contact() {
   const tr = t[lang].contact;
 
   return (
-    <section id="contact" className="py-20 px-4 lg:px-4">
+    <section id="contact" className="py-20 px-4">
       <h2 className="text-4xl font-bold mb-16 text-center text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
         {tr.title}
       </h2>

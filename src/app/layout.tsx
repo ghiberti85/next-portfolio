@@ -73,7 +73,7 @@ export default function RootLayout({
             <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
             <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
             <MouseSpotlight />
-            <div className="container mx-auto px-4 lg:px-8 relative z-10">{children}</div>
+            <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-hidden">{children}</div>
             <AskFernando />
           </LanguageProvider>
         </ThemeProvider>
