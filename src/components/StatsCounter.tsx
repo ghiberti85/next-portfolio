@@ -45,7 +45,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
       >
         {count}{suffix}
       </span>
-      <span className="text-sm text-gray-400 text-center">{label}</span>
+      <span className="text-sm text-center" style={{ color: "var(--color-text-muted)" }}>{label}</span>
     </div>
   );
 }
@@ -58,8 +58,9 @@ export default function StatsCounter() {
     <div
       className="grid grid-cols-2 sm:grid-cols-4 gap-2 rounded-xl my-8 px-4 py-4"
       style={{
-        background: "rgba(255,255,255,0.06)",
-        border: "1px solid rgba(255,255,255,0.1)",
+        background: "var(--card-bg)",
+        border: "1px solid var(--card-border)",
+        boxShadow: "var(--shadow-card)",
       }}
     >
       {stats.map((s) => (
