@@ -236,16 +236,17 @@ export default function ProjectsGrid() {
                 </span>
               ))}
             </div>
-            <Image
-              src={project.image}
-              alt={project.title}
-              width={400}
-              height={267}
-              sizes="sizes=(max-width: 480px) 100vw, (max-width: 768px) 75vw, (max-width: 1024px) 50vw, 400px"
-              loading="lazy"
-              quality={70}
-              className="w-full h-auto rounded-t-lg object-cover"
-            />
+            <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(max-width: 480px) 100vw, (max-width: 768px) 75vw, (max-width: 1024px) 50vw, 400px"
+                loading="lazy"
+                quality={70}
+                className="object-cover"
+              />
+            </div>
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-300">
                 {project.title}
