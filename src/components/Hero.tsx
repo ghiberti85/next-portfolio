@@ -47,7 +47,7 @@ export default function Hero() {
         <span className="text-4xl font-extrabold leading-none text-center">{tr.greeting}</span>
         <h1
           className="text-3xl lg:text-4xl font-extrabold text-center text-transparent bg-clip-text"
-          style={{ backgroundImage: "linear-gradient(135deg, #14b8a6, #6366f1)" }}
+          style={{ backgroundImage: "var(--gradient-accent)" }}
         >
           I&apos;m Fernando Ghiberti
         </h1>

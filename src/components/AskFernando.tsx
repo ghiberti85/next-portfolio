@@ -82,7 +82,7 @@ export default function AskFernando() {
         onClick={() => setOpen((v) => !v)}
         aria-label="Ask Fernando AI"
         className="fixed bottom-8 left-8 z-50 flex items-center gap-2 px-4 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-105"
-        style={{ background: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
+        style={{ background: "var(--gradient-accent)" }}
       >
         <FontAwesomeIcon icon={faCommentDots} />
         <span className="hidden sm:inline text-sm">{tr.title}</span>
@@ -104,7 +104,7 @@ export default function AskFernando() {
           {/* Header */}
           <div
             className="flex items-center justify-between px-4 py-3"
-            style={{ background: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
+            style={{ background: "var(--gradient-accent)" }}
           >
             <span className="font-semibold text-white text-sm">{tr.title}</span>
             <button
@@ -175,7 +175,7 @@ export default function AskFernando() {
                 disabled={loading || !input.trim()}
                 aria-label="Send message"
                 className="px-3 py-2 rounded-lg text-white transition hover:scale-105 disabled:opacity-40"
-                style={{ background: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
+                style={{ background: "var(--gradient-accent)" }}
               >
                 <FontAwesomeIcon icon={faPaperPlane} />
               </button>

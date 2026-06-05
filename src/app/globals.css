@@ -35,6 +35,12 @@
   --blob-opacity: 0.18;
   --modal-bg: rgba(15, 23, 42, 0.95);
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  /* Accent tokens — teal-400 + blue-500 (adequate contrast on dark bg) */
+  --accent-teal: #14b8a6;
+  --accent-blue: #3b82f6;
+  --accent-purple: #9333ea;
+  --gradient-accent: linear-gradient(135deg, #14b8a6, #3b82f6);
+  --gradient-accent-r: linear-gradient(to right, #14b8a6, #3b82f6);
 }
 
 /* ── CSS variables – light ──────────────────────────────────────── */
@@ -50,6 +56,12 @@
   --blob-opacity: 0.08;
   --modal-bg: rgba(248, 250, 252, 0.98);
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.10);
+  /* Accent tokens — teal-700 (4.6:1) + blue-700 (5.7:1) on light bg */
+  --accent-teal: #0f766e;
+  --accent-blue: #1d4ed8;
+  --accent-purple: #7e22ce;
+  --gradient-accent: linear-gradient(135deg, #0f766e, #1d4ed8);
+  --gradient-accent-r: linear-gradient(to right, #0f766e, #1d4ed8);
 }
 
 /* ── Base ───────────────────────────────────────────────────────── */
@@ -80,6 +92,21 @@ html {
 [data-theme="light"] .bg-gray-900   { background-color: rgba(248,250,252,0.92) !important; }
 [data-theme="light"] .text-gray-200 { color: #1e293b !important; }
 
+/* ── Light mode accent overrides (WCAG AA contrast) ─────────────── */
+[data-theme="light"] .text-teal-400                  { color: #0f766e !important; }
+[data-theme="light"] .hover\:text-teal-400:hover     { color: #0f766e !important; }
+[data-theme="light"] .hover\:text-teal-500:hover     { color: #0f766e !important; }
+[data-theme="light"] .text-blue-400                  { color: #1d4ed8 !important; }
+[data-theme="light"] .text-blue-500                  { color: #1d4ed8 !important; }
+[data-theme="light"] .hover\:text-blue-400:hover     { color: #1d4ed8 !important; }
+[data-theme="light"] .hover\:text-blue-500:hover     { color: #1d4ed8 !important; }
+[data-theme="light"] .bg-teal-400                    { background-color: #0f766e !important; }
+[data-theme="light"] .bg-blue-500                    { background-color: #1d4ed8 !important; }
+[data-theme="light"] .hover\:bg-teal-500:hover       { background-color: #0f766e !important; }
+[data-theme="light"] .from-teal-400                  { --tw-gradient-from: #0f766e !important; }
+[data-theme="light"] .to-blue-500                    { --tw-gradient-to: #1d4ed8 !important; }
+[data-theme="light"] .focus\:ring-teal-400           { --tw-ring-color: #0f766e !important; }
+
 /* ── Light mode nav shadow ──────────────────────────────────────── */
 [data-theme="light"] nav {
   box-shadow: 0 1px 12px rgba(0, 0, 0, 0.08);
@@ -105,7 +132,7 @@ html {
 }
 
 *:focus-visible {
-  outline: 2px solid #14b8a6;
+  outline: 2px solid var(--accent-teal);
   outline-offset: 3px;
   border-radius: 4px;
 }

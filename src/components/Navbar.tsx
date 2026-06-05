@@ -45,7 +45,7 @@ export default function Navbar() {
         <a
           href="#hero"
           className="text-base sm:text-xl font-bold text-transparent bg-clip-text truncate"
-          style={{ backgroundImage: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
+          style={{ backgroundImage: "var(--gradient-accent)" }}
           onClick={(e) => { e.preventDefault(); handleScroll("#hero"); }}
         >
           Ghiberti.dev
@@ -81,7 +81,7 @@ export default function Navbar() {
                   ? "text-white"
                   : "text-gray-400 hover:text-gray-200"
               }`}
-              style={lang === "en" ? { background: "linear-gradient(135deg, #14b8a6, #3b82f6)" } : {}}
+              style={lang === "en" ? { background: "var(--gradient-accent)" } : {}}
             >
               EN
             </button>
@@ -93,7 +93,7 @@ export default function Navbar() {
                   ? "text-white"
                   : "text-gray-400 hover:text-gray-200"
               }`}
-              style={lang === "pt" ? { background: "linear-gradient(135deg, #14b8a6, #3b82f6)" } : {}}
+              style={lang === "pt" ? { background: "var(--gradient-accent)" } : {}}
             >
               PT
             </button>
