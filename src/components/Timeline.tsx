@@ -142,11 +142,11 @@ export default function Timeline() {
           */}
           <div className="flex gap-4 w-max px-4 relative" style={{ height: "420px", paddingTop: "20px", paddingBottom: "20px", boxSizing: "content-box" }}>
 
-            {/* Central horizontal line — centered at 210px from content top (inside padding) */}
+            {/* Central horizontal line — centered at 200px from content top (dot center) */}
             <div
               className="absolute left-0 right-0 h-0.5 pointer-events-none"
               style={{
-                top: "calc(20px + 210px)",
+                top: "calc(20px + 200px)",
                 background: "linear-gradient(to right, rgba(20,184,166,0), #14b8a6 4%, #3b82f6 96%, rgba(59,130,246,0))",
               }}
               aria-hidden="true"
