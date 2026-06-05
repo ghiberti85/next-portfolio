@@ -14,7 +14,7 @@ function renderWithProviders(ui: React.ReactElement) {
 describe("Navbar", () => {
   it("renders the logo link", () => {
     renderWithProviders(<Navbar />);
-    expect(screen.getByText("Fernando.dev")).toBeInTheDocument();
+    expect(screen.getByText("Ghiberti.dev")).toBeInTheDocument();
   });
 
   it("renders all navigation links on desktop", () => {

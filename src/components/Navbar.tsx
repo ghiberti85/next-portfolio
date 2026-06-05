@@ -48,7 +48,7 @@ export default function Navbar() {
           style={{ backgroundImage: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
           onClick={(e) => { e.preventDefault(); handleScroll("#hero"); }}
         >
-          Fernando.dev
+          Ghiberti.dev
         </a>
 
         {/* Desktop menu */}
