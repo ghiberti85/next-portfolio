@@ -36,7 +36,7 @@ function TimelineCard({
         <li><span className="font-medium" style={{ color: "var(--color-text)" }}>{item.institution}</span></li>
         <li>{item.period}</li>
       </ul>
-      <p className="text-xs mt-3 hover:text-teal-400 transition" style={{ color: "var(--color-text-muted)" }}>
+      <p className="text-xs mt-auto pt-3 hover:text-teal-400 transition" style={{ color: "var(--color-text-muted)" }}>
         {viewMore}
       </p>
     </div>
@@ -123,24 +123,25 @@ export default function Timeline() {
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
 
-        {/* Scrollable track */}
+        {/* Scrollable track — py-6 gives room for scale(1.03) so cards don't clip */}
         <div
           ref={scrollRef}
           className="timeline-scroll overflow-x-auto scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none", overflowY: "visible" }}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {/*
             Layout per column (height fixed so line stays centered):
             Professional: [card] [dot] [── line ──] [empty]
             Education:    [empty] [── line ──] [dot] [card]
+            py-6 (24px top+bottom) gives breathing room for hover scale.
           */}
-          <div className="flex gap-4 w-max px-4 relative" style={{ height: "420px" }}>
+          <div className="flex gap-4 w-max px-4 relative" style={{ height: "420px", paddingTop: "20px", paddingBottom: "20px", boxSizing: "content-box" }}>
 
-            {/* Central horizontal line — absolutely centered vertically within this relative container */}
+            {/* Central horizontal line — centered at 210px from content top (inside padding) */}
             <div
               className="absolute left-0 right-0 h-0.5 pointer-events-none"
               style={{
-                top: "210px",
+                top: "calc(20px + 210px)",
                 background: "linear-gradient(to right, rgba(20,184,166,0), #14b8a6 4%, #3b82f6 96%, rgba(59,130,246,0))",
               }}
               aria-hidden="true"
