@@ -18,6 +18,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
+      tabIndex={-1}
       className="min-h-screen flex flex-col lg:flex-row items-center justify-between px-4 pt-24 pb-12 lg:py-16 gap-8 lg:gap-16"
     >
       {/* Left Column */}
