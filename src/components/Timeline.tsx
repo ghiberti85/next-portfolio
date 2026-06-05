@@ -85,22 +85,49 @@ export default function Timeline() {
         {tr.title}
       </h2>
 
-      {/* ── Mobile: vertical alternating layout ─────────────────────── */}
-      <div className="lg:hidden relative flex flex-col items-center max-w-3xl mx-auto px-4">
+      {/* ── Mobile: vertical layout with colored dots and connectors ── */}
+      <div className="lg:hidden relative max-w-2xl mx-auto px-4">
+        {/* Vertical line centered */}
         <div
-          className="absolute h-full w-1 left-1/2 -translate-x-1/2 rounded-full"
+          className="absolute top-0 bottom-0 w-0.5 left-1/2 -translate-x-1/2"
           style={{ background: "linear-gradient(to bottom, #14b8a6, rgba(20,184,166,0))" }}
+          aria-hidden="true"
         />
-        {timelineItems.map((item, index) => (
-          <div
-            key={index}
-            className={`relative w-full md:w-1/2 mb-12 ${index % 2 === 0 ? "self-start" : "self-end"}`}
-          >
-            <div className="mx-2 sm:mx-5">
-              <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
+
+        {timelineItems.map((item, index) => {
+          const isLeft = index % 2 === 0;
+          return (
+            <div key={index} className="relative flex items-center mb-10">
+              {isLeft ? (
+                <>
+                  {/* Card on the left */}
+                  <div className="w-[calc(50%-1.5rem)] pr-3">
+                    <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
+                  </div>
+                  {/* Dot on the line */}
+                  <div className="absolute left-1/2 -translate-x-1/2 z-10">
+                    <Dot type={item.type} />
+                  </div>
+                  {/* Empty right side */}
+                  <div className="w-[calc(50%-1.5rem)] pl-3" />
+                </>
+              ) : (
+                <>
+                  {/* Empty left side */}
+                  <div className="w-[calc(50%-1.5rem)] pr-3" />
+                  {/* Dot on the line */}
+                  <div className="absolute left-1/2 -translate-x-1/2 z-10">
+                    <Dot type={item.type} />
+                  </div>
+                  {/* Card on the right */}
+                  <div className="w-[calc(50%-1.5rem)] pl-3">
+                    <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
+                  </div>
+                </>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* ── Desktop: horizontal scroll — professional above, education below ── */}
