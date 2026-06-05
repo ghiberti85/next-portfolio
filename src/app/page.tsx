@@ -10,48 +10,40 @@ import Timeline from "@/components/Timeline";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 const AnimatedSection = dynamic(() => import("@/components/AnimatedSection"), { ssr: false });
-import TerminalIntro from "@/components/TerminalIntro";
+const TerminalIntro = dynamic(() => import("@/components/TerminalIntro"), { ssr: false });
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(false);
   const [exiting, setExiting] = useState(false);
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const seen = sessionStorage.getItem("portfolio-intro-seen");
     if (!seen) {
       setShowIntro(true);
-    } else {
-      setReady(true);
     }
   }, []);
 
   const handleIntroDone = () => {
     sessionStorage.setItem("portfolio-intro-seen", "1");
     setExiting(true);
-    setReady(true);
-    // Remove terminal from DOM after fade-out completes
     setTimeout(() => setShowIntro(false), 900);
   };
 
   return (
     <>
-      {ready && (
-        <div
-          style={{
-            opacity: showIntro && !exiting ? 0 : 1,
-            transition: exiting ? "opacity 0.8s ease 0.2s" : "none",
-          }}
-        >
-          <Navbar />
-          <AnimatedSection variant="fadeUp"  delay={0}   ><Hero /></AnimatedSection>
-          <AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection>
-          <AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection>
-          <AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection>
-          <AnimatedSection variant="flip"    delay={0.05}><Contact /></AnimatedSection>
-          <AnimatedSection variant="fadeUp"  delay={0.05}><Footer /></AnimatedSection>
-        </div>
-      )}
+      <div
+        style={{
+          transition: exiting ? "opacity 0.8s ease 0.2s" : "none",
+        }}
+      >
+        <Navbar />
+        <AnimatedSection variant="fadeUp"  delay={0}   ><Hero /></AnimatedSection>
+        <AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection>
+        <AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection>
+        <AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection>
+        <AnimatedSection variant="flip"    delay={0.05}><Contact /></AnimatedSection>
+        <AnimatedSection variant="fadeUp"  delay={0.05}><Footer /></AnimatedSection>
+      </div>
       {showIntro && <TerminalIntro onDone={handleIntroDone} exiting={exiting} />}
     </>
   );
