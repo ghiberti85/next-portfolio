@@ -18,18 +18,18 @@ function TimelineCard({
   const isProfessional = item.type === "professional";
   return (
     <div
-      className="p-4 rounded-lg shadow-lg hover:scale-105 transition-transform cursor-pointer glass-card"
+      className="p-4 rounded-lg shadow-lg hover:scale-105 transition-transform cursor-pointer glass-card lg:h-full flex flex-col"
       onClick={() => onOpen(item)}
     >
       <div className="flex items-center mb-3">
-        <div className={`p-2 rounded-full mr-3 flex-shrink-0 ${isProfessional ? "bg-teal-400" : "bg-blue-500"} text-white`}>
+        <div className={`w-9 h-9 rounded-full mr-3 flex-shrink-0 flex items-center justify-center ${isProfessional ? "bg-teal-400" : "bg-blue-500"} text-white`}>
           <FontAwesomeIcon icon={isProfessional ? faBriefcase : faGraduationCap} />
         </div>
         <h3 className="text-sm font-semibold leading-tight" style={{ color: "var(--color-heading)" }}>
           {item.title}
         </h3>
       </div>
-      <ul className="list-disc ml-5 space-y-1 text-xs" style={{ color: "var(--color-text-muted)" }}>
+      <ul className="list-disc ml-5 space-y-1 text-xs flex-1" style={{ color: "var(--color-text-muted)" }}>
         <li><span className="font-medium" style={{ color: "var(--color-text)" }}>{item.institution}</span></li>
         <li>{item.period}</li>
       </ul>
