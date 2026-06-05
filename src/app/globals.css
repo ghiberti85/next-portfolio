@@ -92,6 +92,9 @@ html {
   border-radius: 4px;
 }
 
+/* ── Hide scrollbar on timeline horizontal track ───────────────── */
+.timeline-scroll::-webkit-scrollbar { display: none; }
+
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -43,12 +43,12 @@ export default function Home() {
           }}
         >
           <Navbar />
-          <AnimatedSection delay={0}><Hero /></AnimatedSection>
-          <AnimatedSection delay={0.05}><SkillsSlider /></AnimatedSection>
-          <AnimatedSection delay={0.05}><ProjectsGrid /></AnimatedSection>
-          <AnimatedSection delay={0.05}><Timeline /></AnimatedSection>
-          <AnimatedSection delay={0.05}><Contact /></AnimatedSection>
-          <AnimatedSection delay={0.05}><Footer /></AnimatedSection>
+          <AnimatedSection variant="fadeUp"  delay={0}   ><Hero /></AnimatedSection>
+          <AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection>
+          <AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection>
+          <AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection>
+          <AnimatedSection variant="flip"    delay={0.05}><Contact /></AnimatedSection>
+          <AnimatedSection variant="fadeUp"  delay={0.05}><Footer /></AnimatedSection>
         </div>
       )}
       {showIntro && <TerminalIntro onDone={handleIntroDone} exiting={exiting} />}
