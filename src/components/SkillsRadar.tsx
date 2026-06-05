@@ -54,10 +54,10 @@ export default function SkillsRadar() {
             />
             <Radar
               dataKey="value"
-              stroke="#14b8a6"
-              fill="#14b8a6"
+              stroke={isLight ? "#0f766e" : "#14b8a6"}
+              fill={isLight ? "#0f766e" : "#14b8a6"}
               fillOpacity={0.25}
-              dot={{ fill: "#14b8a6", r: 4 }}
+              dot={{ fill: isLight ? "#0f766e" : "#14b8a6", r: 4 }}
             />
           </RadarChart>
         </ResponsiveContainer>

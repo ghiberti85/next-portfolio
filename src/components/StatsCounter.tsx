@@ -41,7 +41,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
     <div ref={ref} className="flex flex-col items-center gap-1 p-2 sm:p-4">
       <span
         className="text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text"
-        style={{ backgroundImage: "linear-gradient(135deg, #14b8a6, #3b82f6)" }}
+        style={{ backgroundImage: "var(--gradient-accent)" }}
       >
         {count}{suffix}
       </span>

@@ -49,8 +49,8 @@ function Dot({ type }: { type: "professional" | "education" }) {
     <div
       className="w-4 h-4 rounded-full flex-shrink-0 border-2"
       style={{
-        background: type === "professional" ? "#14b8a6" : "#3b82f6",
-        borderColor: type === "professional" ? "#0d9488" : "#2563eb",
+        background: type === "professional" ? "var(--accent-teal)" : "var(--accent-blue)",
+        borderColor: type === "professional" ? "var(--accent-teal)" : "var(--accent-blue)",
         boxShadow: type === "professional"
           ? "0 0 8px rgba(20,184,166,0.6)"
           : "0 0 8px rgba(59,130,246,0.6)",
@@ -90,7 +90,7 @@ export default function Timeline() {
         {/* Vertical line on the left rail */}
         <div
           className="absolute top-0 bottom-0 left-6 w-0.5"
-          style={{ background: "linear-gradient(to bottom, transparent, #14b8a6 12%, #14b8a6 88%, transparent)" }}
+          style={{ background: "linear-gradient(to bottom, transparent, var(--accent-teal) 12%, var(--accent-teal) 88%, transparent)" }}
           aria-hidden="true"
         />
 
@@ -147,7 +147,7 @@ export default function Timeline() {
               className="absolute left-0 right-0 h-0.5 pointer-events-none"
               style={{
                 top: "calc(20px + 200px)",
-                background: "linear-gradient(to right, rgba(20,184,166,0), #14b8a6 4%, #3b82f6 96%, rgba(59,130,246,0))",
+                background: "linear-gradient(to right, transparent, var(--accent-teal) 4%, var(--accent-blue) 96%, transparent)",
               }}
               aria-hidden="true"
             />
