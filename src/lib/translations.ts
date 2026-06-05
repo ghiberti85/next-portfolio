@@ -22,7 +22,7 @@ const t = {
       greeting: "Hi! 👋",
       role: "Software Engineer | Senior Fullstack Expert",
       description:
-        "Crafting high-performance, user-friendly interfaces with a focus on delivering exceptional user experiences.",
+        "Building end-to-end products — from scalable backend APIs to polished frontend interfaces — with a focus on performance, reliability, and great user experiences.",
       downloadCV: "Download CV",
       typewriterDesktop: [
         "Building modern web applications",
@@ -36,7 +36,7 @@ const t = {
       ],
     },
     stats: [
-      { value: 9, suffix: "+", label: "Years of Experience" },
+      { value: 8, suffix: "+", label: "Years of Experience" },
       { value: 100, suffix: "+", label: "Projects Delivered" },
       { value: 85, suffix: "%", label: "Avg. Performance Gain" },
       { value: 90, suffix: "%", label: "Avg. Bug Reduction" },
@@ -231,7 +231,7 @@ const t = {
       greeting: "Olá! 👋",
       role: "Engenheiro de Software | Senior Fullstack Expert",
       description:
-        "Construindo interfaces de alta performance e fáceis de usar, com foco em entregar experiências excepcionais.",
+        "Construindo produtos completos — de APIs backend escaláveis a interfaces frontend refinadas — com foco em performance, confiabilidade e experiências excepcionais.",
       downloadCV: "Baixar CV",
       typewriterDesktop: [
         "Construindo aplicações web modernas",
@@ -245,7 +245,7 @@ const t = {
       ],
     },
     stats: [
-      { value: 9, suffix: "+", label: "Anos de Experiência" },
+      { value: 8, suffix: "+", label: "Anos de Experiência" },
       { value: 100, suffix: "+", label: "Projetos Entregues" },
       { value: 85, suffix: "%", label: "Ganho Médio de Performance" },
       { value: 90, suffix: "%", label: "Redução Média de Bugs" },
