@@ -8,35 +8,49 @@ A modern, performant personal portfolio built with **Next.js 15**, **TypeScript*
 
 ## Overview
 
-This portfolio is designed to give recruiters and hiring managers a fast, clear view of Fernando's engineering profile — from his tech stack and open-source projects to his career journey and education. Everything is accessible from a single, scroll-based page with interactive modals and smooth animations.
+This portfolio gives recruiters and hiring managers a fast, clear view of Fernando's engineering profile — from his tech stack and open-source projects to his career journey and education. Everything is accessible from a single, scroll-based page with interactive modals, smooth animations, a built-in AI chat assistant, and bilingual support (EN / PT-BR).
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 15 (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS |
-| Icons | Font Awesome (React) |
-| Animations | Typewriter Effect |
-| Carousel | React Slick |
-| Fonts | Geist (via `next/font`) |
-| Deployment | Vercel |
+| Layer | Technology | Version |
+|---|---|---|
+| Framework | Next.js (App Router) | 15.x |
+| Language | TypeScript | 5.x |
+| Styling | Tailwind CSS | 3.x |
+| Icons | Font Awesome (React) | 6.x |
+| Carousel | React Slick | 0.30.x |
+| Animation | Typewriter Effect | 2.x |
+| Motion | Framer Motion | 11.x |
+| Charts | Recharts | 2.x |
+| Fonts | Geist (via `next/font`) | — |
+| Testing | Jest + React Testing Library | 30.x / 16.x |
+| CI/CD | GitHub Actions + Vercel | — |
 
 ---
 
 ## Features
 
-- **Hero section** — Profile photo, name, animated typewriter role description, links to GitHub, LinkedIn, email, and a downloadable CV (PDF).
-- **Skills Slider** — Dual auto-scrolling carousels (opposite directions) showcasing 19+ technologies with proficiency bars: React, Next.js, TypeScript, JavaScript, Tailwind CSS, Docker, Git, Webpack, Vite, Storybook, Sass, WordPress, HubSpot, Netlify, Vercel, and more.
-- **Projects Grid** — 12 projects displayed in a filterable, paginated grid. Each card opens a modal with description, GitHub link, and live demo when available. Projects can be filtered by technology tag (React, Next.js, Node.js, TypeScript, etc.).
-- **Journey Timeline** — Interactive vertical timeline covering professional experience and education, with modal detail views per entry.
-- **Contact section** — Direct contact links via Email, WhatsApp, LinkedIn, and GitHub.
-- **Responsive design** — Mobile-first layout; all sections adapt gracefully from small screens to wide desktops.
-- **Performance optimizations** — `next/image` with lazy loading and `priority` on the hero image, SSR via Next.js App Router, WebP image format, and Geist font with `next/font` for zero layout shift.
-- **Security headers** — HTTP security headers configured globally: `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `Strict-Transport-Security`, `Referrer-Policy`, and `Permissions-Policy`.
+- **Terminal Intro** — One-time animated terminal boot sequence on first visit (session-based, skippable).
+- **Navbar** — Fixed top navigation with smooth-scroll links, language toggle (EN / PT-BR), theme toggle (dark / light), and a responsive mobile hamburger menu.
+- **Hero** — Profile photo, animated typewriter role description, social links (GitHub, LinkedIn, Email), and a downloadable CV (PDF).
+- **Stats Counter** — Animated counters highlighting years of experience, projects delivered, and performance metrics.
+- **Skills Slider** — Dual auto-scrolling carousels (opposite directions) with 19+ technology icons, plus a Recharts radar chart for expertise-area breakdown.
+- **Projects Grid** — 12 projects in a filterable, paginated grid. Each card opens a modal with description, tags, GitHub link, and live demo when available.
+- **Timeline** — Horizontal (desktop) / vertical (mobile) career and education timeline with modal detail views per entry.
+- **Contact** — Direct contact cards: Email, WhatsApp, LinkedIn, and GitHub.
+- **Footer** — Back-to-top button and author credit.
+- **AskFernando** — Floating AI chat assistant powered by Claude (via `/api/chat`), with conversation history and bilingual support.
+- **CustomCursor** — Custom animated cursor for pointer devices.
+- **MouseSpotlight** — Subtle radial spotlight effect that follows the mouse.
+- **AnimatedSection** — Scroll-triggered entrance animations (fadeUp, stagger, launch, reveal, flip) powered by Framer Motion with `prefers-reduced-motion` support.
+- **SkipLink** — Accessibility skip-to-main-content link for keyboard navigation.
+- **Internationalisation** — Full EN / PT-BR translation via `LanguageContext` (React Context + localStorage persistence).
+- **Theme** — Dark / light mode via `ThemeContext` (React Context + localStorage persistence).
+- **Responsive design** — Mobile-first layout; all sections adapt from small screens to wide desktops.
+- **Performance** — `next/image` lazy loading, `priority` on hero image, SSR via App Router, WebP assets, Geist font via `next/font` (zero layout shift).
+- **Security headers** — CSP, X-Frame-Options, X-Content-Type-Options, HSTS, Referrer-Policy, and Permissions-Policy applied globally in `next.config.ts`.
 
 ---
 
@@ -45,20 +59,74 @@ This portfolio is designed to give recruiters and hiring managers a fast, clear 
 ```
 src/
 ├── app/
-│   ├── layout.tsx        # Root layout with metadata and fonts
-│   ├── page.tsx          # Single-page composition
-│   └── globals.css       # Global styles
-└── components/
-    ├── Navbar.tsx         # Fixed top nav with smooth scroll
-    ├── Hero.tsx           # Profile, social links, CV download
-    ├── SkillsSlider.tsx   # Dual auto-scroll skill carousels
-    ├── ProjectsGrid.tsx   # Filterable project grid with modals
-    ├── Timeline.tsx       # Career & education timeline with modals
-    ├── Contact.tsx        # Contact links (Email, WhatsApp, LinkedIn, GitHub)
-    └── Footer.tsx         # Back-to-top button and footer
+│   ├── layout.tsx          # Root layout — metadata, fonts, providers, global overlays
+│   ├── page.tsx            # Page composition (TerminalIntro + all section components)
+│   └── globals.css         # Global styles and CSS custom properties
+├── components/
+│   ├── Navbar.tsx           # Fixed top nav, smooth scroll, language & theme toggles
+│   ├── Hero.tsx             # Profile, typewriter, social links, CV download
+│   ├── StatsCounter.tsx     # Animated statistics counters
+│   ├── SkillsSlider.tsx     # Dual auto-scroll carousels + SkillsRadar
+│   ├── SkillsRadar.tsx      # Recharts radar chart for expertise areas
+│   ├── ProjectsGrid.tsx     # Filterable grid with modals (tag filter + show-more)
+│   ├── Timeline.tsx         # Career & education timeline (horizontal/vertical) with modals
+│   ├── Contact.tsx          # Contact links (Email, WhatsApp, LinkedIn, GitHub)
+│   ├── Footer.tsx           # Back-to-top button and footer
+│   ├── AskFernando.tsx      # Floating AI chat widget (Claude-powered)
+│   ├── TerminalIntro.tsx    # One-time terminal boot animation
+│   ├── AnimatedSection.tsx  # Scroll-triggered Framer Motion wrapper
+│   ├── CustomCursor.tsx     # Custom animated cursor
+│   ├── MouseSpotlight.tsx   # Mouse-following radial spotlight overlay
+│   └── SkipLink.tsx         # Accessibility skip-to-content link
+├── context/
+│   ├── LanguageContext.tsx  # EN / PT-BR language state (React Context)
+│   └── ThemeContext.tsx     # Dark / light theme state (React Context)
+└── lib/
+    └── translations.ts      # All UI strings for EN and PT-BR
+
+src/__tests__/               # One test file per component (Jest + RTL)
+__mocks__/                   # Static file stubs for Jest
+.github/workflows/ci.yml     # CI: lint → test → build on every PR and push to main
 public/
 └── fernando-ghiberti-cv-en.pdf   # Downloadable CV
 ```
+
+---
+
+## Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Development server (localhost:3000)
+npm run dev
+
+# Production build
+npm run build
+
+# Start production server
+npm start
+
+# Lint
+npm run lint
+
+# Run all tests (required before every PR)
+npm test
+
+# Run tests with coverage report
+npm run test:coverage
+```
+
+---
+
+## Environment Variables
+
+| Variable | Purpose |
+|---|---|
+| `ANTHROPIC_API_KEY` | Claude API key used by `/api/chat` to power the AskFernando AI chat |
+
+Create a `.env.local` file at the root with the variable above for local AI chat support.
 
 ---
 
@@ -120,26 +188,9 @@ Security headers are configured in `next.config.ts` and applied globally to all 
 
 ---
 
-## Getting Started
+## Deployment
 
-```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-```bash
-# Production build
-npm run build
-npm start
-
-# Lint
-npm run lint
-```
+Vercel deployment is triggered automatically when a PR is merged to `main`. No manual deploy step is needed — merging IS deploying. The CI pipeline (`.github/workflows/ci.yml`) runs lint → test → build and must be green before merging.
 
 ---
 
