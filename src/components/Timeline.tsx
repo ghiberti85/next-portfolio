@@ -8,46 +8,52 @@ import t, { TimelineItemData as TimelineItem } from "@/lib/translations";
 
 function TimelineCard({
   item,
-  index,
   onOpen,
   viewMore,
 }: {
   item: TimelineItem;
-  index: number;
   onOpen: (item: TimelineItem) => void;
   viewMore: string;
 }) {
   const isProfessional = item.type === "professional";
   return (
     <div
-      className="relative p-4 sm:p-6 rounded-lg shadow-lg hover:scale-105 transition-transform cursor-pointer glass-card"
+      className="p-4 rounded-lg shadow-lg hover:scale-105 transition-transform cursor-pointer glass-card"
       onClick={() => onOpen(item)}
     >
-      <div className="flex items-center mb-4">
-        <div className={`p-2.5 rounded-full mr-4 ${isProfessional ? "bg-teal-400" : "bg-blue-500"} text-white`}>
-          <FontAwesomeIcon icon={isProfessional ? faBriefcase : faGraduationCap} size="lg" />
+      <div className="flex items-center mb-3">
+        <div className={`p-2 rounded-full mr-3 flex-shrink-0 ${isProfessional ? "bg-teal-400" : "bg-blue-500"} text-white`}>
+          <FontAwesomeIcon icon={isProfessional ? faBriefcase : faGraduationCap} />
         </div>
-        <h3 className="text-base md:text-lg font-semibold" style={{ color: "var(--color-heading)" }}>
+        <h3 className="text-sm font-semibold leading-tight" style={{ color: "var(--color-heading)" }}>
           {item.title}
         </h3>
       </div>
-      <ul className="list-disc ml-6 space-y-1" style={{ color: "var(--color-text-muted)" }}>
+      <ul className="list-disc ml-5 space-y-1 text-xs" style={{ color: "var(--color-text-muted)" }}>
         <li><span className="font-medium" style={{ color: "var(--color-text)" }}>{item.institution}</span></li>
         <li>{item.period}</li>
-        <li><span className="font-medium" style={{ color: "var(--color-text)" }}>{item.location}</span></li>
       </ul>
-      <p className="text-sm mt-4 cursor-pointer hover:text-teal-400 transition" style={{ color: "var(--color-text-muted)" }}>
+      <p className="text-xs mt-3 hover:text-teal-400 transition" style={{ color: "var(--color-text-muted)" }}>
         {viewMore}
       </p>
-      {/* index dot for horizontal layout */}
-      <div
-        className="hidden lg:flex absolute -bottom-[2.35rem] left-1/2 -translate-x-1/2 w-5 h-5 rounded-full border-2 border-teal-400 items-center justify-center text-[10px] font-bold text-teal-400"
-        style={{ background: "var(--bg-from)" }}
-        aria-hidden="true"
-      >
-        {index + 1}
-      </div>
     </div>
+  );
+}
+
+// Connector dot between card and the line
+function Dot({ type }: { type: "professional" | "education" }) {
+  return (
+    <div
+      className="w-4 h-4 rounded-full flex-shrink-0 border-2"
+      style={{
+        background: type === "professional" ? "#14b8a6" : "#3b82f6",
+        borderColor: type === "professional" ? "#0d9488" : "#2563eb",
+        boxShadow: type === "professional"
+          ? "0 0 8px rgba(20,184,166,0.6)"
+          : "0 0 8px rgba(59,130,246,0.6)",
+      }}
+      aria-hidden="true"
+    />
   );
 }
 
@@ -67,7 +73,7 @@ export default function Timeline() {
   }, []);
 
   const scroll = (dir: "left" | "right") => {
-    scrollRef.current?.scrollBy({ left: dir === "right" ? 340 : -340, behavior: "smooth" });
+    scrollRef.current?.scrollBy({ left: dir === "right" ? 320 : -320, behavior: "smooth" });
   };
 
   return (
@@ -76,7 +82,7 @@ export default function Timeline() {
         {tr.title}
       </h2>
 
-      {/* ── Mobile: vertical layout ──────────────────────────────────── */}
+      {/* ── Mobile: vertical alternating layout ─────────────────────── */}
       <div className="lg:hidden relative flex flex-col items-center max-w-3xl mx-auto px-4">
         <div
           className="absolute h-full w-1 left-1/2 -translate-x-1/2 rounded-full"
@@ -88,13 +94,13 @@ export default function Timeline() {
             className={`relative w-full md:w-1/2 mb-12 ${index % 2 === 0 ? "self-start" : "self-end"}`}
           >
             <div className="mx-2 sm:mx-5">
-              <TimelineCard item={item} index={index} onOpen={setSelectedItem} viewMore={tr.viewMore} />
+              <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
             </div>
           </div>
         ))}
       </div>
 
-      {/* ── Desktop: horizontal scroll layout ───────────────────────── */}
+      {/* ── Desktop: horizontal scroll — professional above, education below ── */}
       <div className="hidden lg:block relative max-w-7xl mx-auto px-12">
         {/* Scroll arrows */}
         <button
@@ -117,22 +123,64 @@ export default function Timeline() {
         {/* Scrollable track */}
         <div
           ref={scrollRef}
-          className="timeline-scroll overflow-x-auto pb-12 scroll-smooth"
+          className="timeline-scroll overflow-x-auto scroll-smooth"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          <div className="flex gap-6 w-max px-4 relative">
-            {/* Horizontal line */}
+          {/*
+            Layout per column (height fixed so line stays centered):
+            Professional: [card] [dot] [── line ──] [empty]
+            Education:    [empty] [── line ──] [dot] [card]
+          */}
+          <div className="flex gap-4 w-max px-4 relative" style={{ height: "520px" }}>
+
+            {/* Central horizontal line — absolutely centered vertically within this relative container */}
             <div
-              className="absolute bottom-8 left-0 h-0.5 w-full"
-              style={{ background: "linear-gradient(to right, rgba(20,184,166,0), #14b8a6 10%, #3b82f6 90%, rgba(59,130,246,0))" }}
+              className="absolute left-0 right-0 h-0.5 pointer-events-none"
+              style={{
+                top: "260px",
+                background: "linear-gradient(to right, rgba(20,184,166,0), #14b8a6 4%, #3b82f6 96%, rgba(59,130,246,0))",
+              }}
               aria-hidden="true"
             />
 
-            {timelineItems.map((item, index) => (
-              <div key={index} className="w-72 flex-shrink-0 pb-8 relative">
-                <TimelineCard item={item} index={index} onOpen={setSelectedItem} viewMore={tr.viewMore} />
-              </div>
-            ))}
+            {timelineItems.map((item) => {
+              const isProfessional = item.type === "professional";
+              return (
+                <div
+                  key={item.title}
+                  className="w-64 flex-shrink-0 flex flex-col"
+                  style={{ height: "520px" }}
+                >
+                  {isProfessional ? (
+                    <>
+                      {/* Top half: card fills, anchored to bottom */}
+                      <div className="flex flex-col justify-end" style={{ height: "240px", paddingBottom: "12px" }}>
+                        <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
+                      </div>
+                      {/* Dot sits between card and line */}
+                      <div className="flex justify-center items-center" style={{ height: "20px" }}>
+                        <Dot type="professional" />
+                      </div>
+                      {/* Bottom half: empty */}
+                      <div style={{ height: "260px" }} />
+                    </>
+                  ) : (
+                    <>
+                      {/* Top half: empty */}
+                      <div style={{ height: "240px" }} />
+                      {/* Dot sits between line and card */}
+                      <div className="flex justify-center items-center" style={{ height: "20px" }}>
+                        <Dot type="education" />
+                      </div>
+                      {/* Bottom half: card fills, anchored to top */}
+                      <div className="flex flex-col justify-start" style={{ height: "260px", paddingTop: "12px" }}>
+                        <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
