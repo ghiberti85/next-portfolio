@@ -97,7 +97,7 @@ export default function Timeline() {
         {timelineItems.map((item, index) => (
           <div key={index} className="relative mb-8 flex items-start gap-4">
             {/* Dot on the left rail */}
-            <div className="absolute -left-4 top-1/2 -translate-y-1/2 z-10">
+            <div className="absolute -left-6 top-1/2 -translate-y-1/2 z-10">
               <Dot type={item.type} />
             </div>
             {/* Card — full width minus rail, small gap from dot */}
