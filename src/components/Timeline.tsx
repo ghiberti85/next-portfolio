@@ -85,49 +85,27 @@ export default function Timeline() {
         {tr.title}
       </h2>
 
-      {/* ── Mobile: vertical layout with colored dots and connectors ── */}
-      <div className="lg:hidden relative max-w-2xl mx-auto px-4">
-        {/* Vertical line centered */}
+      {/* ── Mobile: left-rail vertical layout ──────────────────────── */}
+      <div className="lg:hidden relative max-w-2xl mx-auto px-4 pl-10">
+        {/* Vertical line on the left rail */}
         <div
-          className="absolute top-0 bottom-0 w-0.5 left-1/2 -translate-x-1/2"
+          className="absolute top-0 bottom-0 left-6 w-0.5"
           style={{ background: "linear-gradient(to bottom, #14b8a6, rgba(20,184,166,0))" }}
           aria-hidden="true"
         />
 
-        {timelineItems.map((item, index) => {
-          const isLeft = index % 2 === 0;
-          return (
-            <div key={index} className="relative flex items-center mb-10">
-              {isLeft ? (
-                <>
-                  {/* Card on the left */}
-                  <div className="w-[calc(50%-1.5rem)] pr-3">
-                    <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
-                  </div>
-                  {/* Dot on the line */}
-                  <div className="absolute left-1/2 -translate-x-1/2 z-10">
-                    <Dot type={item.type} />
-                  </div>
-                  {/* Empty right side */}
-                  <div className="w-[calc(50%-1.5rem)] pl-3" />
-                </>
-              ) : (
-                <>
-                  {/* Empty left side */}
-                  <div className="w-[calc(50%-1.5rem)] pr-3" />
-                  {/* Dot on the line */}
-                  <div className="absolute left-1/2 -translate-x-1/2 z-10">
-                    <Dot type={item.type} />
-                  </div>
-                  {/* Card on the right */}
-                  <div className="w-[calc(50%-1.5rem)] pl-3">
-                    <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
-                  </div>
-                </>
-              )}
+        {timelineItems.map((item, index) => (
+          <div key={index} className="relative mb-8 flex items-start gap-4">
+            {/* Dot on the left rail */}
+            <div className="absolute -left-4 top-5 z-10">
+              <Dot type={item.type} />
             </div>
-          );
-        })}
+            {/* Card — full width minus rail */}
+            <div className="flex-1 min-w-0">
+              <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* ── Desktop: horizontal scroll — professional above, education below ── */}
