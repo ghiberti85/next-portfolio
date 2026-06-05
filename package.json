@@ -26,6 +26,14 @@
     "slick-carousel": "^1.8.1",
     "typewriter-effect": "^2.21.0"
   },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions",
+    "not dead",
+    "not IE 11"
+  ],
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@testing-library/jest-dom": "^6.9.1",
@@ -36,6 +44,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-slick": "^0.23.13",
+    "critters": "^0.0.23",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "identity-obj-proxy": "^3.0.0",
