@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import dynamic from "next/dynamic";
 import "./globals.css";
 import MouseSpotlight from "@/components/MouseSpotlight";
 import CustomCursor from "@/components/CustomCursor";
 import SkipLink from "@/components/SkipLink";
-import AskFernando from "@/components/AskFernando";
+const AskFernando = dynamic(() => import("@/components/AskFernando"));
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 

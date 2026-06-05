@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import SkillsSlider from "@/components/SkillsSlider";
+const SkillsSlider = dynamic(() => import("@/components/SkillsSlider"), { ssr: false });
 import ProjectsGrid from "@/components/ProjectsGrid";
 import Timeline from "@/components/Timeline";
 import Contact from "@/components/Contact";

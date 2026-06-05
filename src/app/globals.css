@@ -21,8 +21,6 @@
   opacity: 1;
   pointer-events: auto;
 }
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
 
 /* ── CSS variables – dark (default) ────────────────────────────── */
 :root {
