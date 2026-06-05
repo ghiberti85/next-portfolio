@@ -18,9 +18,9 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
   const [outChars, setOutChars] = useState(0);
   const [phase, setPhase] = useState<"cmd" | "out" | "pause">("cmd");
   const bottomRef = useRef<HTMLDivElement>(null);
-  const SPEED_CMD = 45;
-  const SPEED_OUT = 18;
-  const PAUSE_BETWEEN = 350;
+  const SPEED_CMD = 22;
+  const SPEED_OUT = 9;
+  const PAUSE_BETWEEN = 180;
 
   useEffect(() => {
     setLines([]);
@@ -32,7 +32,7 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
 
   useEffect(() => {
     if (currentLine >= tr.lines.length) {
-      const t = setTimeout(onDone, 600);
+      const t = setTimeout(onDone, 300);
       return () => clearTimeout(t);
     }
 
