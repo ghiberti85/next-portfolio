@@ -53,7 +53,7 @@ export default function SkillsSlider() {
     dots: false,
     responsive: [
       { breakpoint: 1024, settings: { slidesToShow: 3 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
+      { breakpoint: 640, settings: { slidesToShow: 2 } },
     ],
   };
 
@@ -87,7 +87,7 @@ export default function SkillsSlider() {
 function SkillCard({ skill }: { skill: Skill }) {
   return (
     <div
-      className="relative p-6 m-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl glass-card"
+      className="relative p-4 sm:p-6 m-2 sm:m-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl glass-card"
     >
       <Image
         src={skill.icon}
