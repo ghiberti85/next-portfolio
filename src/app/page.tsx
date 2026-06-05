@@ -9,7 +9,7 @@ import ProjectsGrid from "@/components/ProjectsGrid";
 import Timeline from "@/components/Timeline";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import AnimatedSection from "@/components/AnimatedSection";
+const AnimatedSection = dynamic(() => import("@/components/AnimatedSection"), { ssr: false });
 import TerminalIntro from "@/components/TerminalIntro";
 
 export default function Home() {
