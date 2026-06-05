@@ -207,39 +207,48 @@ export default function ProjectsGrid() {
         {tr.title}
       </h2>
 
-      {/* Filter Tags */}
-      <div className="flex justify-center flex-wrap gap-4 mb-8">
-        <button
-          onClick={() => {
-            setActiveTag(null);
-            setVisibleProjects(6);
-          }}
-          className={`px-5 py-1 rounded-full text-sm font-semibold transition ${
-            isAllProjects
-              ? "bg-teal-700 text-white"
-              : "hover:bg-teal-700 hover:text-white"
-          }`}
-          style={!isAllProjects ? { background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--color-text)" } : {}}
-        >
-          {tr.all}
-        </button>
-        {uniqueTags.map((tag, index) => (
+      {/* Filter Tags — horizontal scroll on mobile, centered wrap on sm+ */}
+      <div className="relative mb-8">
+        {/* fade edges on mobile */}
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-6 z-10 sm:hidden"
+          style={{ background: "linear-gradient(to right, var(--bg-from), transparent)" }} />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-6 z-10 sm:hidden"
+          style={{ background: "linear-gradient(to left, var(--bg-from), transparent)" }} />
+
+        <div className="flex sm:flex-wrap sm:justify-center gap-3 overflow-x-auto sm:overflow-x-visible px-2 sm:px-0 pb-1 sm:pb-0"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           <button
-            key={index}
             onClick={() => {
-              setActiveTag(tag);
-              setVisibleProjects(filteredProjects.length);
+              setActiveTag(null);
+              setVisibleProjects(6);
             }}
-            className={`px-5 py-1 rounded-full text-sm font-semibold transition ${
-              activeTag === tag
+            className={`flex-shrink-0 px-5 py-1 rounded-full text-sm font-semibold transition ${
+              isAllProjects
                 ? "bg-teal-700 text-white"
                 : "hover:bg-teal-700 hover:text-white"
             }`}
-            style={activeTag !== tag ? { background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--color-text)" } : {}}
+            style={!isAllProjects ? { background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--color-text)" } : {}}
           >
-            {tag}
+            {tr.all}
           </button>
-        ))}
+          {uniqueTags.map((tag, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setActiveTag(tag);
+                setVisibleProjects(filteredProjects.length);
+              }}
+              className={`flex-shrink-0 px-5 py-1 rounded-full text-sm font-semibold transition ${
+                activeTag === tag
+                  ? "bg-teal-700 text-white"
+                  : "hover:bg-teal-700 hover:text-white"
+              }`}
+              style={activeTag !== tag ? { background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--color-text)" } : {}}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Projects Grid */}
