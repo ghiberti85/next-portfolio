@@ -90,18 +90,18 @@ export default function Timeline() {
         {/* Vertical line on the left rail */}
         <div
           className="absolute top-0 bottom-0 left-6 w-0.5"
-          style={{ background: "linear-gradient(to bottom, #14b8a6, rgba(20,184,166,0))" }}
+          style={{ background: "linear-gradient(to bottom, transparent, #14b8a6 12%, #14b8a6 88%, transparent)" }}
           aria-hidden="true"
         />
 
         {timelineItems.map((item, index) => (
           <div key={index} className="relative mb-8 flex items-start gap-4">
             {/* Dot on the left rail */}
-            <div className="absolute -left-4 top-5 z-10">
+            <div className="absolute -left-4 top-1/2 -translate-y-1/2 z-10">
               <Dot type={item.type} />
             </div>
-            {/* Card — full width minus rail */}
-            <div className="flex-1 min-w-0">
+            {/* Card — full width minus rail, small gap from dot */}
+            <div className="flex-1 min-w-0 ml-2">
               <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
             </div>
           </div>
