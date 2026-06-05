@@ -5,8 +5,8 @@ export default function SkipLink() {
     <a
       href="#hero"
       style={{
-        position: "absolute",
-        top: "-100px",
+        position: "fixed",
+        top: "1rem",
         left: "1rem",
         zIndex: 9999,
         padding: "0.5rem 1rem",
@@ -15,10 +15,11 @@ export default function SkipLink() {
         borderRadius: "0.5rem",
         fontWeight: 600,
         boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-        transition: "top 0.2s",
+        transform: "translateY(-200%)",
+        transition: "transform 0.2s",
       }}
-      onFocus={(e) => { e.currentTarget.style.top = "1rem"; }}
-      onBlur={(e) => { e.currentTarget.style.top = "-100px"; }}
+      onFocus={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
+      onBlur={(e) => { e.currentTarget.style.transform = "translateY(-200%)"; }}
     >
       Skip to main content
     </a>
