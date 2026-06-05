@@ -18,7 +18,10 @@ function TimelineCard({
   const isProfessional = item.type === "professional";
   return (
     <div
-      className="p-4 rounded-lg shadow-lg hover:scale-105 transition-transform cursor-pointer glass-card lg:h-full flex flex-col"
+      className="p-4 rounded-lg shadow-lg cursor-pointer glass-card lg:h-full flex flex-col"
+      style={{ transition: "transform 0.35s cubic-bezier(0.34,1.56,0.64,1)" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1.03)"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1)"; }}
       onClick={() => onOpen(item)}
     >
       <div className="flex items-center mb-3">
@@ -124,7 +127,7 @@ export default function Timeline() {
         <div
           ref={scrollRef}
           className="timeline-scroll overflow-x-auto scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none", overflowY: "visible" }}
         >
           {/*
             Layout per column (height fixed so line stays centered):
@@ -154,7 +157,7 @@ export default function Timeline() {
                   {isProfessional ? (
                     <>
                       {/* Top half: card fills, anchored to bottom */}
-                      <div className="flex flex-col justify-end" style={{ height: "190px", paddingBottom: "12px" }}>
+                      <div className="flex flex-col justify-end" style={{ height: "190px", paddingBottom: "12px", overflow: "visible" }}>
                         <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
                       </div>
                       {/* Dot sits between card and line */}
@@ -173,7 +176,7 @@ export default function Timeline() {
                         <Dot type="education" />
                       </div>
                       {/* Bottom half: card fills, anchored to top */}
-                      <div className="flex flex-col justify-start" style={{ height: "210px", paddingTop: "12px" }}>
+                      <div className="flex flex-col justify-start" style={{ height: "210px", paddingTop: "12px", overflow: "visible" }}>
                         <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
                       </div>
                     </>
