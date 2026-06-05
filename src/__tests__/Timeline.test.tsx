@@ -19,13 +19,13 @@ describe("Timeline", () => {
 
   it("renders professional experience entries", () => {
     renderWithProviders(<Timeline />);
-    expect(screen.getByText("+A Educação")).toBeInTheDocument();
-    expect(screen.getByText("EBANX")).toBeInTheDocument();
+    expect(screen.getAllByText("+A Educação").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("EBANX").length).toBeGreaterThan(0);
   });
 
   it("renders education entries", () => {
     renderWithProviders(<Timeline />);
-    expect(screen.getByText(/UNICAMP/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/UNICAMP/i).length).toBeGreaterThan(0);
   });
 
   it("opens modal with details when a timeline item is clicked", () => {

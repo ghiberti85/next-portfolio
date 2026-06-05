@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MouseSpotlight from "@/components/MouseSpotlight";
+import CustomCursor from "@/components/CustomCursor";
 import AskFernando from "@/components/AskFernando";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -72,6 +73,7 @@ export default function RootLayout({
             <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
             <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
             <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
+            <CustomCursor />
             <MouseSpotlight />
             <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-hidden">{children}</div>
             <AskFernando />
