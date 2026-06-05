@@ -38,8 +38,8 @@ const t = {
     stats: [
       { value: 9, suffix: "+", label: "Years of Experience" },
       { value: 100, suffix: "+", label: "Projects Delivered" },
-      { value: 38, suffix: "%", label: "Avg. Performance Gain" },
-      { value: 45, suffix: "%", label: "Avg. Bug Reduction" },
+      { value: 85, suffix: "%", label: "Avg. Performance Gain" },
+      { value: 90, suffix: "%", label: "Avg. Bug Reduction" },
     ],
     skills: {
       title: "Skills",
@@ -247,8 +247,8 @@ const t = {
     stats: [
       { value: 9, suffix: "+", label: "Anos de Experiência" },
       { value: 100, suffix: "+", label: "Projetos Entregues" },
-      { value: 38, suffix: "%", label: "Ganho Médio de Performance" },
-      { value: 45, suffix: "%", label: "Redução Média de Bugs" },
+      { value: 85, suffix: "%", label: "Ganho Médio de Performance" },
+      { value: 90, suffix: "%", label: "Redução Média de Bugs" },
     ],
     skills: {
       title: "Habilidades",
