@@ -29,7 +29,7 @@ function TimelineCard({
           {item.title}
         </h3>
       </div>
-      <ul className="list-disc ml-5 space-y-1 text-xs flex-1" style={{ color: "var(--color-text-muted)" }}>
+      <ul className="list-disc ml-5 space-y-1 text-xs" style={{ color: "var(--color-text-muted)" }}>
         <li><span className="font-medium" style={{ color: "var(--color-text)" }}>{item.institution}</span></li>
         <li>{item.period}</li>
       </ul>
@@ -131,13 +131,13 @@ export default function Timeline() {
             Professional: [card] [dot] [── line ──] [empty]
             Education:    [empty] [── line ──] [dot] [card]
           */}
-          <div className="flex gap-4 w-max px-4 relative" style={{ height: "520px" }}>
+          <div className="flex gap-4 w-max px-4 relative" style={{ height: "420px" }}>
 
             {/* Central horizontal line — absolutely centered vertically within this relative container */}
             <div
               className="absolute left-0 right-0 h-0.5 pointer-events-none"
               style={{
-                top: "260px",
+                top: "210px",
                 background: "linear-gradient(to right, rgba(20,184,166,0), #14b8a6 4%, #3b82f6 96%, rgba(59,130,246,0))",
               }}
               aria-hidden="true"
@@ -149,12 +149,12 @@ export default function Timeline() {
                 <div
                   key={item.title}
                   className="w-64 flex-shrink-0 flex flex-col"
-                  style={{ height: "520px" }}
+                  style={{ height: "420px" }}
                 >
                   {isProfessional ? (
                     <>
                       {/* Top half: card fills, anchored to bottom */}
-                      <div className="flex flex-col justify-end" style={{ height: "240px", paddingBottom: "12px" }}>
+                      <div className="flex flex-col justify-end" style={{ height: "190px", paddingBottom: "12px" }}>
                         <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
                       </div>
                       {/* Dot sits between card and line */}
@@ -162,18 +162,18 @@ export default function Timeline() {
                         <Dot type="professional" />
                       </div>
                       {/* Bottom half: empty */}
-                      <div style={{ height: "260px" }} />
+                      <div style={{ height: "210px" }} />
                     </>
                   ) : (
                     <>
                       {/* Top half: empty */}
-                      <div style={{ height: "240px" }} />
+                      <div style={{ height: "190px" }} />
                       {/* Dot sits between line and card */}
                       <div className="flex justify-center items-center" style={{ height: "20px" }}>
                         <Dot type="education" />
                       </div>
                       {/* Bottom half: card fills, anchored to top */}
-                      <div className="flex flex-col justify-start" style={{ height: "260px", paddingTop: "12px" }}>
+                      <div className="flex flex-col justify-start" style={{ height: "210px", paddingTop: "12px" }}>
                         <TimelineCard item={item} onOpen={setSelectedItem} viewMore={tr.viewMore} />
                       </div>
                     </>
