@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MouseSpotlight from "@/components/MouseSpotlight";
 import CustomCursor from "@/components/CustomCursor";
+import SkipLink from "@/components/SkipLink";
 import AskFernando from "@/components/AskFernando";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -64,26 +65,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <LanguageProvider>
-            <a
-              href="#hero"
-              style={{
-                position: "absolute",
-                top: "-100px",
-                left: "1rem",
-                zIndex: 9999,
-                padding: "0.5rem 1rem",
-                background: "#14b8a6",
-                color: "#fff",
-                borderRadius: "0.5rem",
-                fontWeight: 600,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-                transition: "top 0.2s",
-              }}
-              onFocus={(e) => { e.currentTarget.style.top = "1rem"; }}
-              onBlur={(e) => { e.currentTarget.style.top = "-100px"; }}
-            >
-              Skip to main content
-            </a>
+            <SkipLink />
             <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
             <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
             <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
