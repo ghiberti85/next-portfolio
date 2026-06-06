@@ -9,6 +9,7 @@ All rules below are mandatory. Follow them on every task without exception.
 
 Personal portfolio SPA built with **Next.js 15 (App Router)**, **TypeScript**, and **Tailwind CSS**.
 Single page composed of: Navbar → Hero → SkillsSlider → ProjectsGrid → Timeline → Contact → Footer.
+AI chat powered by **Groq (LLaMA 3.3-70b)** via `/api/chat`.
 Deployed automatically to Vercel on every push to `main`.
 
 ---
@@ -41,10 +42,12 @@ npm test
 
 **Rules:**
 - Every new component or feature must ship with tests in `src/__tests__/<ComponentName>.test.tsx`.
+- API route changes must be covered in `src/__tests__/api-chat.test.ts`.
 - Every bug fix must include a regression test.
 - When a component is removed, delete its test file too.
 - Coverage threshold is **70% lines** (enforced by Jest). Do not lower it.
 - Tests must pass locally before pushing.
+- API route tests use `@jest-environment node` at the top of the file (browser APIs guarded by `typeof window !== "undefined"` in `jest.setup.ts`).
 
 Test commands:
 ```bash
@@ -92,9 +95,9 @@ Keep the following in sync after every change:
 
 | File | Update when |
 |---|---|
-| `README.md` | Tech stack, features, project structure, or commands change |
+| `README.md` | Tech stack, features, project structure, commands, or env vars change |
 | `CLAUDE.md` | Workflow, tooling, or project architecture changes |
-| `src/__tests__/` | Any component is added, changed, or removed |
+| `src/__tests__/` | Any component or API route is added, changed, or removed |
 
 If you add a feature → add it to the README features section.
 If you remove a feature → remove it from README, delete its tests, remove dead code.
@@ -114,9 +117,11 @@ Review the following on every PR:
 - [ ] No new `dangerouslyAllowSVG` usages without a tight `contentSecurityPolicy`.
 - [ ] External URLs hardcoded in components must be trusted, static origins.
 - [ ] New `remotePatterns` in `next.config.ts` must be limited to the exact hostname needed.
-- [ ] HTTP security headers in `next.config.ts` must not be weakened.
+- [ ] HTTP security headers in `next.config.ts` must not be weakened. `unsafe-eval` must NOT be added to production CSP.
 - [ ] No `eval()`, `dangerouslySetInnerHTML`, or unescaped user input.
 - [ ] Dependencies added via `npm install` must be audited with `npm audit`.
+- [ ] Any new API route must implement: rate limiting, input validation (type + length), and explicit CORS headers.
+- [ ] User-supplied values must never be interpolated raw into LLM prompts — validate against an allowlist first.
 
 ---
 
@@ -125,24 +130,55 @@ Review the following on every PR:
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout — metadata, fonts, global styles
-│   ├── page.tsx            # Page composition (imports all section components)
-│   └── globals.css
-└── components/
-    ├── Navbar.tsx           # Fixed top nav, smooth scroll, mobile hamburger
-    ├── Hero.tsx             # Profile, typewriter, social links, CV download
-    ├── SkillsSlider.tsx     # Dual auto-scroll carousels with skill proficiency bars
-    ├── ProjectsGrid.tsx     # Filterable grid with modals (tag filter + pagination)
-    ├── Timeline.tsx         # Career & education vertical timeline with modals
-    ├── Contact.tsx          # Email, WhatsApp, LinkedIn, GitHub contact cards
-    └── Footer.tsx           # Back-to-top button + author credit
+│   ├── layout.tsx              # Root layout — metadata, fonts, providers, global overlays
+│   ├── page.tsx                # Page composition (TerminalIntro + all section components)
+│   ├── globals.css             # Global styles, CSS custom properties, color tokens
+│   └── api/
+│       └── chat/
+│           └── route.ts        # Groq AI chat endpoint (rate-limited, input-validated, CORS)
+├── components/
+│   ├── Navbar.tsx              # Fixed top nav, smooth scroll, language & theme toggles
+│   ├── Hero.tsx                # Profile, typewriter, social links, CV download
+│   ├── StatsCounter.tsx        # Animated statistics counters
+│   ├── SkillsSlider.tsx        # Dual auto-scroll carousels with SkillsRadar
+│   ├── SkillsRadar.tsx         # Recharts radar chart for expertise areas
+│   ├── ProjectsGrid.tsx        # Filterable grid with modals (tag filter + pagination)
+│   ├── Timeline.tsx            # Career & education timeline (horizontal/vertical) with modals
+│   ├── Contact.tsx             # Email, WhatsApp, LinkedIn, GitHub contact cards
+│   ├── Footer.tsx              # Back-to-top button + author credit
+│   ├── AskFernando.tsx         # Floating AI chat widget (Groq-powered)
+│   ├── TerminalIntro.tsx       # One-time terminal boot animation
+│   ├── AnimatedSection.tsx     # Scroll-triggered Framer Motion entrance animations
+│   ├── CustomCursor.tsx        # Custom animated cursor (pointer devices only)
+│   ├── MouseSpotlight.tsx      # Mouse-following radial spotlight overlay
+│   └── SkipLink.tsx            # Accessibility skip-to-content link
+├── context/
+│   ├── LanguageContext.tsx     # EN / PT-BR language state (React Context)
+│   └── ThemeContext.tsx        # Dark / light theme state (React Context)
+└── lib/
+    └── translations.ts         # All UI strings for EN and PT-BR
 
-src/__tests__/              # One test file per component
-__mocks__/                  # Static file stubs for Jest
-.github/workflows/ci.yml    # CI: lint → test → build on every PR and push to main
+src/__tests__/                  # One test file per component + api-chat.test.ts
+__mocks__/                      # Static file stubs for Jest
+.github/workflows/ci.yml        # CI: lint → test → build on every PR and push to main
 public/
 └── fernando-ghiberti-cv-en.pdf
 ```
+
+---
+
+## Color System
+
+CSS custom properties defined in `globals.css` drive all accent colors. Always use these variables — never hardcode `#14b8a6` or `#3b82f6` directly in components.
+
+| Token | Dark mode | Light mode | WCAG contrast on bg |
+|---|---|---|---|
+| `--accent-teal` | `#14b8a6` (teal-400) | `#0f766e` (teal-700) | 4.6:1 ✅ |
+| `--accent-blue` | `#3b82f6` (blue-500) | `#1d4ed8` (blue-700) | 5.7:1 ✅ |
+| `--gradient-accent` | `linear-gradient(135deg, teal, blue)` | same direction, darker stops | — |
+| `--gradient-accent-r` | same, `to right` direction | same | — |
+
+Light mode Tailwind class overrides (`.text-teal-400`, `.bg-teal-400`, `.from-teal-400`, etc.) are declared in `globals.css` — do not add per-component overrides.
 
 ---
 
@@ -154,18 +190,19 @@ public/
 - Use `data-testid` only as a last resort when no semantic query works.
 - Mock external dependencies (e.g. `typewriter-effect`, `next/image`, `next/font`) at the top of the test file.
 - Each describe block maps to one component. Group tests by feature within the block.
-
-Example structure for a new component `MyWidget`:
-```
-src/components/MyWidget.tsx
-src/__tests__/MyWidget.test.tsx
-```
+- API route tests must be in a `.test.ts` (not `.tsx`) file with `@jest-environment node` at the top.
 
 Minimum test coverage per component:
 - Renders without crashing
 - Renders key content (headings, labels, links)
 - Interactive behavior (clicks, toggles, modals)
 - Edge cases relevant to the component's logic
+
+Minimum test coverage per API route:
+- Happy path returns expected response
+- Input validation returns 400 for each invalid field
+- Rate limiting returns 429
+- Missing env var returns 503
 
 ---
 
@@ -179,6 +216,9 @@ Minimum test coverage per component:
 | Icons | Font Awesome React | 6.x |
 | Carousel | React Slick | 0.30.x |
 | Animation | Typewriter Effect | 2.x |
+| Motion | Framer Motion | 11.x |
+| Charts | Recharts | 2.x |
+| AI | Groq SDK (LLaMA 3.3-70b) | — |
 | Testing | Jest + React Testing Library | 30.x / 16.x |
 | CI/CD | GitHub Actions + Vercel | — |
 

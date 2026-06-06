@@ -24,6 +24,7 @@ This portfolio gives recruiters and hiring managers a fast, clear view of Fernan
 | Animation | Typewriter Effect | 2.x |
 | Motion | Framer Motion | 11.x |
 | Charts | Recharts | 2.x |
+| AI | Groq SDK (LLaMA 3.3) | — |
 | Fonts | Geist (via `next/font`) | — |
 | Testing | Jest + React Testing Library | 30.x / 16.x |
 | CI/CD | GitHub Actions + Vercel | — |
@@ -41,16 +42,17 @@ This portfolio gives recruiters and hiring managers a fast, clear view of Fernan
 - **Timeline** — Horizontal (desktop) / vertical (mobile) career and education timeline with modal detail views per entry.
 - **Contact** — Direct contact cards: Email, WhatsApp, LinkedIn, and GitHub.
 - **Footer** — Back-to-top button and author credit.
-- **AskFernando** — Floating AI chat assistant powered by Claude (via `/api/chat`), with conversation history and bilingual support.
+- **AskFernando** — Floating AI chat assistant powered by **Groq (LLaMA 3.3-70b)**, with conversation history and bilingual support. API is rate-limited and validated server-side.
 - **CustomCursor** — Custom animated cursor for pointer devices.
 - **MouseSpotlight** — Subtle radial spotlight effect that follows the mouse.
 - **AnimatedSection** — Scroll-triggered entrance animations (fadeUp, stagger, launch, reveal, flip) powered by Framer Motion with `prefers-reduced-motion` support.
-- **SkipLink** — Accessibility skip-to-main-content link for keyboard navigation.
+- **SkipLink** — Accessibility skip-to-main-content link for keyboard navigation (`<main>` landmark present).
 - **Internationalisation** — Full EN / PT-BR translation via `LanguageContext` (React Context + localStorage persistence).
 - **Theme** — Dark / light mode via `ThemeContext` (React Context + localStorage persistence).
+- **WCAG AA color system** — CSS custom properties (`--accent-teal`, `--accent-blue`, `--gradient-accent`) adapt automatically between dark (teal-400/blue-500) and light (teal-700 4.6:1 / blue-700 5.7:1) to meet WCAG AA contrast requirements in both modes.
 - **Responsive design** — Mobile-first layout; all sections adapt from small screens to wide desktops.
-- **Performance** — `next/image` lazy loading, `priority` on hero image, SSR via App Router, WebP assets, Geist font via `next/font` (zero layout shift).
-- **Security headers** — CSP, X-Frame-Options, X-Content-Type-Options, HSTS, Referrer-Policy, and Permissions-Policy applied globally in `next.config.ts`.
+- **Performance** — `next/image` lazy loading, `priority` on hero image, SSR via App Router, WebP assets, Geist font via `next/font` (zero layout shift), `optimizeCss` enabled. Scores: **95 Performance / 100 Accessibility** on PageSpeed Insights mobile.
+- **Security** — CSP (no `unsafe-eval` in production), HSTS, X-Frame-Options, rate limiting, input validation, and CORS on the AI API route.
 
 ---
 
@@ -59,36 +61,39 @@ This portfolio gives recruiters and hiring managers a fast, clear view of Fernan
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout — metadata, fonts, providers, global overlays
-│   ├── page.tsx            # Page composition (TerminalIntro + all section components)
-│   └── globals.css         # Global styles and CSS custom properties
+│   ├── layout.tsx              # Root layout — metadata, fonts, providers, global overlays
+│   ├── page.tsx                # Page composition (TerminalIntro + all section components)
+│   ├── globals.css             # Global styles, CSS custom properties, color tokens
+│   └── api/
+│       └── chat/
+│           └── route.ts        # AI chat endpoint (Groq, rate-limited, input-validated)
 ├── components/
-│   ├── Navbar.tsx           # Fixed top nav, smooth scroll, language & theme toggles
-│   ├── Hero.tsx             # Profile, typewriter, social links, CV download
-│   ├── StatsCounter.tsx     # Animated statistics counters
-│   ├── SkillsSlider.tsx     # Dual auto-scroll carousels + SkillsRadar
-│   ├── SkillsRadar.tsx      # Recharts radar chart for expertise areas
-│   ├── ProjectsGrid.tsx     # Filterable grid with modals (tag filter + show-more)
-│   ├── Timeline.tsx         # Career & education timeline (horizontal/vertical) with modals
-│   ├── Contact.tsx          # Contact links (Email, WhatsApp, LinkedIn, GitHub)
-│   ├── Footer.tsx           # Back-to-top button and footer
-│   ├── AskFernando.tsx      # Floating AI chat widget (Claude-powered)
-│   ├── TerminalIntro.tsx    # One-time terminal boot animation
-│   ├── AnimatedSection.tsx  # Scroll-triggered Framer Motion wrapper
-│   ├── CustomCursor.tsx     # Custom animated cursor
-│   ├── MouseSpotlight.tsx   # Mouse-following radial spotlight overlay
-│   └── SkipLink.tsx         # Accessibility skip-to-content link
+│   ├── Navbar.tsx              # Fixed top nav, smooth scroll, language & theme toggles
+│   ├── Hero.tsx                # Profile, typewriter, social links, CV download
+│   ├── StatsCounter.tsx        # Animated statistics counters
+│   ├── SkillsSlider.tsx        # Dual auto-scroll carousels + SkillsRadar
+│   ├── SkillsRadar.tsx         # Recharts radar chart for expertise areas
+│   ├── ProjectsGrid.tsx        # Filterable grid with modals (tag filter + show-more)
+│   ├── Timeline.tsx            # Career & education timeline (horizontal/vertical) with modals
+│   ├── Contact.tsx             # Contact links (Email, WhatsApp, LinkedIn, GitHub)
+│   ├── Footer.tsx              # Back-to-top button and footer
+│   ├── AskFernando.tsx         # Floating AI chat widget (Groq-powered)
+│   ├── TerminalIntro.tsx       # One-time terminal boot animation
+│   ├── AnimatedSection.tsx     # Scroll-triggered Framer Motion wrapper
+│   ├── CustomCursor.tsx        # Custom animated cursor
+│   ├── MouseSpotlight.tsx      # Mouse-following radial spotlight overlay
+│   └── SkipLink.tsx            # Accessibility skip-to-content link
 ├── context/
-│   ├── LanguageContext.tsx  # EN / PT-BR language state (React Context)
-│   └── ThemeContext.tsx     # Dark / light theme state (React Context)
+│   ├── LanguageContext.tsx     # EN / PT-BR language state (React Context)
+│   └── ThemeContext.tsx        # Dark / light theme state (React Context)
 └── lib/
-    └── translations.ts      # All UI strings for EN and PT-BR
+    └── translations.ts         # All UI strings for EN and PT-BR
 
-src/__tests__/               # One test file per component (Jest + RTL)
-__mocks__/                   # Static file stubs for Jest
-.github/workflows/ci.yml     # CI: lint → test → build on every PR and push to main
+src/__tests__/                  # One test file per component + API route (Jest + RTL)
+__mocks__/                      # Static file stubs for Jest
+.github/workflows/ci.yml        # CI: lint → test → build on every PR and push to main
 public/
-└── fernando-ghiberti-cv-en.pdf   # Downloadable CV
+└── fernando-ghiberti-cv-en.pdf # Downloadable CV
 ```
 
 ---
@@ -122,11 +127,12 @@ npm run test:coverage
 
 ## Environment Variables
 
-| Variable | Purpose |
-|---|---|
-| `ANTHROPIC_API_KEY` | Claude API key used by `/api/chat` to power the AskFernando AI chat |
+| Variable | Required | Purpose |
+|---|---|---|
+| `GROQ_API_KEY` | Yes | Groq API key used by `/api/chat` to power the AskFernando AI chat |
+| `NEXT_PUBLIC_SITE_URL` | No | Full URL of the deployed site (e.g. `https://ghiberti85.vercel.app`). Used to restrict CORS on `/api/chat`. Defaults to permissive when unset. |
 
-Create a `.env.local` file at the root with the variable above for local AI chat support.
+Create a `.env.local` file at the root with the variables above for local AI chat support.
 
 ---
 
@@ -175,16 +181,29 @@ Key achievements:
 
 ## Security
 
-Security headers are configured in `next.config.ts` and applied globally to all routes:
+Security is applied at both the HTTP layer and the API route level.
+
+### HTTP Headers (`next.config.ts`)
 
 | Header | Value |
 |---|---|
-| `Content-Security-Policy` | Restricts scripts, styles, fonts, and image sources to trusted origins |
+| `Content-Security-Policy` | Restricts scripts, styles, fonts, and image sources to trusted origins. `unsafe-eval` excluded in production — only present in development (required by Next.js HMR). |
 | `X-Frame-Options` | `SAMEORIGIN` — prevents clickjacking |
 | `X-Content-Type-Options` | `nosniff` — blocks MIME-type sniffing |
 | `Strict-Transport-Security` | Forces HTTPS with 2-year max-age and preload |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` |
 | `Permissions-Policy` | Disables camera, microphone, and geolocation access |
+
+### `/api/chat` Route Hardening
+
+| Protection | Detail |
+|---|---|
+| **Rate limiting** | 20 requests / IP / minute (sliding window). Returns HTTP 429 on excess. |
+| **Role validation** | Only `"user"` and `"assistant"` roles accepted — prevents prompt injection via `role: "system"` |
+| **Content validation** | Each message `content` must be a string ≤ 2,000 characters |
+| **Lang validation** | `lang` restricted to `["en", "pt"]` — raw user input never reaches the system prompt |
+| **CORS** | `Access-Control-Allow-Origin` restricted to `NEXT_PUBLIC_SITE_URL` / `VERCEL_URL` when set |
+| **API key guard** | Returns 503 if `GROQ_API_KEY` is not configured |
 
 ---
 
