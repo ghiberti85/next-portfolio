@@ -19,36 +19,89 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const BASE_URL = "https://ghiberti85.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: "Fernando Ghiberti — Senior Fullstack Developer",
   description:
-    "Portfolio of Fernando Ghiberti, Senior Fullstack Developer specializing in React, Next.js, TypeScript, and AI integrations. Available for new opportunities.",
-  keywords: ["Fernando Ghiberti", "Senior Fullstack Developer", "React", "Next.js", "TypeScript", "Supabase", "AI"],
+    "Portfolio of Fernando Ghiberti, Senior Fullstack Developer specializing in React, Next.js, TypeScript, Node.js, Supabase, and AI integrations. Available for new opportunities.",
+  keywords: [
+    "Fernando Ghiberti",
+    "Senior Fullstack Developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "Supabase",
+    "AI",
+    "Portfolio",
+    "Brazil",
+  ],
   authors: [{ name: "Fernando Ghiberti", url: "https://github.com/ghiberti85" }],
+  creator: "Fernando Ghiberti",
+  alternates: { canonical: BASE_URL },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://next-portfolio-ghiberti85.vercel.app",
+    url: BASE_URL,
     siteName: "Fernando Ghiberti Portfolio",
     title: "Fernando Ghiberti — Senior Fullstack Developer",
     description:
       "Portfolio of Fernando Ghiberti, Senior Fullstack Developer specializing in React, Next.js, TypeScript, and AI integrations.",
-    images: [
-      {
-        url: "https://github.com/ghiberti85.png",
-        width: 400,
-        height: 400,
-        alt: "Fernando Ghiberti",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Fernando Ghiberti — Senior Fullstack Developer",
     description:
       "Portfolio of Fernando Ghiberti, Senior Fullstack Developer specializing in React, Next.js, TypeScript, and AI integrations.",
-    images: ["https://github.com/ghiberti85.png"],
+    creator: "@ghiberti85",
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${BASE_URL}/#person`,
+      name: "Fernando Ghiberti",
+      url: BASE_URL,
+      jobTitle: "Senior Fullstack Developer",
+      email: "ghiberti85@gmail.com",
+      image: "https://github.com/ghiberti85.png",
+      sameAs: [
+        "https://github.com/ghiberti85",
+        "https://linkedin.com/in/fernando-ghiberti",
+      ],
+      knowsAbout: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Node.js",
+        "Supabase",
+        "PostgreSQL",
+        "AI Integration",
+        "Groq",
+        "Framer Motion",
+        "Tailwind CSS",
+      ],
+      address: { "@type": "PostalAddress", addressCountry: "BR" },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${BASE_URL}/#website`,
+      url: BASE_URL,
+      name: "Fernando Ghiberti Portfolio",
+      description: "Personal portfolio of Fernando Ghiberti, Senior Fullstack Developer.",
+      author: { "@id": `${BASE_URL}/#person` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -60,6 +113,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" type="image/x-icon" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
