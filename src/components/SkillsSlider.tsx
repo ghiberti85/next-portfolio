@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
@@ -7,6 +8,45 @@ import "slick-carousel/slick/slick-theme.css";
 import { useLanguage } from "@/context/LanguageContext";
 import t from "@/lib/translations";
 import SkillsRadar from "@/components/SkillsRadar";
+
+const skillGlow: Record<string, string> = {
+  "React":          "rgba(97,218,251,0.55)",
+  "TypeScript":     "rgba(49,120,198,0.55)",
+  "JavaScript":     "rgba(247,223,30,0.55)",
+  "Node.js":        "rgba(51,153,51,0.55)",
+  "Next.js":        "rgba(200,200,200,0.35)",
+  "PostgreSQL":     "rgba(51,103,145,0.55)",
+  "Supabase":       "rgba(62,207,142,0.55)",
+  "TailwindCSS":    "rgba(6,182,212,0.55)",
+  "CSS3":           "rgba(21,114,182,0.55)",
+  "HTML5":          "rgba(227,79,38,0.55)",
+  "Git":            "rgba(240,80,50,0.55)",
+  "GitHub Actions": "rgba(32,136,255,0.55)",
+  "Docker":         "rgba(36,150,237,0.55)",
+  "Jest":           "rgba(194,19,37,0.55)",
+  "Storybook":      "rgba(255,71,133,0.55)",
+  "Figma":          "rgba(242,78,30,0.55)",
+  "Vite":           "rgba(100,108,255,0.55)",
+  "Vercel":         "rgba(200,200,200,0.35)",
+  "Webpack":        "rgba(141,214,249,0.55)",
+  "Axios":          "rgba(90,41,228,0.55)",
+  "NPM":            "rgba(203,56,55,0.55)",
+  "Sass":           "rgba(204,102,153,0.55)",
+  "Netlify":        "rgba(0,199,183,0.55)",
+  "Wordpress":      "rgba(33,117,155,0.55)",
+  "Hubspot":        "rgba(255,122,89,0.55)",
+  "Prisma":         "rgba(180,180,200,0.35)",
+  "GraphQL":        "rgba(228,52,170,0.55)",
+  "ESLint":         "rgba(75,50,195,0.55)",
+  "AWS":            "rgba(255,153,0,0.55)",
+  "Linux":          "rgba(150,150,150,0.40)",
+  "React Query":    "rgba(255,65,84,0.55)",
+  "Vitest":         "rgba(110,159,24,0.55)",
+  "Radix UI":       "rgba(200,200,210,0.35)",
+  "Zod":            "rgba(62,103,177,0.55)",
+  "Turborepo":      "rgba(239,68,68,0.55)",
+  "shadcn/ui":      "rgba(200,200,200,0.35)",
+};
 
 interface Skill {
   name: string;
@@ -102,9 +142,19 @@ export default function SkillsSlider() {
 }
 
 function SkillCard({ skill }: { skill: Skill }) {
+  const [hovered, setHovered] = useState(false);
+  const glowColor = skillGlow[skill.name] ?? "rgba(20,184,166,0.45)";
+
   return (
     <div
-      className="relative p-4 sm:p-6 m-2 sm:m-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl glass-card"
+      className="relative p-4 sm:p-6 m-2 sm:m-4 rounded-lg shadow-lg glass-card"
+      style={{
+        transform: hovered ? "scale(1.07)" : "scale(1)",
+        boxShadow: hovered ? `0 0 22px 6px ${glowColor}` : undefined,
+        transition: "transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease",
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <Image
         src={skill.icon}

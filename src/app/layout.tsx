@@ -5,6 +5,7 @@ import "./globals.css";
 import MouseSpotlight from "@/components/MouseSpotlight";
 import CustomCursor from "@/components/CustomCursor";
 import SkipLink from "@/components/SkipLink";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
 const AskFernando = dynamic(() => import("@/components/AskFernando"));
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -123,6 +124,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <LanguageProvider>
+            <ScrollProgressBar />
             <SkipLink />
             <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
             <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
