@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import t from "@/lib/translations";
 
-function useCountUp(target: number, duration = 1400, active: boolean) {
+function useCountUp(target: number, duration = 2000, active: boolean) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -13,7 +13,8 @@ function useCountUp(target: number, duration = 1400, active: boolean) {
     const raf = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
+      // easeOutExpo: slow start, explosive acceleration, snappy finish
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       setValue(Math.round(ease * target));
       if (progress < 1) requestAnimationFrame(raf);
     };

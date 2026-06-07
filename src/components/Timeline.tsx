@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faGraduationCap, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
@@ -66,6 +67,13 @@ export default function Timeline() {
   const timelineItems = tr.items;
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start center", "end center"],
+  });
+  const lineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25 });
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -80,7 +88,7 @@ export default function Timeline() {
   };
 
   return (
-    <section id="timeline" className="py-20 px-0">
+    <section id="timeline" className="py-20 px-0" ref={sectionRef}>
       <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
         {tr.title}
       </h2>
@@ -88,11 +96,17 @@ export default function Timeline() {
       {/* ── Mobile: left-rail vertical layout ──────────────────────── */}
       <div className="lg:hidden relative max-w-2xl mx-auto px-4 pl-10">
         {/* Vertical line on the left rail */}
-        <div
-          className="absolute top-0 bottom-0 left-6 w-0.5"
-          style={{ background: "linear-gradient(to bottom, transparent, var(--accent-teal) 12%, var(--accent-teal) 88%, transparent)" }}
-          aria-hidden="true"
-        />
+        <div className="absolute top-0 bottom-0 left-6 w-0.5 overflow-hidden" aria-hidden="true"
+          style={{ background: "var(--card-border)" }}>
+          <motion.div
+            className="w-full origin-top"
+            style={{
+              scaleY: lineProgress,
+              height: "100%",
+              background: "linear-gradient(to bottom, var(--accent-teal), var(--accent-blue))",
+            }}
+          />
+        </div>
 
         {timelineItems.map((item, index) => (
           <div key={index} className="relative mb-8 flex items-start gap-4">
@@ -144,13 +158,19 @@ export default function Timeline() {
 
             {/* Central horizontal line — centered at 200px from content top (dot center) */}
             <div
-              className="absolute left-0 right-0 h-0.5 pointer-events-none"
-              style={{
-                top: "calc(20px + 200px)",
-                background: "linear-gradient(to right, transparent, var(--accent-teal) 4%, var(--accent-blue) 96%, transparent)",
-              }}
+              className="absolute left-0 right-0 h-0.5 pointer-events-none overflow-hidden"
+              style={{ top: "calc(20px + 200px)", background: "var(--card-border)" }}
               aria-hidden="true"
-            />
+            >
+              <motion.div
+                className="h-full origin-left"
+                style={{
+                  scaleX: lineProgress,
+                  width: "100%",
+                  background: "linear-gradient(to right, var(--accent-teal), var(--accent-blue))",
+                }}
+              />
+            </div>
 
             {timelineItems.map((item) => {
               const isProfessional = item.type === "professional";
