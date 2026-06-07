@@ -120,7 +120,7 @@ export default function SkillsSlider() {
         {tr.title}
       </h2>
 
-      <div className="relative mb-8">
+      <div className="skills-slider relative mb-8">
         <Slider {...sliderSettings}>
           {firstSliderSkills.map((skill, index) => (
             <SkillCard key={index} skill={skill} />
@@ -128,7 +128,7 @@ export default function SkillsSlider() {
         </Slider>
       </div>
 
-      <div className="relative">
+      <div className="skills-slider relative">
         <Slider {...sliderSettings} rtl={true}>
           {secondSliderSkills.map((skill, index) => (
             <SkillCard key={index} skill={skill} />
@@ -149,9 +149,9 @@ function SkillCard({ skill }: { skill: Skill }) {
     <div
       className="relative p-4 sm:p-6 m-2 sm:m-4 rounded-lg shadow-lg glass-card"
       style={{
-        transform: hovered ? "scale(1.07)" : "scale(1)",
-        boxShadow: hovered ? `0 0 22px 6px ${glowColor}` : undefined,
-        transition: "transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease",
+        transform: hovered ? "scale(1.05)" : "scale(1)",
+        boxShadow: hovered ? `0 4px 32px 0px ${glowColor}` : "none",
+        transition: "transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease",
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
