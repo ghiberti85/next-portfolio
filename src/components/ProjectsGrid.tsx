@@ -19,6 +19,13 @@ interface Project {
 // Define projects with deterministic tags
 const projects: Project[] = [
   {
+    title: "AI Code Reviewer",
+    image: "https://raw.githubusercontent.com/ghiberti85/ai-code-reviewer/main/public/screenshot.png",
+    github: "https://github.com/ghiberti85/ai-code-reviewer",
+    live: "https://ghiberti-code-reviewer.vercel.app",
+    tags: ["React", "TypeScript", "Vite", "Groq API", "Llama 4", "Shiki", "Framer Motion"],
+  },
+  {
     title: "DevInterviewLab",
     image: "https://raw.githubusercontent.com/ghiberti85/devinterviewlab/main/public/og-image.png",
     github: "https://github.com/ghiberti85/devinterviewlab",
