@@ -54,13 +54,6 @@ const projects: Project[] = [
     tags: ["React", "TypeScript", "Vite", "Supabase", "Claude AI", "PWA"],
   },
   {
-    title: "upload.ai",
-    image: "https://github.com/ghiberti85/nlw-ai/raw/main/upload-ai-web/public/screenshot.png",
-    github: "https://github.com/ghiberti85/nlw-ai",
-    live: "",
-    tags: ["React", "Typescript", "Vite", "Vercel"],
-  },
-  {
     title: "Ignite Call",
     image: "https://github.com/ghiberti85/ignite-call/raw/main/public/registration-1.png",
     github: "https://github.com/ghiberti85/ignite-call",
@@ -73,6 +66,13 @@ const projects: Project[] = [
     github: "https://github.com/ghiberti85/ignite-design-system",
     live: "https://ghiberti85.github.io/ignite-design-system/",
     tags: ["React", "Typescript"],
+  },
+  {
+    title: "upload.ai",
+    image: "https://github.com/ghiberti85/nlw-ai/raw/main/upload-ai-web/public/screenshot.png",
+    github: "https://github.com/ghiberti85/nlw-ai",
+    live: "",
+    tags: ["React", "Typescript", "Vite", "Vercel"],
   },
   {
     title: "Coffee Delivery",
