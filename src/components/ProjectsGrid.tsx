@@ -36,7 +36,7 @@ const projects: Project[] = [
     title: "Interview Command Center",
     image: "https://raw.githubusercontent.com/ghiberti85/interview-command-center/main/public/screenshot.png",
     github: "https://github.com/ghiberti85/interview-command-center",
-    live: "https://interview-command-center.vercel.app",
+    live: "https://ghiberti-interview-center.vercel.app",
     tags: ["React", "TypeScript", "Vite", "Supabase", "Claude AI", "PWA"],
   },
   {
