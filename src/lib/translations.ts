@@ -65,6 +65,7 @@ const t = {
       close: "Close",
     },
     projectDescriptions: [
+      "AI-powered code review tool that analyzes your code in real time, returning a quality score (0–100), a categorized issues list with concrete fixes, and a complete refactored version. Built for developers who want fast, actionable feedback without leaving the browser.",
       "AI-powered technical interview prep platform. Generate personalized study roadmaps from job descriptions, practice with AI-generated questions, review Flash Topics and track your progress — available in English and Portuguese.",
       "A personal CRM for managing job interview pipelines — track processes by stage, generate AI-powered recruiter responses and CV adaptations, and manage next steps across multiple open positions simultaneously.",
       "A monorepo design system with 5 themed token collections and 30 accessible React components. Built for developers who need a fully themeable, dark-mode-ready component library with CSS custom properties and no runtime dependencies.",
@@ -274,6 +275,7 @@ const t = {
       close: "Fechar",
     },
     projectDescriptions: [
+      "Ferramenta de revisão de código com IA que analisa seu código em tempo real, retornando uma pontuação de qualidade (0–100), uma lista categorizada de problemas com correções concretas e uma versão completamente refatorada. Criada para desenvolvedores que querem feedback rápido e acionável sem sair do navegador.",
       "Plataforma de preparação para entrevistas técnicas com IA. Gere roadmaps de estudo personalizados a partir de descrições de vagas, pratique com perguntas geradas por IA, revise Flash Topics e acompanhe seu progresso — disponível em inglês e português.",
       "CRM pessoal para gerenciar pipelines de entrevistas de emprego — acompanhe processos por etapa, gere respostas a recrutadores e adaptações de currículo com IA, e gerencie próximos passos em múltiplas vagas simultaneamente.",
       "Design system em monorepo com 5 coleções de tokens temáticos e 30 componentes React acessíveis. Criado para desenvolvedores que precisam de uma biblioteca de componentes totalmente personalizável, com suporte a dark mode e propriedades CSS customizadas.",
