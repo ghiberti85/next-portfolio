@@ -26,6 +26,13 @@ const projects: Project[] = [
     tags: ["React", "TypeScript", "Vite", "Groq API", "Llama 4", "Shiki", "Framer Motion"],
   },
   {
+    title: "Philosophia",
+    image: "https://raw.githubusercontent.com/ghiberti85/philosophia/main/public/screenshot.png",
+    github: "https://github.com/ghiberti85/philosophia",
+    live: "https://philosophia-neon.vercel.app",
+    tags: ["Next.js", "TypeScript", "React", "Three.js", "Vercel", "Vitest"],
+  },
+  {
     title: "DevInterviewLab",
     image: "https://raw.githubusercontent.com/ghiberti85/devinterviewlab/main/public/og-image.png",
     github: "https://github.com/ghiberti85/devinterviewlab",
