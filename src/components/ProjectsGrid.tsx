@@ -30,7 +30,7 @@ const projects: Project[] = [
     image: "https://raw.githubusercontent.com/ghiberti85/philosophia/main/public/screenshot.png",
     github: "https://github.com/ghiberti85/philosophia",
     live: "https://philosophia-neon.vercel.app",
-    tags: ["Next.js", "TypeScript", "React", "Three.js", "React Three Fiber", "PWA", "i18n", "Vitest"],
+    tags: ["Next.js", "TypeScript", "React", "Tailwind CSS", "PWA", "i18n", "Vitest", "DALL-E"],
   },
   {
     title: "DevInterviewLab",
