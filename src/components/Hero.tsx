@@ -5,7 +5,6 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faFileDownload } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import t from "@/lib/translations";
 import StatsCounter from "@/components/StatsCounter";
@@ -15,10 +14,6 @@ const Typewriter = dynamic(() => import("typewriter-effect"), { ssr: false });
 export default function Hero() {
   const { lang } = useLanguage();
   const tr = t[lang].hero;
-  const { scrollY } = useScroll();
-  const leftY = useTransform(scrollY, [0, 600], [0, -60]);
-  const rightY = useTransform(scrollY, [0, 600], [0, -100]);
-
   return (
     <section
       id="hero"
@@ -27,10 +22,7 @@ export default function Hero() {
       className="min-h-screen flex flex-col lg:flex-row items-center justify-between px-4 pt-24 pb-12 lg:py-16 gap-8 lg:gap-16"
     >
       {/* Left Column */}
-      <motion.div
-        style={{ y: leftY }}
-        className="w-full lg:w-1/2 flex flex-col justify-center items-center space-y-5 py-8 px-4 rounded-lg shadow-lg glass-card"
-      >
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center space-y-5 py-8 px-4 rounded-lg shadow-lg glass-card">
         {/* Profile Picture */}
         <div
           className="relative w-40 h-40 rounded-full p-1"
@@ -92,10 +84,10 @@ export default function Hero() {
             <span>{tr.downloadCV}</span>
           </a>
         </div>
-      </motion.div>
+      </div>
 
       {/* Right Column */}
-      <motion.div style={{ y: rightY }} className="w-full lg:w-1/2 flex flex-col justify-center items-center text-center px-2 lg:px-0">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center text-center px-2 lg:px-0">
         {/* Mobile typewriter */}
         <h2 className="text-xl font-semibold mb-6 lg:hidden" style={{ color: "var(--color-text)" }}>
           <Typewriter
@@ -115,7 +107,7 @@ export default function Hero() {
         </p>
 
         <StatsCounter />
-      </motion.div>
+      </div>
     </section>
   );
 }
