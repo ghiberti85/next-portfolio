@@ -2,7 +2,7 @@
 
 A modern, performant personal portfolio built with **Next.js 15**, **TypeScript**, and **Tailwind CSS** — showcasing professional experience, technical skills, and personal projects in a clean, animated single-page application.
 
-**Live:** [ghiberti85.vercel.app](https://ghiberti85.vercel.app) &nbsp;|&nbsp; **Author:** [Fernando Ghiberti](https://linkedin.com/in/fernando-ghiberti) &nbsp;|&nbsp; **License:** MIT
+**Live:** [fernando-ghiberti.vercel.app](https://fernando-ghiberti.vercel.app/) &nbsp;|&nbsp; **Author:** [Fernando Ghiberti](https://linkedin.com/in/fernando-ghiberti) &nbsp;|&nbsp; **License:** MIT
 
 ---
 
