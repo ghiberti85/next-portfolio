@@ -224,12 +224,12 @@ export default function ProjectsGrid() {
       {/* Filter Tags — horizontal scroll on mobile, centered wrap on sm+ */}
       <div className="relative mb-8 -mx-4 sm:mx-0">
         {/* fade edges on mobile */}
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-8 z-10 sm:hidden"
-          style={{ background: "linear-gradient(to right, var(--bg-from), transparent)" }} />
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-8 z-10 sm:hidden"
-          style={{ background: "linear-gradient(to left, var(--bg-from), transparent)" }} />
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-14 z-10 sm:hidden"
+          style={{ background: "linear-gradient(to right, var(--bg-from) 30%, transparent)" }} />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-14 z-10 sm:hidden"
+          style={{ background: "linear-gradient(to left, var(--bg-from) 30%, transparent)" }} />
 
-        <div className="flex sm:flex-wrap sm:justify-center gap-3 overflow-x-auto sm:overflow-x-visible px-4 sm:px-0 pb-1 sm:pb-0"
+        <div className="flex sm:flex-wrap sm:justify-center gap-3 overflow-x-auto sm:overflow-x-visible px-2 sm:px-0 pb-1 sm:pb-0"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           <button
             onClick={() => {
