@@ -11,14 +11,24 @@ const config: Config = {
   transform: {
     "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: { jsx: "react-jsx" } }],
   },
-  testMatch: ["**/__tests__/**/*.test.(ts|tsx)"],
+  testMatch: [
+    "**/__tests__/**/*.test.(ts|tsx)",
+    "**/*.test.(ts|tsx)",
+  ],
   collectCoverageFrom: [
     "src/components/**/*.{ts,tsx}",
     "src/app/**/*.{ts,tsx}",
+    "src/context/**/*.{ts,tsx}",
+    "src/lib/**/*.{ts,tsx}",
     "!src/**/*.d.ts",
   ],
   coverageThreshold: {
-    global: { lines: 70 },
+    global: {
+      lines: 70,
+      branches: 60,
+      functions: 70,
+      statements: 70,
+    },
   },
 };
 

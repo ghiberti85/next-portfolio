@@ -133,7 +133,7 @@ const projects: Project[] = [
   {
     title: "Ecoleta",
     image: "https://github.com/ghiberti85/nlw/raw/master/public/assets/Home.svg",
-    github: "https://github.com/yourusername/photo-gallery",
+    github: "https://github.com/ghiberti85/nlw",
     live: "",
     tags: ["JavaScript", "Node.js", "React"],
   },
@@ -239,9 +239,9 @@ export default function ProjectsGrid() {
           >
             {tr.all}
           </button>
-          {uniqueTags.map((tag, index) => (
+          {uniqueTags.map((tag) => (
             <button
-              key={index}
+              key={tag}
               onClick={() => {
                 setActiveTag(tag);
                 setVisibleProjects(filteredProjects.length);
@@ -263,18 +263,22 @@ export default function ProjectsGrid() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredProjects.slice(0, visibleProjects).map((project, index) => (
           <div
-            key={index}
+            key={project.title}
             ref={(el) => { cardRefs.current[index] = el; }}
             className="group rounded-lg shadow-lg relative cursor-pointer glass-card"
             style={{ transform: "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)", transition: "transform 0.4s ease-out" }}
             onMouseMove={(e) => handleTiltMove(e, index)}
             onMouseLeave={() => handleTiltLeave(index)}
             onClick={() => handleOpenModal(project)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleOpenModal(project); } }}
+            aria-label={`View details for ${project.title}`}
           >
             <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-              {project.tags.map((tag, idx) => (
+              {project.tags.map((tag) => (
                 <span
-                  key={idx}
+                  key={tag}
                   className="px-2 py-1 text-xs bg-teal-700 text-white rounded-full"
                 >
                   {tag}

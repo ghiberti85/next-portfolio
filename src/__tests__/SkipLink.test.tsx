@@ -7,9 +7,9 @@ describe("SkipLink", () => {
     expect(screen.getByText("Skip to main content")).toBeInTheDocument();
   });
 
-  it("points to the hero section", () => {
+  it("points to the main content landmark", () => {
     render(<SkipLink />);
     const link = screen.getByText("Skip to main content");
-    expect(link).toHaveAttribute("href", "#hero");
+    expect(link).toHaveAttribute("href", "#main-content");
   });
 });

@@ -9,9 +9,16 @@ describe("Error boundary page", () => {
     expect(screen.getByRole("heading", { name: /something went wrong/i })).toBeInTheDocument();
   });
 
-  it("displays the error message", () => {
+  it("displays a safe generic message (not raw error content)", () => {
     render(<ErrorPage error={makeError("Oops!")} reset={jest.fn()} />);
-    expect(screen.getByText("Oops!")).toBeInTheDocument();
+    expect(screen.getByText(/an unexpected error occurred/i)).toBeInTheDocument();
+    expect(screen.queryByText("Oops!")).not.toBeInTheDocument();
+  });
+
+  it("displays the error digest when available", () => {
+    const error = Object.assign(new globalThis.Error("test"), { digest: "abc-123" });
+    render(<ErrorPage error={error} reset={jest.fn()} />);
+    expect(screen.getByText(/error id.*abc-123/i)).toBeInTheDocument();
   });
 
   it("calls reset when Try again button is clicked", () => {

@@ -5,7 +5,7 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faGraduationCap, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
-import t, { TimelineItemData as TimelineItem } from "@/lib/translations";
+import t, { type TimelineItemData as TimelineItem } from "@/lib/translations";
 
 function TimelineCard({
   item,
@@ -24,6 +24,10 @@ function TimelineCard({
       onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1.03)"; }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1)"; }}
       onClick={() => onOpen(item)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(item); } }}
+      aria-label={`View details for ${item.title}`}
     >
       <div className="flex items-center mb-3">
         <div className={`w-9 h-9 rounded-full mr-3 flex-shrink-0 flex items-center justify-center ${isProfessional ? "bg-teal-400" : "bg-blue-500"} text-white`}>
@@ -108,8 +112,8 @@ export default function Timeline() {
           />
         </div>
 
-        {timelineItems.map((item, index) => (
-          <div key={index} className="relative mb-8 flex items-start gap-4">
+        {timelineItems.map((item) => (
+          <div key={item.title} className="relative mb-8 flex items-start gap-4">
             {/* Dot on the left rail */}
             <div className="absolute -left-6 top-1/2 -translate-y-1/2 z-10">
               <Dot type={item.type} />

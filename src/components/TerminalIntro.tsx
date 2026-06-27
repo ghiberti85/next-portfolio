@@ -32,11 +32,12 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
 
   useEffect(() => {
     if (currentLine >= tr.lines.length) {
-      const t = setTimeout(onDone, 300);
-      return () => clearTimeout(t);
+      const timerId = setTimeout(onDone, 300);
+      return () => clearTimeout(timerId);
     }
 
     const line = tr.lines[currentLine];
+    if (!line) return;
 
     if (phase === "cmd") {
       if (cmdChars < line.cmd.length) {
@@ -69,7 +70,7 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [lines, cmdChars, outChars]);
 
-  const activeLine = currentLine < tr.lines.length ? tr.lines[currentLine] : null;
+  const activeLine = currentLine < tr.lines.length ? (tr.lines[currentLine] ?? null) : null;
 
   return (
     <div

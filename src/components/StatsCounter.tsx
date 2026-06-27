@@ -31,7 +31,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setActive(true); },
+      ([entry]) => { if (entry?.isIntersecting) setActive(true); },
       { threshold: 0.5 }
     );
     if (ref.current) observer.observe(ref.current);

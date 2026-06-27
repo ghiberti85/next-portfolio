@@ -71,7 +71,7 @@ export default function AskFernando() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: newMessages.filter((m) => m.role !== "assistant" || newMessages.indexOf(m) > 0),
+          messages: newMessages.slice(1), // skip the initial assistant greeting
           lang,
         }),
         signal: controller.signal,
@@ -97,6 +97,8 @@ export default function AskFernando() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label="Ask Fernando AI"
+        aria-expanded={open}
+        aria-controls="ask-fernando-dialog"
         className="fixed bottom-8 left-8 z-50 flex items-center gap-2 px-4 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-105"
         style={{ background: "var(--gradient-accent)" }}
       >
@@ -107,6 +109,7 @@ export default function AskFernando() {
       {/* Chat modal */}
       {open && (
         <div
+          id="ask-fernando-dialog"
           className="fixed bottom-24 left-4 sm:left-8 z-50 w-[calc(100vw-2rem)] sm:w-96 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           style={{
             backgroundColor: isLight ? "rgba(248,250,252,0.98)" : "rgba(15,23,42,0.95)",
@@ -134,9 +137,14 @@ export default function AskFernando() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" style={{ minHeight: 0 }}>
+          <div
+            className="flex-1 overflow-y-auto px-4 py-3 space-y-3"
+            style={{ minHeight: 0 }}
+            aria-live="polite"
+            aria-atomic="false"
+          >
             {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div key={`${msg.role}-${i}`} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
                   className={`max-w-[80%] px-3 py-2 rounded-xl text-sm leading-relaxed ${
                     msg.role === "user" ? "text-white rounded-br-none" : "rounded-bl-none"
@@ -144,7 +152,7 @@ export default function AskFernando() {
                   style={{
                     background:
                       msg.role === "user"
-                        ? "linear-gradient(135deg, #14b8a6, #3b82f6)"
+                        ? "var(--gradient-accent)"
                         : isLight ? "rgba(15,23,42,0.08)" : "rgba(255,255,255,0.1)",
                     color: msg.role === "user" ? "#fff" : isLight ? "#1e293b" : "#e5e7eb",
                   }}
@@ -154,7 +162,7 @@ export default function AskFernando() {
               </div>
             ))}
             {loading && (
-              <div className="flex justify-start">
+              <div className="flex justify-start" role="status" aria-label={tr.thinking}>
                 <div
                   className="px-3 py-2 rounded-xl rounded-bl-none text-sm"
                   style={{

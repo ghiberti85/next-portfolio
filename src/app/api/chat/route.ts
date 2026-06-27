@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
 
 // Module-scope singleton — reused across warm serverless instances
@@ -14,6 +14,12 @@ const RATE_WINDOW = 60_000;   // per minute
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+
+  // Evict expired entries to prevent unbounded memory growth
+  for (const [key, val] of rateMap) {
+    if (now > val.reset) rateMap.delete(key);
+  }
+
   const entry = rateMap.get(ip);
   if (!entry || now > entry.reset) {
     rateMap.set(ip, { count: 1, reset: now + RATE_WINDOW });
@@ -64,9 +70,12 @@ function corsHeaders(req: NextRequest) {
   const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
   const allowed = [siteUrl, vercelUrl].filter(Boolean) as string[];
 
-  // If no expected origin is configured (local dev) or origin matches, allow it
+  // In production, require a configured origin. In development, allow all.
+  const isProduction = process.env.NODE_ENV === "production";
   const allowOrigin =
-    !origin || allowed.length === 0 || allowed.includes(origin) ? (origin ?? "*") : null;
+    !origin || (!isProduction && allowed.length === 0) || allowed.includes(origin)
+      ? (origin ?? "*")
+      : null;
 
   return allowOrigin
     ? { "Access-Control-Allow-Origin": allowOrigin, "Access-Control-Allow-Methods": "POST, OPTIONS" }
@@ -89,14 +98,24 @@ export async function POST(req: NextRequest) {
   }
 
   // Rate limiting
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   if (isRateLimited(ip)) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 
+  let body: unknown;
   try {
-    const body = await req.json();
-    const { messages, lang } = body;
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  try {
+    if (typeof body !== "object" || body === null) {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    }
+    const raw = body as Record<string, unknown>;
+    const { messages, lang } = raw;
 
     // Validate messages array
     if (!Array.isArray(messages) || messages.length === 0) {
@@ -105,16 +124,17 @@ export async function POST(req: NextRequest) {
 
     // Validate each message: role and content
     for (const msg of messages) {
-      if (!ALLOWED_ROLES.has(msg.role)) {
+      const m = msg as Record<string, unknown>;
+      if (typeof m.role !== "string" || !ALLOWED_ROLES.has(m.role)) {
         return NextResponse.json({ error: "Invalid message role" }, { status: 400 });
       }
-      if (typeof msg.content !== "string" || msg.content.length > MAX_MSG_LENGTH) {
+      if (typeof m.content !== "string" || m.content.length > MAX_MSG_LENGTH) {
         return NextResponse.json({ error: "Invalid message content" }, { status: 400 });
       }
     }
 
     // Validate lang — default to "en" if invalid/missing
-    const safeLang = ALLOWED_LANGS.has(lang) ? lang : "en";
+    const safeLang = typeof lang === "string" && ALLOWED_LANGS.has(lang) ? lang : "en";
 
     const langInstruction =
       safeLang === "pt"
@@ -133,7 +153,7 @@ export async function POST(req: NextRequest) {
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: "system", content: SYSTEM_PROMPT + langInstruction },
-        ...messages.slice(-MAX_MESSAGES),
+        ...(messages as { role: "user" | "assistant"; content: string }[]).slice(-MAX_MESSAGES),
       ],
       max_tokens: 512,
       temperature: 0.7,
