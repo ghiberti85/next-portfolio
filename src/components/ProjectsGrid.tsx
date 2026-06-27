@@ -1,151 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import t from "@/lib/translations";
-
-interface Project {
-  title: string;
-  image: string;
-  github: string;
-  live: string;
-  tags: string[];
-}
-
-// Define projects with deterministic tags
-const projects: Project[] = [
-  {
-    title: "AI Code Reviewer",
-    image: "https://raw.githubusercontent.com/ghiberti85/ai-code-reviewer/main/public/screenshot.png",
-    github: "https://github.com/ghiberti85/ai-code-reviewer",
-    live: "https://ghiberti-code-reviewer.vercel.app",
-    tags: ["React", "TypeScript", "Vite", "Groq", "Framer Motion"],
-  },
-  {
-    title: "Philosophia",
-    image: "https://raw.githubusercontent.com/ghiberti85/philosophia/main/public/screenshot.png",
-    github: "https://github.com/ghiberti85/philosophia",
-    live: "https://philosophia-neon.vercel.app",
-    tags: ["Next.js", "TypeScript", "React", "Tailwind CSS", "PWA", "i18n", "Vitest", "DALL-E"],
-  },
-  {
-    title: "DevInterviewLab",
-    image: "https://raw.githubusercontent.com/ghiberti85/devinterviewlab/main/public/og-image.png",
-    github: "https://github.com/ghiberti85/devinterviewlab",
-    live: "https://devinterviewlab.vercel.app",
-    tags: ["Next.js", "TypeScript", "Supabase", "Groq", "PWA", "Radix UI"],
-  },
-  {
-    title: "Interview Command Center",
-    image: "https://raw.githubusercontent.com/ghiberti85/interview-command-center/main/public/screenshot.png",
-    github: "https://github.com/ghiberti85/interview-command-center",
-    live: "https://ghiberti-interview-center.vercel.app",
-    tags: ["React", "TypeScript", "Vite", "Supabase", "Claude AI", "PWA"],
-  },
-  {
-    title: "Ghiberti UI",
-    image: "https://raw.githubusercontent.com/ghiberti85/ui/main/apps/docs/public/screenshot.png",
-    github: "https://github.com/ghiberti85/ui",
-    live: "https://ghiberti-ui.vercel.app",
-    tags: ["React", "TypeScript", "Next.js", "Storybook", "Turborepo", "Radix UI"],
-  },
-  {
-    title: "Finanças do Casal",
-    image: "https://raw.githubusercontent.com/ghiberti85/financa-casal/main/public/screenshot.png",
-    github: "https://github.com/ghiberti85/financa-casal",
-    live: "https://financa-casal.vercel.app",
-    tags: ["React", "TypeScript", "Vite", "Supabase", "Claude AI", "PWA"],
-  },
-  {
-    title: "Ignite Call",
-    image: "https://github.com/ghiberti85/ignite-call/raw/main/public/registration-1.png",
-    github: "https://github.com/ghiberti85/ignite-call",
-    live: "https://ignitecall-ghiberti85.vercel.app/",
-    tags: ["Next.js", "React", "TypeScript"],
-  },
-  {
-    title: "Design System",
-    image: "https://github.com/ghiberti85/ignite-design-system/blob/main/design-system.png?raw=true",
-    github: "https://github.com/ghiberti85/ignite-design-system",
-    live: "https://ghiberti85.github.io/ignite-design-system/",
-    tags: ["React", "TypeScript"],
-  },
-  {
-    title: "upload.ai",
-    image: "https://github.com/ghiberti85/nlw-ai/raw/main/upload-ai-web/public/screenshot.png",
-    github: "https://github.com/ghiberti85/nlw-ai",
-    live: "",
-    tags: ["React", "TypeScript", "Vite", "Vercel"],
-  },
-  {
-    title: "Coffee Delivery",
-    image: "https://github.com/ghiberti85/ignite-coffee-delivery/blob/main/coffee-delivery.png?raw=true",
-    github: "https://github.com/ghiberti85/ignite-coffee-delivery",
-    live: "",
-    tags: ["React", "TypeScript", "Vite"],
-  },
-  {
-    title: "ToDo",
-    image: "https://github.com/ghiberti85/ignite-todo-list/blob/main/to-do.png?raw=true",
-    github: "https://github.com/ghiberti85/ignite-todo-list",
-    live: "",
-    tags: ["TypeScript", "React", "Vite"],
-  },
-  {
-    title: "Pizza Shop",
-    image: "https://github.com/ghiberti85/ignite-pizza-shop-web/raw/main/public/image-3.png",
-    github: "https://github.com/ghiberti85/ignite-pizza-shop-web",
-    live: "",
-    tags: ["React", "TypeScript", "Vite"],
-  },
-  {
-    title: "Be The Hero",
-    image: "https://github.com/ghiberti85/omnistack/blob/master/be-the-hero.png?raw=true",
-    github: "https://github.com/ghiberti85/omnistack",
-    live: "",
-    tags: ["React", "Node.js", "React Native"],
-  },
-  {
-    title: "Feedget",
-    image: "https://github.com/ghiberti85/nlw-return-impulse/raw/main/Capa.png",
-    github: "https://github.com/ghiberti85/nlw-return-impulse",
-    live: "",
-    tags: ["React", "React Native", "Node.js"],
-  },
-  {
-    title: "Happy",
-    image: "https://github.com/ghiberti85/nlw3/blob/master/happy.png?raw=true",
-    github: "https://github.com/ghiberti85/nlw3/blob/master/web/src/images/happy.png",
-    live: "",
-    tags: ["Node.js", "Express", "React"],
-  },
-  {
-    title: "move.it",
-    image: "https://placehold.co/300x200?text=move.it",
-    github: "https://github.com/ghiberti85/moveit-next",
-    live: "",
-    tags: ["Next.js", "TypeScript", "React"],
-  },
-  {
-    title: "Ecoleta",
-    image: "https://github.com/ghiberti85/nlw/raw/master/public/assets/Home.svg",
-    github: "https://github.com/ghiberti85/nlw",
-    live: "",
-    tags: ["JavaScript", "Node.js", "React"],
-  },
-  {
-    title: "NLW Esports",
-    image: "https://github.com/ghiberti85/nlw-esports/blob/main/nlw-esports.png?raw=true",
-    github: "https://github.com/ghiberti85/nlw-esports",
-    live: "",
-    tags: ["React", "Node.js", "React Native"],
-  },
-];
-
+import { projects } from "@/lib/projects";
+import type { Project } from "@/lib/projects";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 export default function ProjectsGrid() {
   const { lang } = useLanguage();
@@ -154,13 +19,8 @@ export default function ProjectsGrid() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedProject(null);
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  useEscapeKey(selectedProject !== null, () => setSelectedProject(null));
+  const dialogRef = useFocusTrap(selectedProject !== null);
 
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const prefersReducedMotion = useRef(false);
@@ -186,28 +46,12 @@ export default function ProjectsGrid() {
     card.style.transition = "transform 0.4s ease-out";
   };
 
-  // Extract unique tags dynamically
-  const uniqueTags = Array.from(new Set(projects.flatMap((project) => project.tags)));
-
-  const handleShowMore = () => {
-    setVisibleProjects((prev) => (prev === 6 ? projects.length : 6));
-  };
-
-  const descriptions = t[lang].projectDescriptions;
-
-  const handleOpenModal = (project: Project) => {
-    setSelectedProject(project);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProject(null);
-  };
-
-  const filteredProjects = activeTag
-    ? projects.filter((project) => project.tags.includes(activeTag))
-    : projects;
-
+  const uniqueTags = Array.from(new Set(projects.flatMap((p) => p.tags)));
   const isAllProjects = !activeTag;
+  const descriptions = t[lang].projectDescriptions;
+  const filteredProjects = activeTag
+    ? projects.filter((p) => p.tags.includes(activeTag))
+    : projects;
 
   return (
     <section id="projects" className="py-12 lg:py-20 px-4">
@@ -215,9 +59,8 @@ export default function ProjectsGrid() {
         {tr.title}
       </h2>
 
-      {/* Filter Tags — horizontal scroll on mobile, centered wrap on sm+ */}
+      {/* Filter Tags */}
       <div className="relative mb-8 -mx-4 sm:mx-0">
-        {/* fade edges on mobile */}
         <div className="pointer-events-none absolute left-0 top-0 h-full w-14 z-10 sm:hidden"
           style={{ background: "linear-gradient(to right, var(--bg-from) 30%, transparent)" }} />
         <div className="pointer-events-none absolute right-0 top-0 h-full w-14 z-10 sm:hidden"
@@ -226,14 +69,9 @@ export default function ProjectsGrid() {
         <div className="flex sm:flex-wrap sm:justify-center gap-3 overflow-x-auto sm:overflow-x-visible px-2 sm:px-0 pb-1 sm:pb-0"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           <button
-            onClick={() => {
-              setActiveTag(null);
-              setVisibleProjects(6);
-            }}
+            onClick={() => { setActiveTag(null); setVisibleProjects(6); }}
             className={`flex-shrink-0 px-5 py-1 rounded-full text-sm font-semibold transition ${
-              isAllProjects
-                ? "bg-teal-700 text-white"
-                : "hover:bg-teal-700 hover:text-white"
+              isAllProjects ? "bg-teal-700 text-white" : "hover:bg-teal-700 hover:text-white"
             }`}
             style={!isAllProjects ? { background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--color-text)" } : {}}
           >
@@ -242,14 +80,9 @@ export default function ProjectsGrid() {
           {uniqueTags.map((tag) => (
             <button
               key={tag}
-              onClick={() => {
-                setActiveTag(tag);
-                setVisibleProjects(filteredProjects.length);
-              }}
+              onClick={() => { setActiveTag(tag); setVisibleProjects(filteredProjects.length); }}
               className={`flex-shrink-0 px-5 py-1 rounded-full text-sm font-semibold transition ${
-                activeTag === tag
-                  ? "bg-teal-700 text-white"
-                  : "hover:bg-teal-700 hover:text-white"
+                activeTag === tag ? "bg-teal-700 text-white" : "hover:bg-teal-700 hover:text-white"
               }`}
               style={activeTag !== tag ? { background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--color-text)" } : {}}
             >
@@ -265,22 +98,20 @@ export default function ProjectsGrid() {
           <div
             key={project.title}
             ref={(el) => { cardRefs.current[index] = el; }}
+            data-testid="project-card"
             className="group rounded-lg shadow-lg relative cursor-pointer glass-card"
             style={{ transform: "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)", transition: "transform 0.4s ease-out" }}
             onMouseMove={(e) => handleTiltMove(e, index)}
             onMouseLeave={() => handleTiltLeave(index)}
-            onClick={() => handleOpenModal(project)}
+            onClick={() => setSelectedProject(project)}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleOpenModal(project); } }}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedProject(project); } }}
             aria-label={`View details for ${project.title}`}
           >
             <div className="absolute top-4 left-4 flex flex-wrap gap-2">
               {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-1 text-xs bg-teal-700 text-white rounded-full"
-                >
+                <span key={tag} className="px-2 py-1 text-xs bg-teal-700 text-white rounded-full">
                   {tag}
                 </span>
               ))}
@@ -297,13 +128,8 @@ export default function ProjectsGrid() {
               />
             </div>
             <div className="p-4">
-              <h3 className="text-xl font-semibold text-gray-300">
-                {project.title}
-              </h3>
-              <p
-                className="text-sm text-gray-400 mt-2 cursor-pointer hover:text-teal-400 transition"
-                onClick={() => handleOpenModal(project)}
-              >
+              <h3 className="text-xl font-semibold text-gray-300">{project.title}</h3>
+              <p className="text-sm text-gray-400 mt-2 hover:text-teal-400 transition">
                 {tr.viewMore}
               </p>
             </div>
@@ -314,7 +140,7 @@ export default function ProjectsGrid() {
       {isAllProjects && (
         <div className="text-center mt-8">
           <button
-            onClick={handleShowMore}
+            onClick={() => setVisibleProjects((prev) => (prev === 6 ? projects.length : 6))}
             className="px-6 py-3 rounded-lg bg-gradient-to-r from-teal-400 to-blue-500 text-white font-semibold hover:scale-105 transition-transform"
           >
             {visibleProjects === 6 ? tr.showMore : tr.showLess}
@@ -325,9 +151,10 @@ export default function ProjectsGrid() {
       {selectedProject && (
         <div
           className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75 px-4"
-          onClick={handleCloseModal}
+          onClick={() => setSelectedProject(null)}
         >
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="project-modal-title"
@@ -369,17 +196,13 @@ export default function ProjectsGrid() {
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-blue-500 transition flex items-center"
                 >
-                  <FontAwesomeIcon
-                    icon={faExternalLinkAlt}
-                    size="lg"
-                    className="mr-2"
-                  />
+                  <FontAwesomeIcon icon={faExternalLinkAlt} size="lg" className="mr-2" />
                   {tr.liveSite}
                 </a>
               )}
             </div>
             <button
-              onClick={handleCloseModal}
+              onClick={() => setSelectedProject(null)}
               aria-label="Close"
               className="absolute top-4 right-4 py-1 px-2.5 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition transform hover:scale-110 shadow-lg"
             >

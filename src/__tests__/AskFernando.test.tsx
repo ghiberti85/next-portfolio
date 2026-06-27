@@ -40,7 +40,7 @@ describe("AskFernando", () => {
   it("closes chat modal on Escape key", () => {
     renderWithProviders(<AskFernando />);
     fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
-    fireEvent.keyDown(window, { key: "Escape" });
+    fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 

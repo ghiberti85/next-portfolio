@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import t from "@/lib/translations";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,13 +22,8 @@ export default function Navbar() {
     { name: tr.contact, href: "#contact" },
   ];
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMobileMenuOpen(false);
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
+  useEscapeKey(isMobileMenuOpen, closeMobileMenu);
 
   const handleScroll = (href: string) => {
     setIsMobileMenuOpen(false);

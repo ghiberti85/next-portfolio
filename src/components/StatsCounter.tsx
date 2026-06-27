@@ -39,7 +39,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
   }, []);
 
   return (
-    <div ref={ref} className="flex flex-col items-center gap-1 p-2 sm:p-4">
+    <div ref={ref} data-testid="stat-item" className="flex flex-col items-center gap-1 p-2 sm:p-4">
       <span
         className="text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text"
         style={{ backgroundImage: "var(--gradient-accent)" }}

@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faGraduationCap, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import t, { type TimelineItemData as TimelineItem } from "@/lib/translations";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 function TimelineCard({
   item,
@@ -79,13 +81,8 @@ export default function Timeline() {
   });
   const lineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25 });
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedItem(null);
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  useEscapeKey(selectedItem !== null, () => setSelectedItem(null));
+  const dialogRef = useFocusTrap(selectedItem !== null);
 
   const scroll = (dir: "left" | "right") => {
     scrollRef.current?.scrollBy({ left: dir === "right" ? 320 : -320, behavior: "smooth" });
@@ -225,6 +222,7 @@ export default function Timeline() {
           onClick={() => setSelectedItem(null)}
         >
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="timeline-modal-title"

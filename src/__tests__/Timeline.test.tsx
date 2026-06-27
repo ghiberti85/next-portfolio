@@ -37,8 +37,25 @@ describe("Timeline", () => {
 
   it("closes the modal when the close button is clicked", () => {
     renderWithProviders(<Timeline />);
-    fireEvent.click(screen.getAllByText(/Ver mais|View more/i)[0]);
+    fireEvent.click(screen.getAllByText(/Ver mais|View more/i)[0] as HTMLElement);
     fireEvent.click(screen.getByRole("button", { name: /close/i }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("closes the modal on Escape key", () => {
+    renderWithProviders(<Timeline />);
+    fireEvent.click(screen.getAllByText(/Ver mais|View more/i)[0] as HTMLElement);
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("timeline cards are keyboard activatable", () => {
+    renderWithProviders(<Timeline />);
+    const cards = screen.getAllByRole("button", { name: /view details for|ver detalhes/i });
+    if (cards.length > 0) {
+      fireEvent.keyDown(cards[0] as HTMLElement, { key: "Enter" });
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    }
   });
 });

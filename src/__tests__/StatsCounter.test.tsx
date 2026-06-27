@@ -26,9 +26,8 @@ describe("StatsCounter", () => {
   });
 
   it("renders multiple stat items", () => {
-    const { container } = renderWithProviders(<StatsCounter />);
-    // 4 stat items expected from translations
-    const statItems = container.querySelectorAll(".flex.flex-col.items-center");
+    renderWithProviders(<StatsCounter />);
+    const statItems = screen.getAllByTestId("stat-item");
     expect(statItems.length).toBeGreaterThanOrEqual(4);
   });
 });

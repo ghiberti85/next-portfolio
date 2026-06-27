@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots, faTimes, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import t from "@/lib/translations";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
 
 interface Message {
   role: "user" | "assistant";
@@ -45,13 +46,8 @@ export default function AskFernando() {
     }
   }, [open, messages]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && open) setOpen(false);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open]);
+  const closeChat = useCallback(() => setOpen(false), []);
+  useEscapeKey(open, closeChat);
 
   const sendMessage = async () => {
     const text = input.trim();

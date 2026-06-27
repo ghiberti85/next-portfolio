@@ -7,7 +7,15 @@ import MouseSpotlight from "@/components/MouseSpotlight";
 import CustomCursor from "@/components/CustomCursor";
 import SkipLink from "@/components/SkipLink";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
-const AskFernando = dynamic(() => import("@/components/AskFernando"));
+const AskFernando = dynamic(() => import("@/components/AskFernando"), {
+  loading: () => (
+    <div
+      aria-hidden="true"
+      className="fixed bottom-8 left-8 z-50 w-36 h-12 rounded-full animate-pulse"
+      style={{ background: "var(--card-bg)" }}
+    />
+  ),
+});
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 

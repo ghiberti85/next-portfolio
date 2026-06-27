@@ -13,6 +13,7 @@ export function middleware(request: NextRequest) {
     "img-src 'self' data: https://github.com https://raw.githubusercontent.com https://cdn.jsdelivr.net https://static.cdnlogo.com https://placehold.co https://via.placeholder.com",
     "connect-src 'self'",
     "frame-ancestors 'none'",
+    "report-uri /api/csp-report",
   ].join("; ");
 
   const requestHeaders = new Headers(request.headers);
