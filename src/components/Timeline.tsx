@@ -221,17 +221,21 @@ export default function Timeline() {
           onClick={() => setSelectedItem(null)}
         >
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="timeline-modal-title"
             className="relative p-5 sm:p-8 rounded-lg shadow-lg max-w-md w-full sm:max-w-lg mx-4 max-h-[85vh] overflow-y-auto"
             style={{ backgroundColor: "var(--nav-bg)", border: "1px solid var(--card-border)" }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setSelectedItem(null)}
+              aria-label="Close"
               className="absolute top-4 right-4 px-2.5 py-1 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition transform hover:scale-110 shadow-lg"
             >
               ✕
             </button>
-            <h3 className="text-xl md:text-2xl font-semibold mb-4" style={{ color: "var(--color-heading)" }}>
+            <h3 id="timeline-modal-title" className="text-xl md:text-2xl font-semibold mb-4" style={{ color: "var(--color-heading)" }}>
               {selectedItem.title}
             </h3>
             <p className="mb-4" style={{ color: "var(--color-text-muted)" }}>{selectedItem.period}</p>

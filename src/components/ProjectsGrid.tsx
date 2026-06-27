@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, CSSProperties } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
@@ -163,8 +163,6 @@ export default function ProjectsGrid() {
   }, []);
 
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const tiltStyles = useRef<CSSProperties[]>([]);
-  const [, forceUpdate] = useState(0);
   const prefersReducedMotion = useRef(false);
   useEffect(() => {
     prefersReducedMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -177,19 +175,15 @@ export default function ProjectsGrid() {
     const rect = card.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    tiltStyles.current[index] = {
-      transform: `perspective(600px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.03)`,
-      transition: "transform 0.1s ease-out",
-    };
-    forceUpdate((n) => n + 1);
+    card.style.transform = `perspective(600px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.03)`;
+    card.style.transition = "transform 0.1s ease-out";
   };
 
   const handleTiltLeave = (index: number) => {
-    tiltStyles.current[index] = {
-      transform: "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)",
-      transition: "transform 0.4s ease-out",
-    };
-    forceUpdate((n) => n + 1);
+    const card = cardRefs.current[index];
+    if (!card) return;
+    card.style.transform = "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)";
+    card.style.transition = "transform 0.4s ease-out";
   };
 
   // Extract unique tags dynamically
@@ -272,9 +266,7 @@ export default function ProjectsGrid() {
             key={index}
             ref={(el) => { cardRefs.current[index] = el; }}
             className="group rounded-lg shadow-lg relative cursor-pointer glass-card"
-            style={{
-              ...(tiltStyles.current[index] ?? { transform: "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)", transition: "transform 0.4s ease-out" }),
-            }}
+            style={{ transform: "perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)", transition: "transform 0.4s ease-out" }}
             onMouseMove={(e) => handleTiltMove(e, index)}
             onMouseLeave={() => handleTiltLeave(index)}
             onClick={() => handleOpenModal(project)}
@@ -332,6 +324,9 @@ export default function ProjectsGrid() {
           onClick={handleCloseModal}
         >
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-modal-title"
             className="relative p-6 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto glass-card"
             style={{ backgroundColor: "var(--nav-bg)" }}
             onClick={(e) => e.stopPropagation()}
@@ -347,7 +342,7 @@ export default function ProjectsGrid() {
                 className="object-cover object-top"
               />
             </div>
-            <h3 className="text-2xl font-semibold mb-4" style={{ color: "var(--color-heading)" }}>
+            <h3 id="project-modal-title" className="text-2xl font-semibold mb-4" style={{ color: "var(--color-heading)" }}>
               {selectedProject.title}
             </h3>
             <p className="mb-6" style={{ color: "var(--color-text-muted)" }}>
@@ -381,6 +376,7 @@ export default function ProjectsGrid() {
             </div>
             <button
               onClick={handleCloseModal}
+              aria-label="Close"
               className="absolute top-4 right-4 py-1 px-2.5 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition transform hover:scale-110 shadow-lg"
             >
               ✕

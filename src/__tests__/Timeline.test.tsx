@@ -31,13 +31,14 @@ describe("Timeline", () => {
   it("opens modal with details when a timeline item is clicked", () => {
     renderWithProviders(<Timeline />);
     fireEvent.click(screen.getAllByText(/Ver mais|View more/i)[0]);
-    expect(screen.getByRole("button", { name: /✕/ })).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /close/i })).toBeInTheDocument();
   });
 
   it("closes the modal when the close button is clicked", () => {
     renderWithProviders(<Timeline />);
     fireEvent.click(screen.getAllByText(/Ver mais|View more/i)[0]);
-    fireEvent.click(screen.getByRole("button", { name: /✕/ }));
-    expect(screen.queryByRole("button", { name: /✕/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /close/i }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

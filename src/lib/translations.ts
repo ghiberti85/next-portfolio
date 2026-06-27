@@ -206,6 +206,9 @@ const t = {
       placeholder: "Ask something…",
       title: "Ask Fernando AI",
       thinking: "Thinking…",
+      errorNetwork: "Sorry, something went wrong. Try again later.",
+      errorRateLimit: "Too many messages. Please wait a moment.",
+      errorServer: "Service temporarily unavailable. Try again shortly.",
     },
   },
 
@@ -406,6 +409,9 @@ const t = {
       placeholder: "Pergunte algo…",
       title: "Pergunte ao Fernando",
       thinking: "Pensando…",
+      errorNetwork: "Desculpe, algo deu errado. Tente novamente mais tarde.",
+      errorRateLimit: "Muitas mensagens. Por favor, aguarde um momento.",
+      errorServer: "Serviço temporariamente indisponível. Tente novamente em breve.",
     },
   },
 };

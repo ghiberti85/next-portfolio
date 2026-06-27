@@ -52,13 +52,14 @@ describe("ProjectsGrid", () => {
   it("opens a modal when a project card is clicked", () => {
     renderWithProviders(<ProjectsGrid />);
     fireEvent.click(screen.getAllByText(/ver mais|view more/i)[0]);
-    expect(screen.getByRole("button", { name: /✕/ })).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /close/i })).toBeInTheDocument();
   });
 
   it("closes the modal when the close button is clicked", () => {
     renderWithProviders(<ProjectsGrid />);
     fireEvent.click(screen.getAllByText(/ver mais|view more/i)[0]);
-    fireEvent.click(screen.getByRole("button", { name: /✕/ }));
-    expect(screen.queryByRole("button", { name: /✕/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /close/i }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
 
+// Module-scope singleton — reused across warm serverless instances
+let groqClient: Groq | null = null;
+
 // ── Rate limiting ─────────────────────────────────────────────────
 // In-memory sliding window — resets per serverless instance.
 // Acceptable for a low-traffic portfolio; upgrade to Upstash Redis
@@ -122,10 +125,11 @@ export async function POST(req: NextRequest) {
     if (!apiKey) {
       return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
     }
+    if (!groqClient) {
+      groqClient = new Groq({ apiKey });
+    }
 
-    const groq = new Groq({ apiKey });
-
-    const completion = await groq.chat.completions.create({
+    const completion = await groqClient.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: "system", content: SYSTEM_PROMPT + langInstruction },
@@ -137,7 +141,12 @@ export async function POST(req: NextRequest) {
 
     const reply = completion.choices[0]?.message?.content ?? "I couldn't generate a response.";
     return NextResponse.json({ reply }, { headers: cors });
-  } catch {
+  } catch (err) {
+    if (err instanceof Error && "status" in err) {
+      const status = (err as Error & { status: number }).status;
+      if (status === 429) return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+      if (status >= 500) return NextResponse.json({ error: "AI service error" }, { status: 502 });
+    }
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
