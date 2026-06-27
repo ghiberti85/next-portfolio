@@ -26,6 +26,11 @@ export default function AskFernando() {
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => { abortRef.current?.abort(); };
+  }, []);
 
   // Reset greeting when language changes
   useEffect(() => {
@@ -57,6 +62,10 @@ export default function AskFernando() {
     setInput("");
     setLoading(true);
 
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -65,11 +74,18 @@ export default function AskFernando() {
           messages: newMessages.filter((m) => m.role !== "assistant" || newMessages.indexOf(m) > 0),
           lang,
         }),
+        signal: controller.signal,
       });
+      if (!res.ok) {
+        const errorMsg = res.status === 429 ? tr.errorRateLimit : tr.errorServer;
+        setMessages([...newMessages, { role: "assistant", content: errorMsg }]);
+        return;
+      }
       const data = await res.json();
-      setMessages([...newMessages, { role: "assistant", content: data.reply ?? "Sorry, I couldn't respond right now." }]);
-    } catch {
-      setMessages([...newMessages, { role: "assistant", content: "Sorry, something went wrong. Try again later." }]);
+      setMessages([...newMessages, { role: "assistant", content: data.reply ?? tr.errorServer }]);
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
+      setMessages([...newMessages, { role: "assistant", content: tr.errorNetwork }]);
     } finally {
       setLoading(false);
     }
@@ -99,14 +115,15 @@ export default function AskFernando() {
             maxHeight: "min(70vh, calc(100dvh - 8rem))",
           }}
           role="dialog"
-          aria-label="Ask Fernando chat"
+          aria-modal="true"
+          aria-labelledby="ask-fernando-title"
         >
           {/* Header */}
           <div
             className="flex items-center justify-between px-4 py-3"
             style={{ background: "var(--gradient-accent)" }}
           >
-            <span className="font-semibold text-white text-sm">{tr.title}</span>
+            <span id="ask-fernando-title" className="font-semibold text-white text-sm">{tr.title}</span>
             <button
               onClick={() => setOpen(false)}
               aria-label="Close chat"

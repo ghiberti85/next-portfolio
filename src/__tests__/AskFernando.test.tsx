@@ -46,6 +46,7 @@ describe("AskFernando", () => {
 
   it("sends a message and displays AI reply", async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
       json: async () => ({ reply: "Fernando is a Senior Fullstack Developer." }),
     });
 
@@ -74,5 +75,41 @@ describe("AskFernando", () => {
     await waitFor(() => {
       expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
     });
+  });
+
+  it("shows rate limit error message on 429 response", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 429 });
+
+    renderWithProviders(<AskFernando />);
+    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+
+    const input = screen.getByPlaceholderText(/ask something|pergunte algo/i);
+    fireEvent.change(input, { target: { value: "test" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+
+    await waitFor(() => {
+      expect(screen.getByText(/too many messages/i)).toBeInTheDocument();
+    });
+  });
+
+  it("shows server error message on 500 response", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 500 });
+
+    renderWithProviders(<AskFernando />);
+    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+
+    const input = screen.getByPlaceholderText(/ask something|pergunte algo/i);
+    fireEvent.change(input, { target: { value: "test" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+
+    await waitFor(() => {
+      expect(screen.getByText(/temporarily unavailable/i)).toBeInTheDocument();
+    });
+  });
+
+  it("dialog has aria-modal attribute", () => {
+    renderWithProviders(<AskFernando />);
+    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+    expect(screen.getByRole("dialog")).toHaveAttribute("aria-modal", "true");
   });
 });
