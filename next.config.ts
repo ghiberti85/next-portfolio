@@ -1,7 +1,5 @@
 import type { NextConfig } from "next";
 
-const isDev = process.env.NODE_ENV === "development";
-
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -12,19 +10,7 @@ const securityHeaders = [
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
-  {
-    key: "Content-Security-Policy",
-    value: [
-      "default-src 'self'",
-      // unsafe-eval is only included in development (required by Next.js HMR)
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: https://github.com https://raw.githubusercontent.com https://cdn.jsdelivr.net https://static.cdnlogo.com https://placehold.co https://via.placeholder.com",
-      "connect-src 'self'",
-      "frame-ancestors 'none'",
-    ].join("; "),
-  },
+  // CSP is set dynamically per-request via src/middleware.ts (nonce-based, no unsafe-inline)
 ];
 
 const nextConfig: NextConfig = {
