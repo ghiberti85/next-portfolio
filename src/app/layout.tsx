@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import dynamic from "next/dynamic";
+import { headers } from "next/headers";
 import "./globals.css";
 import MouseSpotlight from "@/components/MouseSpotlight";
 import CustomCursor from "@/components/CustomCursor";
@@ -105,16 +106,19 @@ const jsonLd = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const nonce = (await headers()).get("x-nonce") ?? "";
+
   return (
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" type="image/x-icon" />
         <script
+          nonce={nonce}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
