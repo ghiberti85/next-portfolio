@@ -22,8 +22,8 @@ This portfolio gives recruiters and hiring managers a fast, clear view of Fernan
 | Icons | Font Awesome (React) | 6.x |
 | Carousel | React Slick | 0.30.x |
 | Animation | Typewriter Effect | 2.x |
-| Motion | Framer Motion | 11.x |
-| Charts | Recharts | 2.x |
+| Motion | Framer Motion | 12.x |
+| Charts | Recharts | 3.x |
 | AI | Groq SDK (LLaMA 3.3) | — |
 | Fonts | Geist (via `next/font`) | — |
 | Testing | Jest + React Testing Library | 30.x / 16.x |
@@ -86,6 +86,7 @@ src/
 │   ├── AnimatedSection.tsx     # Scroll-triggered Framer Motion wrapper
 │   ├── CustomCursor.tsx        # Custom animated cursor
 │   ├── MouseSpotlight.tsx      # Mouse-following radial spotlight overlay
+│   ├── ScrollProgressBar.tsx   # Fixed top reading-progress bar
 │   └── SkipLink.tsx            # Accessibility skip-to-content link
 ├── context/
 │   ├── LanguageContext.tsx     # EN / PT-BR language state (React Context)
@@ -135,6 +136,7 @@ npm run test:coverage
 |---|---|---|
 | `GROQ_API_KEY` | Yes | Groq API key used by `/api/chat` to power the AskFernando AI chat |
 | `NEXT_PUBLIC_SITE_URL` | No | Full URL of the deployed site (e.g. `https://ghiberti85.vercel.app`). Used to restrict CORS on `/api/chat`. Defaults to permissive when unset. |
+| `VERCEL_URL` | No | Injected automatically by Vercel. Used as fallback CORS origin when `NEXT_PUBLIC_SITE_URL` is not set. |
 
 Create a `.env.local` file at the root with the variables above for local AI chat support.
 

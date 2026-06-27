@@ -151,6 +151,7 @@ src/
 │   ├── AnimatedSection.tsx     # Scroll-triggered Framer Motion entrance animations
 │   ├── CustomCursor.tsx        # Custom animated cursor (pointer devices only)
 │   ├── MouseSpotlight.tsx      # Mouse-following radial spotlight overlay
+│   ├── ScrollProgressBar.tsx   # Fixed top reading-progress bar
 │   └── SkipLink.tsx            # Accessibility skip-to-content link
 ├── context/
 │   ├── LanguageContext.tsx     # EN / PT-BR language state (React Context)
@@ -216,8 +217,8 @@ Minimum test coverage per API route:
 | Icons | Font Awesome React | 6.x |
 | Carousel | React Slick | 0.30.x |
 | Animation | Typewriter Effect | 2.x |
-| Motion | Framer Motion | 11.x |
-| Charts | Recharts | 2.x |
+| Motion | Framer Motion | 12.x |
+| Charts | Recharts | 3.x |
 | AI | Groq SDK (LLaMA 3.3-70b) | — |
 | Testing | Jest + React Testing Library | 30.x / 16.x |
 | CI/CD | GitHub Actions + Vercel | — |

@@ -5,7 +5,6 @@ export interface TimelineItemData {
   period: string;
   type: "professional" | "education";
   institution: string;
-  location: string;
   details: string[];
 }
 
@@ -59,10 +58,7 @@ const t = {
       showMore: "Show More",
       showLess: "Show Less",
       viewMore: "View more",
-      viewCode: "View Code",
-      liveDemo: "Live Demo",
       liveSite: "Live Site",
-      close: "Close",
     },
     projectDescriptions: [
       "AI-powered code review tool that analyzes your code in real time, returning a quality score (0–100), a categorized issues list with concrete fixes, and a complete refactored version. Built for developers who want fast, actionable feedback without leaving the browser.",
@@ -87,14 +83,12 @@ const t = {
     timeline: {
       title: "Experience & Education",
       viewMore: "View more",
-      close: "Close",
       items: [
         {
           title: "Senior Software Engineer | Tech Lead",
           period: "2022 – Present",
           type: "professional" as const,
           institution: "+A Educação",
-          location: "São Paulo, Brazil (Remote)",
           details: [
             "Reduced loading time by 38% across institutional websites through a complete front-end rebuild using Next.js (SSR), Tailwind CSS, and lazy loading strategies.",
             "Created a reusable Design System in React + Tailwind documented in Storybook, accelerating screen delivery by 50% and ensuring UI consistency.",
@@ -108,7 +102,6 @@ const t = {
           period: "2025",
           type: "education" as const,
           institution: "Universidade Estadual de Campinas – UNICAMP",
-          location: "Campinas, Brazil",
           details: [
             "Object-Oriented Analysis and Design: expertise in designing robust software architectures using OO principles.",
             "Software Validation and Verification: testing methodologies to ensure software quality and reliability.",
@@ -121,7 +114,6 @@ const t = {
           period: "2020 – 2022",
           type: "professional" as const,
           institution: "EBANX",
-          location: "Curitiba, Brazil (Hybrid)",
           details: [
             "Accelerated delivery of promotional landing pages by 32% through a modular front-end framework in React and Tailwind, supported by Docker and GitHub Actions pipelines.",
             "Reduced bugs by 45% and increased code reusability via a Storybook-based component library tailored for marketing variations.",
@@ -134,7 +126,6 @@ const t = {
           period: "2020",
           type: "education" as const,
           institution: "XP Educação",
-          location: "Belo Horizonte, Brazil",
           details: [
             "Full-Stack Web Development: mastered end-to-end application development, including front-end and back-end technologies.",
             "Front-End Proficiency: advanced skills in building responsive, user-friendly interfaces using modern frameworks.",
@@ -147,7 +138,6 @@ const t = {
           period: "2018 – Present",
           type: "professional" as const,
           institution: "Freelance & Personal Projects",
-          location: "Remote",
           details: [
             "Developed institutional and e-commerce websites with an average PageSpeed score of 93+ and up to 28% higher conversion rates using Next.js and Tailwind CSS.",
             "Engineered robust back-end systems with 99.9% uptime using Node.js, TypeScript, PostgreSQL, MongoDB, and GraphQL within Clean Architecture principles.",
@@ -160,7 +150,6 @@ const t = {
           period: "2017",
           type: "education" as const,
           institution: "Cambridge Assessment English Exams",
-          location: "London, United Kingdom",
           details: [
             "Advanced Reading Skills: comprehend complex texts and identify detailed information across various topics.",
             "Effective Writing Proficiency: crafting clear, coherent, and well-structured written communication.",
@@ -173,7 +162,6 @@ const t = {
           period: "2014",
           type: "education" as const,
           institution: "Instituto Mauá de Tecnologia",
-          location: "São Caetano do Sul, Brazil",
           details: [
             "Robotics and Automation: designing and implementing automated systems and robotic solutions for industrial applications.",
             "Control Systems: analyzing and optimizing control processes to enhance efficiency and system performance.",
@@ -270,10 +258,7 @@ const t = {
       showMore: "Ver Mais",
       showLess: "Ver Menos",
       viewMore: "Ver mais",
-      viewCode: "Ver Código",
-      liveDemo: "Demo ao Vivo",
       liveSite: "Site ao Vivo",
-      close: "Fechar",
     },
     projectDescriptions: [
       "Ferramenta de revisão de código com IA que analisa seu código em tempo real, retornando uma pontuação de qualidade (0–100), uma lista categorizada de problemas com correções concretas e uma versão completamente refatorada. Criada para desenvolvedores que querem feedback rápido e acionável sem sair do navegador.",
@@ -298,14 +283,12 @@ const t = {
     timeline: {
       title: "Experiência & Formação",
       viewMore: "Ver mais",
-      close: "Fechar",
       items: [
         {
           title: "Engenheiro de Software Sênior | Tech Lead",
           period: "2022 – Presente",
           type: "professional" as const,
           institution: "+A Educação",
-          location: "São Paulo, Brasil (Remoto)",
           details: [
             "Reduzi o tempo de carregamento em 38% nos sites institucionais com uma reconstrução completa do front-end usando Next.js (SSR), Tailwind CSS e lazy loading.",
             "Criei um Design System reutilizável em React + Tailwind documentado no Storybook, acelerando a entrega de telas em 50% e garantindo consistência visual.",
@@ -319,7 +302,6 @@ const t = {
           period: "2025",
           type: "education" as const,
           institution: "Universidade Estadual de Campinas – UNICAMP",
-          location: "Campinas, Brasil",
           details: [
             "Análise e Projeto Orientado a Objetos: expertise em arquiteturas de software robustas com princípios OO.",
             "Validação e Verificação de Software: metodologias de teste para garantir qualidade e confiabilidade.",
@@ -332,7 +314,6 @@ const t = {
           period: "2020 – 2022",
           type: "professional" as const,
           institution: "EBANX",
-          location: "Curitiba, Brasil (Híbrido)",
           details: [
             "Acelerei a entrega de landing pages promocionais em 32% com um framework front-end modular em React e Tailwind, apoiado por pipelines Docker e GitHub Actions.",
             "Reduzi bugs em 45% e aumentei a reutilização de código com biblioteca de componentes baseada em Storybook para variações de marketing.",
@@ -345,7 +326,6 @@ const t = {
           period: "2020",
           type: "education" as const,
           institution: "XP Educação",
-          location: "Belo Horizonte, Brasil",
           details: [
             "Desenvolvimento Web Full-Stack: domínio de desenvolvimento end-to-end, incluindo tecnologias de front-end e back-end.",
             "Proficiência em Front-End: habilidades avançadas para construir interfaces responsivas com frameworks modernos.",
@@ -358,7 +338,6 @@ const t = {
           period: "2018 – Presente",
           type: "professional" as const,
           institution: "Freelance & Projetos Pessoais",
-          location: "Remoto",
           details: [
             "Desenvolvi sites institucionais e e-commerces com PageSpeed médio de 93+ e até 28% a mais em conversão usando Next.js e Tailwind CSS.",
             "Construí sistemas back-end robustos com 99,9% de uptime usando Node.js, TypeScript, PostgreSQL, MongoDB e GraphQL com Arquitetura Limpa.",
@@ -371,7 +350,6 @@ const t = {
           period: "2017",
           type: "education" as const,
           institution: "Cambridge Assessment English Exams",
-          location: "Londres, Reino Unido",
           details: [
             "Leitura Avançada: capacidade de compreender textos complexos e identificar informações detalhadas.",
             "Escrita Eficaz: criação de comunicação escrita clara, coerente e bem estruturada para diferentes finalidades.",
@@ -384,7 +362,6 @@ const t = {
           period: "2014",
           type: "education" as const,
           institution: "Instituto Mauá de Tecnologia",
-          location: "São Caetano do Sul, Brasil",
           details: [
             "Robótica e Automação: projeto e implementação de sistemas automatizados e robóticos para aplicações industriais.",
             "Sistemas de Controle: análise e otimização de processos de controle para maior eficiência e desempenho.",
