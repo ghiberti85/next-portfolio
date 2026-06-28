@@ -29,7 +29,7 @@ export default function Hero() {
           <div className="rounded-full bg-gray-900 p-1">
             <Image
               src="https://github.com/ghiberti85.png"
-              alt="Profile Picture"
+              alt="Fernando Ghiberti"
               width={160}
               height={160}
               className="rounded-full"

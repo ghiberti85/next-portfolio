@@ -50,4 +50,22 @@ describe("LanguageContext", () => {
     expect(screen.getByTestId("lang")).toHaveTextContent("en");
     expect(localStorage.getItem("portfolio-lang")).toBe("en");
   });
+
+  it("sets document.documentElement.lang on mount", () => {
+    render(<LanguageProvider><LangDisplay /></LanguageProvider>);
+    expect(document.documentElement.lang).toBe("en");
+  });
+
+  it("updates document.documentElement.lang when language changes", async () => {
+    localStorage.setItem("portfolio-lang", "pt");
+    render(<LanguageProvider><LangDisplay /></LanguageProvider>);
+    await screen.findByText("pt");
+    expect(document.documentElement.lang).toBe("pt");
+  });
+
+  it("updates document.documentElement.lang when setLang is called", () => {
+    render(<LanguageProvider><LangDisplay /></LanguageProvider>);
+    act(() => { screen.getByRole("button", { name: "PT" }).click(); });
+    expect(document.documentElement.lang).toBe("pt");
+  });
 });
