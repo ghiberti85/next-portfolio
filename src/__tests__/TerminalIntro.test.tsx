@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import TerminalIntro from "@/components/TerminalIntro";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -24,10 +25,11 @@ describe("TerminalIntro", () => {
     expect(screen.getByText(/skip|pular/i)).toBeInTheDocument();
   });
 
-  it("calls onDone when skip button is clicked", () => {
+  it("calls onDone when skip button is clicked", async () => {
     const onDone = jest.fn();
+    const user = userEvent.setup();
     renderWithProviders(<TerminalIntro onDone={onDone} />);
-    fireEvent.click(screen.getByText(/skip|pular/i));
+    await user.click(screen.getByText(/skip|pular/i));
     expect(onDone).toHaveBeenCalled();
   });
 

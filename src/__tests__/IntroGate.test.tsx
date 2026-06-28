@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import IntroGate from "@/components/IntroGate";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -58,11 +59,12 @@ describe("IntroGate", () => {
   });
 
   it("shows page content and marks intro seen after completion", async () => {
+    const user = userEvent.setup();
     renderWithProviders(<IntroGate />);
     await waitFor(() => {
       expect(screen.getByText("Complete intro")).toBeInTheDocument();
     });
-    fireEvent.click(screen.getByText("Complete intro"));
+    await user.click(screen.getByText("Complete intro"));
     await waitFor(() => {
       expect(screen.getByText("Navbar")).toBeInTheDocument();
     });

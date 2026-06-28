@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -9,6 +10,16 @@ function renderWithProviders(ui: React.ReactElement) {
       <LanguageProvider>{ui}</LanguageProvider>
     </ThemeProvider>
   );
+}
+
+function makeSkillsEl(scrollY = 400) {
+  const el = document.createElement("div");
+  el.id = "skills";
+  Object.defineProperty(el, "offsetTop", { value: 100 });
+  Object.defineProperty(el, "offsetHeight", { value: 200 });
+  document.body.appendChild(el);
+  Object.defineProperty(window, "scrollY", { writable: true, configurable: true, value: scrollY });
+  return el;
 }
 
 describe("Footer", () => {
@@ -28,42 +39,21 @@ describe("Footer", () => {
   });
 
   it("shows back-to-top button when scrolled past the skills section", () => {
-    const skillsEl = document.createElement("div");
-    skillsEl.id = "skills";
-    Object.defineProperty(skillsEl, "offsetTop", { value: 100 });
-    Object.defineProperty(skillsEl, "offsetHeight", { value: 200 });
-    document.body.appendChild(skillsEl);
-
-    Object.defineProperty(window, "scrollY", { writable: true, configurable: true, value: 400 });
-
+    const el = makeSkillsEl();
     renderWithProviders(<Footer />);
-
-    act(() => {
-      fireEvent.scroll(window);
-    });
-
+    act(() => { fireEvent.scroll(window); });
     expect(screen.getByLabelText("Back to top")).toBeInTheDocument();
-    document.body.removeChild(skillsEl);
+    document.body.removeChild(el);
   });
 
-  it("calls window.scrollTo when back-to-top button is clicked", () => {
-    const skillsEl = document.createElement("div");
-    skillsEl.id = "skills";
-    Object.defineProperty(skillsEl, "offsetTop", { value: 100 });
-    Object.defineProperty(skillsEl, "offsetHeight", { value: 200 });
-    document.body.appendChild(skillsEl);
-
-    Object.defineProperty(window, "scrollY", { writable: true, configurable: true, value: 400 });
-
+  it("calls window.scrollTo when back-to-top button is clicked", async () => {
+    const el = makeSkillsEl();
+    const user = userEvent.setup();
     renderWithProviders(<Footer />);
-
-    act(() => {
-      fireEvent.scroll(window);
-    });
-
-    fireEvent.click(screen.getByLabelText("Back to top"));
+    act(() => { fireEvent.scroll(window); });
+    await user.click(screen.getByLabelText("Back to top"));
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
-    document.body.removeChild(skillsEl);
+    document.body.removeChild(el);
   });
 
   it("renders the current year in the copyright line", () => {
