@@ -1,11 +1,10 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import TerminalIntro from "@/components/TerminalIntro";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 
-function renderWithProviders(
-  ui: React.ReactElement
-) {
+function renderWithProviders(ui: React.ReactElement) {
   return render(
     <ThemeProvider>
       <LanguageProvider>{ui}</LanguageProvider>
@@ -16,9 +15,7 @@ function renderWithProviders(
 describe("TerminalIntro", () => {
   it("renders without crashing", () => {
     const onDone = jest.fn();
-    const { container } = renderWithProviders(
-      <TerminalIntro onDone={onDone} />
-    );
+    const { container } = renderWithProviders(<TerminalIntro onDone={onDone} />);
     expect(container.firstChild).toBeInTheDocument();
   });
 
@@ -28,10 +25,11 @@ describe("TerminalIntro", () => {
     expect(screen.getByText(/skip|pular/i)).toBeInTheDocument();
   });
 
-  it("calls onDone when skip button is clicked", () => {
+  it("calls onDone when skip button is clicked", async () => {
     const onDone = jest.fn();
+    const user = userEvent.setup();
     renderWithProviders(<TerminalIntro onDone={onDone} />);
-    fireEvent.click(screen.getByText(/skip|pular/i));
+    await user.click(screen.getByText(/skip|pular/i));
     expect(onDone).toHaveBeenCalled();
   });
 
@@ -51,5 +49,35 @@ describe("TerminalIntro", () => {
     );
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper.style.opacity).toBe("1");
+  });
+
+  it("eventually calls onDone after animation completes", () => {
+    jest.useFakeTimers();
+    const onDone = jest.fn();
+    renderWithProviders(<TerminalIntro onDone={onDone} />);
+
+    // Each act() flushes exactly one React state update + its useEffect,
+    // which registers the next timer. Advancing 30 ms per iteration covers
+    // cmd (22 ms), out (9 ms), and pause (180 ms / 6 iters) timers.
+    // 500 iterations >> the ~225 timers in the 4-line English animation.
+    for (let i = 0; i < 500 && onDone.mock.calls.length === 0; i++) {
+      act(() => { jest.advanceTimersByTime(30); });
+    }
+
+    expect(onDone).toHaveBeenCalled();
+    jest.useRealTimers();
+  });
+
+  it("shows the cursor character while typing", () => {
+    jest.useFakeTimers();
+    const onDone = jest.fn();
+    renderWithProviders(<TerminalIntro onDone={onDone} />);
+
+    act(() => {
+      jest.advanceTimersByTime(50);
+    });
+
+    expect(screen.getByText("▋")).toBeInTheDocument();
+    jest.useRealTimers();
   });
 });

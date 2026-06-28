@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 
 type Lang = "en" | "pt";
 
@@ -21,6 +21,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const stored = localStorage.getItem("portfolio-lang") as Lang | null;
     if (stored === "en" || stored === "pt") setLangState(stored);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   const setLang = (l: Lang) => {
     setLangState(l);

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, Variants } from "framer-motion";
-import { ReactNode } from "react";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import type { ReactNode } from "react";
 
 type SectionVariant = "fadeUp" | "stagger" | "launch" | "reveal" | "flip";
 

@@ -10,9 +10,10 @@ export function middleware(request: NextRequest) {
     `script-src 'self' 'nonce-${nonce}'${isDev ? " 'unsafe-eval'" : ""}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https://github.com https://raw.githubusercontent.com https://cdn.jsdelivr.net https://static.cdnlogo.com https://placehold.co https://via.placeholder.com",
+    "img-src 'self' data: https://github.com https://raw.githubusercontent.com https://cdn.jsdelivr.net https://static.cdnlogo.com",
     "connect-src 'self'",
     "frame-ancestors 'none'",
+    "report-uri /api/csp-report",
   ].join("; ");
 
   const requestHeaders = new Headers(request.headers);

@@ -10,6 +10,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
+    // console.error is stripped in production by removeConsole; use this for dev only
     console.error(error);
   }, [error]);
 
@@ -19,8 +20,13 @@ export default function Error({
         Something went wrong
       </h2>
       <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
-        {error.message || "An unexpected error occurred."}
+        An unexpected error occurred. Please try again.
       </p>
+      {error.digest && (
+        <p className="text-xs font-mono opacity-50" style={{ color: "var(--color-text-muted)" }}>
+          Error ID: {error.digest}
+        </p>
+      )}
       <button
         onClick={reset}
         className="px-6 py-2 rounded-lg text-white font-semibold hover:scale-105 transition-transform"

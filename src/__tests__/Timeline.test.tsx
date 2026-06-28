@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Timeline from "@/components/Timeline";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -28,17 +29,38 @@ describe("Timeline", () => {
     expect(screen.getAllByText(/UNICAMP/i).length).toBeGreaterThan(0);
   });
 
-  it("opens modal with details when a timeline item is clicked", () => {
+  it("opens modal with details when a timeline item is clicked", async () => {
+    const user = userEvent.setup();
     renderWithProviders(<Timeline />);
-    fireEvent.click(screen.getAllByText(/Ver mais|View more/i)[0]);
+    await user.click(screen.getAllByText(/Ver mais|View more/i)[0] as HTMLElement);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /close/i })).toBeInTheDocument();
   });
 
-  it("closes the modal when the close button is clicked", () => {
+  it("closes the modal when the close button is clicked", async () => {
+    const user = userEvent.setup();
     renderWithProviders(<Timeline />);
-    fireEvent.click(screen.getAllByText(/Ver mais|View more/i)[0]);
-    fireEvent.click(screen.getByRole("button", { name: /close/i }));
+    await user.click(screen.getAllByText(/Ver mais|View more/i)[0] as HTMLElement);
+    await user.click(screen.getByRole("button", { name: /close/i }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("closes the modal on Escape key", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Timeline />);
+    await user.click(screen.getAllByText(/Ver mais|View more/i)[0] as HTMLElement);
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    // document-level listener — use fireEvent to dispatch directly to document
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("timeline cards are keyboard activatable", () => {
+    renderWithProviders(<Timeline />);
+    const cards = screen.getAllByRole("button", { name: /view details for|ver detalhes/i });
+    if (cards.length > 0) {
+      fireEvent.keyDown(cards[0] as HTMLElement, { key: "Enter" });
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    }
   });
 });

@@ -57,7 +57,6 @@ export default function Image() {
             gap: 28,
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://github.com/ghiberti85.png"
             width={96}

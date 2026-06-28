@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import AskFernando from "@/components/AskFernando";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -23,24 +24,28 @@ describe("AskFernando", () => {
     expect(screen.getByRole("button", { name: /ask fernando/i })).toBeInTheDocument();
   });
 
-  it("opens chat modal on button click", () => {
+  it("opens chat modal on button click", async () => {
+    const user = userEvent.setup();
     renderWithProviders(<AskFernando />);
-    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+    await user.click(screen.getByRole("button", { name: /ask fernando/i }));
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByText(/assistente de ia do fernando|fernando's ai assistant/i)).toBeInTheDocument();
   });
 
-  it("closes chat modal on close button click", () => {
+  it("closes chat modal on close button click", async () => {
+    const user = userEvent.setup();
     renderWithProviders(<AskFernando />);
-    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
-    fireEvent.click(screen.getByRole("button", { name: /close chat/i }));
+    await user.click(screen.getByRole("button", { name: /ask fernando/i }));
+    await user.click(screen.getByRole("button", { name: /close chat/i }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("closes chat modal on Escape key", () => {
+  it("closes chat modal on Escape key", async () => {
+    const user = userEvent.setup();
     renderWithProviders(<AskFernando />);
-    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
-    fireEvent.keyDown(window, { key: "Escape" });
+    await user.click(screen.getByRole("button", { name: /ask fernando/i }));
+    // document-level listener — use fireEvent to dispatch directly to document
+    fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
@@ -50,12 +55,13 @@ describe("AskFernando", () => {
       json: async () => ({ reply: "Fernando is a Senior Fullstack Developer." }),
     });
 
+    const user = userEvent.setup();
     renderWithProviders(<AskFernando />);
-    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+    await user.click(screen.getByRole("button", { name: /ask fernando/i }));
 
     const input = screen.getByPlaceholderText(/ask something|pergunte algo/i);
-    fireEvent.change(input, { target: { value: "Who is Fernando?" } });
-    fireEvent.keyDown(input, { key: "Enter" });
+    await user.type(input, "Who is Fernando?");
+    await user.keyboard("{Enter}");
 
     await waitFor(() => {
       expect(screen.getByText("Fernando is a Senior Fullstack Developer.")).toBeInTheDocument();
@@ -65,12 +71,13 @@ describe("AskFernando", () => {
   it("shows error message on fetch failure", async () => {
     (global.fetch as jest.Mock).mockRejectedValueOnce(new Error("Network error"));
 
+    const user = userEvent.setup();
     renderWithProviders(<AskFernando />);
-    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+    await user.click(screen.getByRole("button", { name: /ask fernando/i }));
 
     const input = screen.getByPlaceholderText(/ask something|pergunte algo/i);
-    fireEvent.change(input, { target: { value: "test" } });
-    fireEvent.keyDown(input, { key: "Enter" });
+    await user.type(input, "test");
+    await user.keyboard("{Enter}");
 
     await waitFor(() => {
       expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
@@ -80,12 +87,13 @@ describe("AskFernando", () => {
   it("shows rate limit error message on 429 response", async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 429 });
 
+    const user = userEvent.setup();
     renderWithProviders(<AskFernando />);
-    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+    await user.click(screen.getByRole("button", { name: /ask fernando/i }));
 
     const input = screen.getByPlaceholderText(/ask something|pergunte algo/i);
-    fireEvent.change(input, { target: { value: "test" } });
-    fireEvent.keyDown(input, { key: "Enter" });
+    await user.type(input, "test");
+    await user.keyboard("{Enter}");
 
     await waitFor(() => {
       expect(screen.getByText(/too many messages/i)).toBeInTheDocument();
@@ -95,21 +103,23 @@ describe("AskFernando", () => {
   it("shows server error message on 500 response", async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: false, status: 500 });
 
+    const user = userEvent.setup();
     renderWithProviders(<AskFernando />);
-    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+    await user.click(screen.getByRole("button", { name: /ask fernando/i }));
 
     const input = screen.getByPlaceholderText(/ask something|pergunte algo/i);
-    fireEvent.change(input, { target: { value: "test" } });
-    fireEvent.keyDown(input, { key: "Enter" });
+    await user.type(input, "test");
+    await user.keyboard("{Enter}");
 
     await waitFor(() => {
       expect(screen.getByText(/temporarily unavailable/i)).toBeInTheDocument();
     });
   });
 
-  it("dialog has aria-modal attribute", () => {
+  it("dialog has aria-modal attribute", async () => {
+    const user = userEvent.setup();
     renderWithProviders(<AskFernando />);
-    fireEvent.click(screen.getByRole("button", { name: /ask fernando/i }));
+    await user.click(screen.getByRole("button", { name: /ask fernando/i }));
     expect(screen.getByRole("dialog")).toHaveAttribute("aria-modal", "true");
   });
 });

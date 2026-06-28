@@ -9,6 +9,7 @@ import Timeline from "@/components/Timeline";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import TerminalIntro from "@/components/TerminalIntro";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const SkillsSlider = dynamic(() => import("@/components/SkillsSlider"), { ssr: false });
 const AnimatedSection = dynamic(() => import("@/components/AnimatedSection"), { ssr: false });
@@ -31,8 +32,13 @@ export default function IntroGate() {
     sessionStorage.setItem("portfolio-intro-seen", "1");
     setExiting(true);
     setReady(true);
-    setTimeout(() => setShowIntro(false), 900);
   };
+
+  useEffect(() => {
+    if (!exiting) return;
+    const timerId = setTimeout(() => setShowIntro(false), 900);
+    return () => clearTimeout(timerId);
+  }, [exiting]);
 
   return (
     <>
@@ -44,11 +50,11 @@ export default function IntroGate() {
           }}
         >
           <Navbar />
-          <main>
+          <main id="main-content">
             <AnimatedSection variant="fadeUp"  delay={0}   ><Hero /></AnimatedSection>
-            <AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection>
-            <AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection>
-            <AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection>
+            <ErrorBoundary><AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection></ErrorBoundary>
+            <ErrorBoundary><AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection></ErrorBoundary>
+            <ErrorBoundary><AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection></ErrorBoundary>
             <AnimatedSection variant="flip"    delay={0.05}><Contact /></AnimatedSection>
           </main>
           <AnimatedSection variant="fadeUp"  delay={0.05}><Footer /></AnimatedSection>

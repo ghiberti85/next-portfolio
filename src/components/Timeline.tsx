@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faGraduationCap, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
-import t, { TimelineItemData as TimelineItem } from "@/lib/translations";
+import t, { type TimelineItemData as TimelineItem } from "@/lib/translations";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 function TimelineCard({
   item,
@@ -24,6 +26,10 @@ function TimelineCard({
       onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1.03)"; }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1)"; }}
       onClick={() => onOpen(item)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(item); } }}
+      aria-label={`View details for ${item.title}`}
     >
       <div className="flex items-center mb-3">
         <div className={`w-9 h-9 rounded-full mr-3 flex-shrink-0 flex items-center justify-center ${isProfessional ? "bg-teal-400" : "bg-blue-500"} text-white`}>
@@ -75,13 +81,8 @@ export default function Timeline() {
   });
   const lineProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25 });
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedItem(null);
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  useEscapeKey(selectedItem !== null, () => setSelectedItem(null));
+  const dialogRef = useFocusTrap(selectedItem !== null);
 
   const scroll = (dir: "left" | "right") => {
     scrollRef.current?.scrollBy({ left: dir === "right" ? 320 : -320, behavior: "smooth" });
@@ -108,8 +109,8 @@ export default function Timeline() {
           />
         </div>
 
-        {timelineItems.map((item, index) => (
-          <div key={index} className="relative mb-8 flex items-start gap-4">
+        {timelineItems.map((item) => (
+          <div key={item.title} className="relative mb-8 flex items-start gap-4">
             {/* Dot on the left rail */}
             <div className="absolute -left-6 top-1/2 -translate-y-1/2 z-10">
               <Dot type={item.type} />
@@ -221,6 +222,7 @@ export default function Timeline() {
           onClick={() => setSelectedItem(null)}
         >
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="timeline-modal-title"

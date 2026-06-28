@@ -17,8 +17,6 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      tabIndex={0}
-      style={{ outline: "none" }}
       className="min-h-screen flex flex-col lg:flex-row items-center justify-between px-4 pt-24 pb-12 lg:py-16 gap-8 lg:gap-16"
     >
       {/* Left Column */}
@@ -31,7 +29,7 @@ export default function Hero() {
           <div className="rounded-full bg-gray-900 p-1">
             <Image
               src="https://github.com/ghiberti85.png"
-              alt="Profile Picture"
+              alt="Fernando Ghiberti"
               width={160}
               height={160}
               className="rounded-full"

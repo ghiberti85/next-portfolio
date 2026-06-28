@@ -114,14 +114,17 @@ The CI pipeline (`ci.yml`) must be green before merging.
 Review the following on every PR:
 
 - [ ] No secrets, tokens, API keys, or credentials committed — use environment variables.
+- [ ] All env-var access goes through `src/lib/env.ts`. Server-only vars (GROQ_API_KEY, VERCEL_URL) must be accessed via exported functions — never as bare `process.env` in component or route files.
 - [ ] No new `dangerouslyAllowSVG` usages without a tight `contentSecurityPolicy`.
 - [ ] External URLs hardcoded in components must be trusted, static origins.
-- [ ] New `remotePatterns` in `next.config.ts` must be limited to the exact hostname needed.
+- [ ] New `remotePatterns` in `next.config.ts` must be limited to the exact hostname needed — no wildcard hostnames.
 - [ ] HTTP security headers in `next.config.ts` must not be weakened. `unsafe-eval` must NOT be added to production CSP.
 - [ ] No `eval()`, `dangerouslySetInnerHTML`, or unescaped user input.
 - [ ] Dependencies added via `npm install` must be audited with `npm audit`.
-- [ ] Any new API route must implement: rate limiting, input validation (type + length), and explicit CORS headers.
+- [ ] Any new API route must implement: rate limiting, input validation (type + length), and fail-closed CORS headers.
 - [ ] User-supplied values must never be interpolated raw into LLM prompts — validate against an allowlist first.
+- [ ] New GitHub Actions must be pinned to a full commit SHA (not a mutable tag like `@v4`). Use Dependabot to keep them updated.
+- [ ] See [`SECURITY.md`](./SECURITY.md) for the full threat model and current control inventory.
 
 ---
 
@@ -152,18 +155,29 @@ src/
 │   ├── CustomCursor.tsx        # Custom animated cursor (pointer devices only)
 │   ├── MouseSpotlight.tsx      # Mouse-following radial spotlight overlay
 │   ├── ScrollProgressBar.tsx   # Fixed top reading-progress bar
-│   └── SkipLink.tsx            # Accessibility skip-to-content link
+│   ├── SkipLink.tsx            # Accessibility skip-to-content link
+│   └── ErrorBoundary.tsx       # React class ErrorBoundary for per-section failure isolation
 ├── context/
-│   ├── LanguageContext.tsx     # EN / PT-BR language state (React Context)
+│   ├── LanguageContext.tsx     # EN / PT-BR language state (React Context + document.lang sync)
 │   └── ThemeContext.tsx        # Dark / light theme state (React Context)
+├── hooks/
+│   ├── useEscapeKey.ts         # Shared Escape-key listener (used by all modal components)
+│   └── useFocusTrap.ts         # WCAG 2.4.7 focus trap for modal dialogs (save + restore focus)
 └── lib/
+    ├── env.ts                  # Centralised env-var access — server vars as functions, public as constants
+    ├── projects.ts             # Project data array (extracted from ProjectsGrid)
     └── translations.ts         # All UI strings for EN and PT-BR
 
 src/__tests__/                  # One test file per component + api-chat.test.ts
 __mocks__/                      # Static file stubs for Jest
-.github/workflows/ci.yml        # CI: lint → test → build on every PR and push to main
+.github/
+├── workflows/ci.yml            # CI: lint → test → build on every PR and push to main (SHA-pinned)
+└── dependabot.yml              # Automated dependency update PRs (npm + GitHub Actions, weekly)
+SECURITY.md                     # Full security architecture documentation
 public/
-└── fernando-ghiberti-cv-en.pdf
+├── fernando-ghiberti-cv-en.pdf
+└── images/
+    └── move-it.svg             # Local placeholder (no third-party image services)
 ```
 
 ---
@@ -192,6 +206,9 @@ Light mode Tailwind class overrides (`.text-teal-400`, `.bg-teal-400`, `.from-te
 - Mock external dependencies (e.g. `typewriter-effect`, `next/image`, `next/font`) at the top of the test file.
 - Each describe block maps to one component. Group tests by feature within the block.
 - API route tests must be in a `.test.ts` (not `.tsx`) file with `@jest-environment node` at the top.
+- For keyboard events on `document` listeners (e.g. `useEscapeKey`), use `fireEvent.keyDown(document, ...)` — NOT `fireEvent.keyDown(window, ...)`. JSDOM does not propagate window events to document.
+- When testing components with fake timers that drive multiple React state transitions (e.g. TerminalIntro), use an iterative loop (`for (let i = 0; i < N; i++) { act(() => jest.advanceTimersByTime(delta)); }`) — a single `advanceTimersByTime` only flushes one React update cycle.
+- Hook tests go in `src/__tests__/hooks/<hookName>.test.ts`. New hooks in `src/hooks/` must have a test file.
 
 Minimum test coverage per component:
 - Renders without crashing

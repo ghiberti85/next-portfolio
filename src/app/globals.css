@@ -135,7 +135,8 @@ html {
 }
 
 /* ── Focus styles ───────────────────────────────────────────────── */
-*:focus {
+/* Remove focus ring for pointer interactions only; keyboard/AT always get :focus-visible */
+*:focus:not(:focus-visible) {
   outline: none;
 }
 
