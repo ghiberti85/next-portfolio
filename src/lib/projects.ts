@@ -114,7 +114,7 @@ export const projects: Project[] = [
   },
   {
     title: "move.it",
-    image: "https://placehold.co/300x200?text=move.it",
+    image: "/images/move-it.svg",
     github: "https://github.com/ghiberti85/moveit-next",
     live: "",
     tags: ["Next.js", "TypeScript", "React"],

@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
+import { groqApiKey, vercelUrl as getVercelUrl, SITE_URL } from "@/lib/env";
 
 // Module-scope singleton — reused across warm serverless instances
 let groqClient: Groq | null = null;
@@ -66,9 +67,8 @@ Answer factual questions about Fernando. If asked something you don't know about
 // ── CORS helper ───────────────────────────────────────────────────
 function corsHeaders(req: NextRequest) {
   const origin = req.headers.get("origin");
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
-  const allowed = [siteUrl, vercelUrl].filter(Boolean) as string[];
+  const vercelOrigin = getVercelUrl() ? `https://${getVercelUrl()}` : null;
+  const allowed = [SITE_URL || null, vercelOrigin].filter(Boolean) as string[];
 
   // In production, require a configured origin. In development, allow all.
   const isProduction = process.env.NODE_ENV === "production";
@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
         ? "\n\nIMPORTANT: The user has the site in Portuguese. Always respond in Brazilian Portuguese."
         : "\n\nIMPORTANT: The user has the site in English. Always respond in English.";
 
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = groqApiKey();
     if (!apiKey) {
       return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
     }
