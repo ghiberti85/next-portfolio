@@ -42,12 +42,12 @@ npm test
 
 **Rules:**
 - Every new component or feature must ship with tests in `src/__tests__/<ComponentName>.test.tsx`.
-- API route changes must be covered in `src/__tests__/api-chat.test.ts`.
+- Every new API route must have a corresponding test file in `src/__tests__/api-<name>.test.ts`.
 - Every bug fix must include a regression test.
 - When a component is removed, delete its test file too.
 - Coverage threshold is **70% lines** (enforced by Jest). Do not lower it.
 - Tests must pass locally before pushing.
-- API route tests use `@jest-environment node` at the top of the file (browser APIs guarded by `typeof window !== "undefined"` in `jest.setup.ts`).
+- API route tests use a JSDoc block `/** @jest-environment node */` at the very top of the file (single-line `//` comment is not recognised by Jest). Browser APIs guarded by `typeof window !== "undefined"` in `jest.setup.ts`.
 
 Test commands:
 ```bash
@@ -168,7 +168,8 @@ src/
     ├── projects.ts             # Project data array (extracted from ProjectsGrid)
     └── translations.ts         # All UI strings for EN and PT-BR
 
-src/__tests__/                  # One test file per component + api-chat.test.ts
+src/__tests__/                  # One test file per component + one per API route
+    └── hooks/                  # Hook-specific tests (useFocusTrap, useEscapeKey)
 __mocks__/                      # Static file stubs for Jest
 .github/
 ├── workflows/ci.yml            # CI: lint → test → build on every PR and push to main (SHA-pinned)
@@ -205,7 +206,8 @@ Light mode Tailwind class overrides (`.text-teal-400`, `.bg-teal-400`, `.from-te
 - Use `data-testid` only as a last resort when no semantic query works.
 - Mock external dependencies (e.g. `typewriter-effect`, `next/image`, `next/font`) at the top of the test file.
 - Each describe block maps to one component. Group tests by feature within the block.
-- API route tests must be in a `.test.ts` (not `.tsx`) file with `@jest-environment node` at the top.
+- API route tests must be in a `.test.ts` (not `.tsx`) file with `/** @jest-environment node */` JSDoc block at the very top.
+- Prefer `userEvent` (from `@testing-library/user-event`) over `fireEvent` for simulating user interactions (clicks, typing). Use `const user = userEvent.setup()` inside each test and `await user.click(...)` / `await user.type(...)` / `await user.keyboard('{Enter}')`. Exception: `fireEvent.keyDown(document, ...)` for document-level listeners and `fireEvent.scroll` (no userEvent equivalent).
 - For keyboard events on `document` listeners (e.g. `useEscapeKey`), use `fireEvent.keyDown(document, ...)` — NOT `fireEvent.keyDown(window, ...)`. JSDOM does not propagate window events to document.
 - When testing components with fake timers that drive multiple React state transitions (e.g. TerminalIntro), use an iterative loop (`for (let i = 0; i < N; i++) { act(() => jest.advanceTimersByTime(delta)); }`) — a single `advanceTimersByTime` only flushes one React update cycle.
 - Hook tests go in `src/__tests__/hooks/<hookName>.test.ts`. New hooks in `src/hooks/` must have a test file.
