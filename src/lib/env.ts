@@ -23,3 +23,8 @@ export function groqApiKey(): string | undefined {
 export function vercelUrl(): string | undefined {
   return process.env["VERCEL_URL"];
 }
+
+// Optional — raises GitHub API rate limits for the GitHub Activity section.
+export function githubToken(): string | undefined {
+  return process.env["GITHUB_TOKEN"];
+}

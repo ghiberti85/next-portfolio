@@ -6,6 +6,7 @@ import { faLinkedin, faGithub, faWhatsapp } from "@fortawesome/free-brands-svg-i
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { useLanguage } from "@/context/LanguageContext";
 import t from "@/lib/translations";
+import DecryptText from "@/components/DecryptText";
 
 interface CardConfig {
   icon: IconDefinition;
@@ -30,7 +31,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-12 lg:py-20 px-4">
       <h2 className="text-4xl font-bold mb-16 text-center text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
-        {tr.title}
+        <DecryptText text={tr.title} />
       </h2>
 
       <div className="flex flex-col lg:flex-row gap-12 items-center">

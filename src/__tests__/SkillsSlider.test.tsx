@@ -42,7 +42,7 @@ describe("SkillsSlider", () => {
 
   it("renders the Skills section heading", () => {
     renderWithProviders(<SkillsSlider />);
-    expect(screen.getByText(/skills|habilidades/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: /skills|habilidades/i })).toBeInTheDocument();
   });
 
   it("renders skill names in the carousel", () => {

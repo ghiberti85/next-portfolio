@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { motion, MotionConfig } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -11,6 +12,7 @@ import { projects } from "@/lib/projects";
 import type { Project } from "@/lib/projects";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
+import DecryptText from "@/components/DecryptText";
 
 export default function ProjectsGrid() {
   const { lang } = useLanguage();
@@ -54,9 +56,10 @@ export default function ProjectsGrid() {
     : projects;
 
   return (
+    <MotionConfig reducedMotion="user">
     <section id="projects" className="py-12 lg:py-20 px-4">
       <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
-        {tr.title}
+        <DecryptText text={tr.title} />
       </h2>
 
       {/* Filter Tags */}
@@ -109,30 +112,32 @@ export default function ProjectsGrid() {
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedProject(project); } }}
             aria-label={`View details for ${project.title}`}
           >
-            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span key={tag} className="px-2 py-1 text-xs bg-teal-700 text-white rounded-full">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                sizes="(max-width: 480px) 100vw, (max-width: 768px) 75vw, (max-width: 1024px) 50vw, 400px"
-                loading="lazy"
-                quality={70}
-                className="object-cover object-top"
-              />
-            </div>
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-gray-300">{project.title}</h3>
-              <p className="text-sm text-gray-400 mt-2 hover:text-teal-400 transition">
-                {tr.viewMore}
-              </p>
-            </div>
+            <motion.div layoutId={`project-${project.title}`} className="relative">
+              <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span key={tag} className="px-2 py-1 text-xs bg-teal-700 text-white rounded-full">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 480px) 100vw, (max-width: 768px) 75vw, (max-width: 1024px) 50vw, 400px"
+                  loading="lazy"
+                  quality={70}
+                  className="object-cover object-top"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-gray-300">{project.title}</h3>
+                <p className="text-sm text-gray-400 mt-2 hover:text-teal-400 transition">
+                  {tr.viewMore}
+                </p>
+              </div>
+            </motion.div>
           </div>
         ))}
       </div>
@@ -153,7 +158,8 @@ export default function ProjectsGrid() {
           className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75 px-4"
           onClick={() => setSelectedProject(null)}
         >
-          <div
+          <motion.div
+            layoutId={`project-${selectedProject.title}`}
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
@@ -208,9 +214,10 @@ export default function ProjectsGrid() {
             >
               ✕
             </button>
-          </div>
+          </motion.div>
         </div>
       )}
     </section>
+    </MotionConfig>
   );
 }

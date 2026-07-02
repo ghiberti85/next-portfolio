@@ -10,11 +10,17 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import TerminalIntro from "@/components/TerminalIntro";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import GitHubActivity from "@/components/GitHubActivity";
+import type { GitHubStats } from "@/lib/github";
 
 const SkillsSlider = dynamic(() => import("@/components/SkillsSlider"), { ssr: false });
 const AnimatedSection = dynamic(() => import("@/components/AnimatedSection"), { ssr: false });
 
-export default function IntroGate() {
+interface IntroGateProps {
+  github?: GitHubStats | null;
+}
+
+export default function IntroGate({ github = null }: IntroGateProps) {
   const [showIntro, setShowIntro] = useState(false);
   const [exiting, setExiting] = useState(false);
   const [ready, setReady] = useState(false);
@@ -55,6 +61,7 @@ export default function IntroGate() {
             <ErrorBoundary><AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection></ErrorBoundary>
             <ErrorBoundary><AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection></ErrorBoundary>
             <ErrorBoundary><AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection></ErrorBoundary>
+            <ErrorBoundary><AnimatedSection variant="fadeUp"  delay={0.05}><GitHubActivity data={github} /></AnimatedSection></ErrorBoundary>
             <AnimatedSection variant="flip"    delay={0.05}><Contact /></AnimatedSection>
           </main>
           <AnimatedSection variant="fadeUp"  delay={0.05}><Footer /></AnimatedSection>

@@ -205,3 +205,25 @@ html {
   animation-delay: -12s;
   opacity: calc(var(--blob-opacity) * 0.6);
 }
+
+/* Theme toggle — circular reveal via the View Transitions API.
+   Falls back to an instant switch in browsers without support
+   (guarded in ThemeContext) and for prefers-reduced-motion users. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: theme-reveal 0.55s ease-out both;
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0px at var(--theme-reveal-x, 50%) var(--theme-reveal-y, 0%));
+  }
+  to {
+    clip-path: circle(150vmax at var(--theme-reveal-x, 50%) var(--theme-reveal-y, 0%));
+  }
+}

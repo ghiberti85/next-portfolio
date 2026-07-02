@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import Navbar from "@/components/Navbar";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { OPEN_PALETTE_EVENT, OPEN_TERMINAL_EVENT } from "@/lib/uiEvents";
 
 function renderWithProviders(ui: React.ReactElement) {
   return render(
@@ -119,5 +120,25 @@ describe("Navbar", () => {
     const mobileLinks = screen.getAllByText("Skills");
     await user.click(mobileLinks[mobileLinks.length - 1] as HTMLElement);
     expect(screen.getAllByText("Skills").length).toBe(1);
+  });
+
+  it("dispatches the open-palette event from the ⌘K button", async () => {
+    const user = userEvent.setup();
+    const listener = jest.fn();
+    window.addEventListener(OPEN_PALETTE_EVENT, listener);
+    renderWithProviders(<Navbar />);
+    await user.click(screen.getByLabelText(/open command palette/i));
+    expect(listener).toHaveBeenCalledTimes(1);
+    window.removeEventListener(OPEN_PALETTE_EVENT, listener);
+  });
+
+  it("dispatches the open-terminal event from the terminal button", async () => {
+    const user = userEvent.setup();
+    const listener = jest.fn();
+    window.addEventListener(OPEN_TERMINAL_EVENT, listener);
+    renderWithProviders(<Navbar />);
+    await user.click(screen.getByLabelText(/open interactive terminal/i));
+    expect(listener).toHaveBeenCalledTimes(1);
+    window.removeEventListener(OPEN_TERMINAL_EVENT, listener);
   });
 });

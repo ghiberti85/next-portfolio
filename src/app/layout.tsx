@@ -16,6 +16,8 @@ const AskFernando = dynamic(() => import("@/components/AskFernando"), {
     />
   ),
 });
+const CommandPalette = dynamic(() => import("@/components/CommandPalette"));
+const InteractiveTerminal = dynamic(() => import("@/components/InteractiveTerminal"));
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 
@@ -145,6 +147,8 @@ export default async function RootLayout({
             <MouseSpotlight />
             <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-hidden">{children}</div>
             <AskFernando />
+            <CommandPalette />
+            <InteractiveTerminal />
           </LanguageProvider>
         </ThemeProvider>
       </body>

@@ -34,6 +34,9 @@ This portfolio gives recruiters and hiring managers a fast, clear view of Fernan
 ## Features
 
 - **Terminal Intro** — One-time animated terminal boot sequence on first visit (session-based, skippable).
+- **Command Palette** — ⌘K / Ctrl+K overlay (also via the navbar chip) to jump to sections, toggle theme/language, download the CV, open the terminal, or open external profiles. Fully keyboard-navigable (arrows + Enter + Esc).
+- **Interactive Terminal** — Persistent zsh-style terminal widget (Ctrl+` or navbar button) with `help`, `whoami`, `projects`, `skills`, `cv`, `contact`, `theme`, `lang`, `clear`, `exit`, command history via arrow keys, and a `sudo hire-me` easter egg.
+- **GitHub Activity** — Live section fed by the GitHub API at the server (ISR, revalidated hourly): public repos, stars, followers, top-language bars, and recently updated repositories. Fails closed — the section simply doesn't render if the API is unavailable.
 - **Navbar** — Fixed top navigation with smooth-scroll links, language toggle (EN / PT-BR), theme toggle (dark / light), and a responsive mobile hamburger menu.
 - **Hero** — Profile photo, animated typewriter role description, social links (GitHub, LinkedIn, Email), and a downloadable CV (PDF).
 - **Stats Counter** — Animated counters highlighting years of experience, projects delivered, and performance metrics.
@@ -46,6 +49,9 @@ This portfolio gives recruiters and hiring managers a fast, clear view of Fernan
 - **CustomCursor** — Custom animated cursor for pointer devices.
 - **MouseSpotlight** — Subtle radial spotlight effect that follows the mouse.
 - **AnimatedSection** — Scroll-triggered entrance animations (fadeUp, stagger, launch, reveal, flip) powered by Framer Motion with `prefers-reduced-motion` support.
+- **Card → modal morph** — Project cards physically expand into their detail modal (Framer Motion shared layout animation).
+- **Theme circular reveal** — Dark/light toggle paints the new theme outward from the clicked button via the View Transitions API (instant fallback for unsupported browsers and reduced-motion users).
+- **Decrypt headings** — Section titles scramble terminal-style and resolve when scrolled into view (screen-reader copy stays intact; disabled for reduced motion).
 - **SkipLink** — Accessibility skip-to-main-content link for keyboard navigation (`<main>` landmark present).
 - **Internationalisation** — Full EN / PT-BR translation via `LanguageContext` (React Context + localStorage persistence).
 - **Theme** — Dark / light mode via `ThemeContext` (React Context + localStorage persistence).
@@ -83,7 +89,11 @@ src/
 │   ├── Timeline.tsx            # Career & education timeline (horizontal/vertical) with modals
 │   ├── Contact.tsx             # Contact links (Email, WhatsApp, LinkedIn, GitHub)
 │   ├── Footer.tsx              # Back-to-top button and footer
+│   ├── GitHubActivity.tsx      # Live GitHub stats section (server-fetched via ISR)
 │   ├── AskFernando.tsx         # Floating AI chat widget (Groq-powered)
+│   ├── CommandPalette.tsx      # ⌘K command palette overlay (navigate + actions)
+│   ├── InteractiveTerminal.tsx # Persistent interactive terminal widget
+│   ├── DecryptText.tsx         # Scramble-and-resolve heading animation
 │   ├── TerminalIntro.tsx       # One-time terminal boot animation
 │   ├── AnimatedSection.tsx     # Scroll-triggered Framer Motion wrapper
 │   ├── CustomCursor.tsx        # Custom animated cursor
@@ -99,8 +109,10 @@ src/
 │   └── useFocusTrap.ts         # WCAG 2.4.7 focus trap for modal dialogs (save + restore focus)
 └── lib/
     ├── env.ts                  # Centralised env-var access — server vars as functions, public as constants
+    ├── github.ts               # Server-side GitHub API fetch for the GitHub Activity section
     ├── projects.ts             # Project data array extracted from ProjectsGrid
-    └── translations.ts         # All UI strings for EN and PT-BR
+    ├── translations.ts         # All UI strings for EN and PT-BR
+    └── uiEvents.ts             # Custom events for the command palette / terminal overlays
 
 src/__tests__/                  # One test file per component + API route (Jest + RTL)
     └── hooks/                  # Hook-specific tests (useFocusTrap, useEscapeKey)
@@ -151,6 +163,7 @@ npm run test:coverage
 | `GROQ_API_KEY` | Yes | Groq API key used by `/api/chat` to power the AskFernando AI chat |
 | `NEXT_PUBLIC_SITE_URL` | No | Full URL of the deployed site (e.g. `https://ghiberti85.vercel.app`). Used to restrict CORS on `/api/chat`. Defaults to permissive when unset. |
 | `VERCEL_URL` | No | Injected automatically by Vercel. Used as fallback CORS origin when `NEXT_PUBLIC_SITE_URL` is not set. |
+| `GITHUB_TOKEN` | No | Optional GitHub token to raise API rate limits for the GitHub Activity section. Unauthenticated access (60 req/h) is enough with hourly ISR. |
 
 Create a `.env.local` file at the root with the variables above for local AI chat support.
 
