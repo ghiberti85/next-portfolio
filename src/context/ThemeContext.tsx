@@ -1,13 +1,23 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { flushSync } from "react-dom";
 
 type Theme = "dark" | "light";
 
+interface ToggleOrigin {
+  x: number;
+  y: number;
+}
+
 interface ThemeContextValue {
   theme: Theme;
-  toggleTheme: () => void;
+  toggleTheme: (origin?: ToggleOrigin) => void;
 }
+
+type DocumentWithViewTransition = Document & {
+  startViewTransition?: (callback: () => void) => unknown;
+};
 
 const ThemeContext = createContext<ThemeContextValue>({
   theme: "dark",
@@ -24,12 +34,27 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute("data-theme", initial);
   }, []);
 
-  const toggleTheme = () => {
-    setTheme((prev) => {
-      const next = prev === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("portfolio-theme", next);
-      return next;
+  const applyTheme = (next: Theme) => {
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("portfolio-theme", next);
+    setTheme(next);
+  };
+
+  const toggleTheme = (origin?: ToggleOrigin) => {
+    const next = theme === "dark" ? "light" : "dark";
+    const doc = document as DocumentWithViewTransition;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!doc.startViewTransition || prefersReducedMotion) {
+      applyTheme(next);
+      return;
+    }
+
+    const root = document.documentElement;
+    root.style.setProperty("--theme-reveal-x", `${origin?.x ?? window.innerWidth / 2}px`);
+    root.style.setProperty("--theme-reveal-y", `${origin?.y ?? 0}px`);
+    doc.startViewTransition(() => {
+      flushSync(() => applyTheme(next));
     });
   };
 

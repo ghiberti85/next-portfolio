@@ -15,7 +15,7 @@ function renderWithProviders(ui: React.ReactElement) {
 describe("Timeline", () => {
   it("renders the section heading", () => {
     renderWithProviders(<Timeline />);
-    expect(screen.getByText(/Experiência & Formação|Experience & Education/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: /Experiência & Formação|Experience & Education/i })).toBeInTheDocument();
   });
 
   it("renders professional experience entries", () => {

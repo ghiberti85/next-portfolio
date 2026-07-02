@@ -8,8 +8,9 @@ All rules below are mandatory. Follow them on every task without exception.
 ## Project Overview
 
 Personal portfolio SPA built with **Next.js 15 (App Router)**, **TypeScript**, and **Tailwind CSS**.
-Single page composed of: Navbar → Hero → SkillsSlider → ProjectsGrid → Timeline → Contact → Footer.
-AI chat powered by **Groq (LLaMA 3.3-70b)** via `/api/chat`.
+Single page composed of: Navbar → Hero → SkillsSlider → ProjectsGrid → Timeline → GitHubActivity → Contact → Footer.
+Global overlays: AskFernando (AI chat), CommandPalette (⌘K), InteractiveTerminal (Ctrl+`).
+AI chat powered by **Groq (LLaMA 3.3-70b)** via `/api/chat`. GitHub Activity data fetched server-side (ISR, 1h) in `page.tsx`.
 Deployed automatically to Vercel on every push to `main`.
 
 ---
@@ -114,7 +115,7 @@ The CI pipeline (`ci.yml`) must be green before merging.
 Review the following on every PR:
 
 - [ ] No secrets, tokens, API keys, or credentials committed — use environment variables.
-- [ ] All env-var access goes through `src/lib/env.ts`. Server-only vars (GROQ_API_KEY, VERCEL_URL) must be accessed via exported functions — never as bare `process.env` in component or route files.
+- [ ] All env-var access goes through `src/lib/env.ts`. Server-only vars (GROQ_API_KEY, VERCEL_URL, GITHUB_TOKEN) must be accessed via exported functions — never as bare `process.env` in component or route files.
 - [ ] No new `dangerouslyAllowSVG` usages without a tight `contentSecurityPolicy`.
 - [ ] External URLs hardcoded in components must be trusted, static origins.
 - [ ] New `remotePatterns` in `next.config.ts` must be limited to the exact hostname needed — no wildcard hostnames.
@@ -147,9 +148,13 @@ src/
 │   ├── SkillsRadar.tsx         # Recharts radar chart for expertise areas
 │   ├── ProjectsGrid.tsx        # Filterable grid with modals (tag filter + pagination)
 │   ├── Timeline.tsx            # Career & education timeline (horizontal/vertical) with modals
+│   ├── GitHubActivity.tsx      # Live GitHub stats section (data fetched server-side via ISR)
 │   ├── Contact.tsx             # Email, WhatsApp, LinkedIn, GitHub contact cards
 │   ├── Footer.tsx              # Back-to-top button + author credit
 │   ├── AskFernando.tsx         # Floating AI chat widget (Groq-powered)
+│   ├── CommandPalette.tsx      # Cmd/Ctrl+K command palette overlay (navigation + actions)
+│   ├── InteractiveTerminal.tsx # Persistent interactive terminal widget (Ctrl+` or navbar)
+│   ├── DecryptText.tsx         # Scramble-and-resolve heading animation (a11y + reduced-motion safe)
 │   ├── TerminalIntro.tsx       # One-time terminal boot animation
 │   ├── AnimatedSection.tsx     # Scroll-triggered Framer Motion entrance animations
 │   ├── CustomCursor.tsx        # Custom animated cursor (pointer devices only)
@@ -165,8 +170,10 @@ src/
 │   └── useFocusTrap.ts         # WCAG 2.4.7 focus trap for modal dialogs (save + restore focus)
 └── lib/
     ├── env.ts                  # Centralised env-var access — server vars as functions, public as constants
+    ├── github.ts               # Server-only GitHub API fetch (ISR, fails closed) for GitHubActivity
     ├── projects.ts             # Project data array (extracted from ProjectsGrid)
-    └── translations.ts         # All UI strings for EN and PT-BR
+    ├── translations.ts         # All UI strings for EN and PT-BR
+    └── uiEvents.ts             # CustomEvent names + dispatch helpers for palette/terminal overlays
 
 src/__tests__/                  # One test file per component + one per API route
     └── hooks/                  # Hook-specific tests (useFocusTrap, useEscapeKey)

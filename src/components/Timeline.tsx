@@ -8,6 +8,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import t, { type TimelineItemData as TimelineItem } from "@/lib/translations";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
+import DecryptText from "@/components/DecryptText";
 
 function TimelineCard({
   item,
@@ -91,7 +92,7 @@ export default function Timeline() {
   return (
     <section id="timeline" className="py-12 lg:py-20 px-0" ref={sectionRef}>
       <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
-        {tr.title}
+        <DecryptText text={tr.title} />
       </h2>
 
       {/* ── Mobile: left-rail vertical layout ──────────────────────── */}

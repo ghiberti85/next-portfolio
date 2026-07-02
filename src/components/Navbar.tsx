@@ -2,11 +2,12 @@
 
 import { useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes, faSun, faMoon, faTerminal } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import t from "@/lib/translations";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
+import { openPalette, openTerminal } from "@/lib/uiEvents";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -62,8 +63,28 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Controls: lang toggle + theme toggle + mobile hamburger */}
+        {/* Controls: palette + terminal + lang toggle + theme toggle + mobile hamburger */}
         <div className="flex items-center gap-3">
+          {/* Command palette trigger */}
+          <button
+            onClick={openPalette}
+            aria-label={t[lang].palette.openLabel}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 h-8 rounded-full text-xs font-mono text-gray-400 hover:text-teal-400 transition-colors"
+            style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
+          >
+            ⌘K
+          </button>
+
+          {/* Interactive terminal trigger */}
+          <button
+            onClick={openTerminal}
+            aria-label={t[lang].shell.openLabel}
+            className="hidden sm:flex w-8 h-8 items-center justify-center rounded-full text-gray-400 hover:text-teal-400 transition-colors"
+            style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
+          >
+            <FontAwesomeIcon icon={faTerminal} className="text-xs" />
+          </button>
+
           {/* Language toggle */}
           <div
             className="hidden sm:flex items-center gap-1 rounded-full px-1 py-1 text-xs font-semibold"
@@ -99,7 +120,7 @@ export default function Navbar() {
 
           {/* Theme toggle */}
           <button
-            onClick={toggleTheme}
+            onClick={(e) => toggleTheme({ x: e.clientX, y: e.clientY })}
             aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             className="hidden sm:flex w-8 h-8 items-center justify-center rounded-full text-gray-400 hover:text-teal-400 transition-colors"
             style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
@@ -159,7 +180,7 @@ export default function Navbar() {
               PT
             </button>
             <button
-              onClick={toggleTheme}
+              onClick={(e) => toggleTheme({ x: e.clientX, y: e.clientY })}
               className="text-xs px-3 py-1.5 rounded-full font-semibold text-gray-400 hover:text-teal-400 transition"
               style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
             >
