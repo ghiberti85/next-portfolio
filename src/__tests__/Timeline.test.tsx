@@ -63,4 +63,15 @@ describe("Timeline", () => {
       expect(screen.getByRole("dialog")).toBeInTheDocument();
     }
   });
+
+  it("reserves right padding on the modal title so long titles never render under the close button", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Timeline />);
+    await user.click(screen.getAllByText(/Ver mais|View more/i)[0] as HTMLElement);
+    const title = screen.getByRole("dialog").querySelector("#timeline-modal-title");
+    // Regression: the close button is absolutely positioned in the top-right
+    // corner of the dialog; without right padding on the title, long titles
+    // wrap under it and get visually clipped (confirmed via browser screenshot).
+    expect(title).toHaveClass("pr-12");
+  });
 });

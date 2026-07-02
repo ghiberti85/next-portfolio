@@ -210,7 +210,7 @@ export default function ProjectsGrid() {
             <button
               onClick={() => setSelectedProject(null)}
               aria-label="Close"
-              className="absolute top-4 right-4 py-1 px-2.5 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition transform hover:scale-110 shadow-lg"
+              className="absolute top-4 right-4 z-10 py-1 px-2.5 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition transform hover:scale-110 shadow-lg"
             >
               ✕
             </button>
