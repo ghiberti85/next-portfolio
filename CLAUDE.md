@@ -98,6 +98,10 @@ Keep the following in sync after every change:
 |---|---|
 | `README.md` | Tech stack, features, project structure, commands, or env vars change |
 | `CLAUDE.md` | Workflow, tooling, or project architecture changes |
+| `docs/COMPONENTS.md` | A component is added, removed, or its behavior/data shape/local state changes |
+| `docs/ARCHITECTURE.md` | A stack decision, data-layer shape, styling convention, or security control changes |
+| `docs/adr/` | An architectural decision changes or is reversed — write a new ADR and mark the old one Superseded; never leave an ADR contradicting the code |
+| `CHANGELOG.md` | Every merged PR gets an entry under `[Unreleased]` at merge time — don't let it fall behind |
 | `src/__tests__/` | Any component or API route is added, changed, or removed |
 
 If you add a feature → add it to the README features section.
@@ -135,12 +139,13 @@ Review the following on every PR:
 src/
 ├── app/
 │   ├── layout.tsx              # Root layout — metadata, fonts, providers, global overlays
-│   ├── page.tsx                # Page composition (TerminalIntro + all section components)
+│   ├── page.tsx                # Server Component — fetches GitHub stats, renders <IntroGate>
 │   ├── globals.css             # Global styles, CSS custom properties, color tokens
 │   └── api/
 │       └── chat/
 │           └── route.ts        # Groq AI chat endpoint (rate-limited, input-validated, CORS)
 ├── components/
+│   ├── IntroGate.tsx           # Client Component — page composition + terminal-intro gating
 │   ├── Navbar.tsx              # Fixed top nav, smooth scroll, language & theme toggles
 │   ├── Hero.tsx                # Profile, typewriter, social links, CV download
 │   ├── StatsCounter.tsx        # Animated statistics counters
