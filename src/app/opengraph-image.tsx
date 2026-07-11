@@ -66,7 +66,7 @@ export default function Image() {
           />
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <span style={{ color: "#94a3b8", fontSize: 20, letterSpacing: 2 }}>
-              ghiberti85.vercel.app
+              fernando-ghiberti.vercel.app
             </span>
           </div>
         </div>

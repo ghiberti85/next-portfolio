@@ -7,6 +7,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **SEO — canonical domain corrected to `fernando-ghiberti.vercel.app`** across `layout.tsx` (`metadataBase`, canonical, Open Graph, JSON-LD), `sitemap.ts`, `robots.ts`, the OG image, and `README.md`. The codebase had been split between two domains.
+- Removed stray `public/robot.txt` — misnamed (never served at `/robots.txt`), pointed at the wrong domain, and duplicated by the dynamic `robots.ts`. The App Router `robots.ts`/`sitemap.ts` are now the single source of truth.
+
+### Changed
+- `robots.ts` now `disallow`s `/api/` so the chat and CSP-report endpoints are excluded from indexing.
+- Home `<meta name="description">` trimmed to 155 characters (from 175) for clean SERP display, still leading with name + stack.
+
+### Added
+- Explicit `viewport` export with light/dark `themeColor` in `layout.tsx`.
+- `ProfilePage` node added to the home JSON-LD `@graph` (wraps the existing `Person`/`WebSite`), plus `inLanguage` on the profile and website nodes.
+- `src/__tests__/seo-metadata-routes.test.ts` covering `robots.ts` and `sitemap.ts` (rules, `/api/` disallow, correct production domain).
+
 ### Docs
 - `CHANGELOG.md` backfilled with everything from v1.5.0 through v2.1.1 (previously last updated 2026-06-04, 8 releases behind).
 - `docs/COMPONENTS.md` and `docs/ARCHITECTURE.md` rewritten — both had drifted back to the v1.0/v1.3 era (7 components, "no backend" framing) and no longer matched the current 20+ component, API-routes-with-exceptions architecture.

@@ -2,7 +2,7 @@
 
 A modern, performant personal portfolio built with **Next.js 15**, **TypeScript**, and **Tailwind CSS** — showcasing professional experience, technical skills, and personal projects in a clean, animated single-page application.
 
-**Live:** [ghiberti85.vercel.app](https://ghiberti85.vercel.app/) &nbsp;|&nbsp; **Author:** [Fernando Ghiberti](https://linkedin.com/in/fernando-ghiberti) &nbsp;|&nbsp; **License:** MIT
+**Live:** [fernando-ghiberti.vercel.app](https://fernando-ghiberti.vercel.app/) &nbsp;|&nbsp; **Author:** [Fernando Ghiberti](https://linkedin.com/in/fernando-ghiberti) &nbsp;|&nbsp; **License:** MIT
 
 ---
 
@@ -162,7 +162,7 @@ npm run test:coverage
 | Variable | Required | Purpose |
 |---|---|---|
 | `GROQ_API_KEY` | Yes | Groq API key used by `/api/chat` to power the AskFernando AI chat |
-| `NEXT_PUBLIC_SITE_URL` | No | Full URL of the deployed site (e.g. `https://ghiberti85.vercel.app`). Used to restrict CORS on `/api/chat`. Defaults to permissive when unset. |
+| `NEXT_PUBLIC_SITE_URL` | No | Full URL of the deployed site (e.g. `https://fernando-ghiberti.vercel.app`). Used to restrict CORS on `/api/chat`. Defaults to permissive when unset. |
 | `VERCEL_URL` | No | Injected automatically by Vercel. Used as fallback CORS origin when `NEXT_PUBLIC_SITE_URL` is not set. |
 | `GITHUB_TOKEN` | No | Optional GitHub token to raise API rate limits for the GitHub Activity section. Unauthenticated access (60 req/h) is enough with hourly ISR. |
 

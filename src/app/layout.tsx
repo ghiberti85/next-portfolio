@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import dynamic from "next/dynamic";
 import { headers } from "next/headers";
@@ -31,13 +31,22 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const BASE_URL = "https://ghiberti85.vercel.app";
+const BASE_URL = "https://fernando-ghiberti.vercel.app";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: "Fernando Ghiberti — Senior Fullstack Developer",
   description:
-    "Portfolio of Fernando Ghiberti, Senior Fullstack Developer specializing in React, Next.js, TypeScript, Node.js, Supabase, and AI integrations. Available for new opportunities.",
+    "Fernando Ghiberti — Senior Fullstack Developer building with React, Next.js, TypeScript, Node.js, Supabase, and AI integrations. Open to new opportunities.",
   keywords: [
     "Fernando Ghiberti",
     "Senior Fullstack Developer",
@@ -80,6 +89,16 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "ProfilePage",
+      "@id": `${BASE_URL}/#profilepage`,
+      url: BASE_URL,
+      name: "Fernando Ghiberti — Senior Fullstack Developer",
+      inLanguage: "en",
+      isPartOf: { "@id": `${BASE_URL}/#website` },
+      about: { "@id": `${BASE_URL}/#person` },
+      mainEntity: { "@id": `${BASE_URL}/#person` },
+    },
+    {
       "@type": "Person",
       "@id": `${BASE_URL}/#person`,
       name: "Fernando Ghiberti",
@@ -111,6 +130,7 @@ const jsonLd = {
       url: BASE_URL,
       name: "Fernando Ghiberti Portfolio",
       description: "Personal portfolio of Fernando Ghiberti, Senior Fullstack Developer.",
+      inLanguage: "en",
       author: { "@id": `${BASE_URL}/#person` },
     },
   ],
