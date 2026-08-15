@@ -11,32 +11,46 @@ CustomEvent bus in `src/lib/uiEvents.ts` — components do not reach into each o
 **Files:** `src/app/page.tsx` (Server Component) → `src/components/IntroGate.tsx` (Client Component)
 
 `page.tsx` is an `async` Server Component: it calls `getGitHubStats()` (ISR, `revalidate = 3600`)
-and passes the result straight into `<IntroGate github={...} />`. All client-side state (terminal
-intro visibility, `sessionStorage`, dynamic imports with `ssr: false`) lives in `IntroGate`, which
-is what actually sequences the page:
+and passes the result straight into `<IntroGate github={...} />`. `IntroGate` sequences the page:
 
 ```
 IntroGate
 ├── <Navbar />
 └── <main id="main-content">
-    ├── <Hero />          fadeUp
+    ├── <Hero />          (no scroll-in animation — see below)
     ├── <SkillsSlider />  stagger  (dynamic import, ssr: false)
     ├── <ProjectsGrid />  launch
     ├── <Timeline />      reveal
     ├── <GitHubActivity data={github} />  fadeUp
     └── <Contact />       flip
 └── <Footer />            fadeUp
+└── <TerminalIntro />     first-visit overlay, mounted conditionally
 ```
 
+**Page content always renders** — it is never gated behind a client-only check (no `ready`/mount
+gate). This matters for LCP: gating all content behind a `useEffect` (which only runs after
+hydration) meant the server-rendered HTML was empty and nothing painted until JS finished loading,
+which is especially costly on throttled mobile. `TerminalIntro` instead mounts as an opaque,
+fixed, full-screen overlay (`z-[200]`) on top of the already-rendered content on first visit per
+browser session (`sessionStorage["portfolio-intro-seen"]`), and crossfades itself out once
+dismissed — the content underneath was never hidden, just visually covered.
+
+`<Hero>` is intentionally **not** wrapped in `<AnimatedSection>`. It's the LCP element (profile
+photo + heading); `AnimatedSection`'s `whileInView` starts elements at `opacity: 0` (including in
+the SSR output) until an `IntersectionObserver` confirms visibility client-side, which delays when
+the LCP element counts as painted. Every other section is below the fold, so the scroll-in
+animation there has no LCP cost.
+
 Each section (except Hero and Contact) is wrapped in `<ErrorBoundary>` for per-section failure
-isolation, and every section is wrapped in `<AnimatedSection variant="...">` for its scroll-in
-animation. `TerminalIntro` renders on top of everything on first visit per browser session
-(`sessionStorage["portfolio-intro-seen"]`) and crossfades out once dismissed.
+isolation.
 
 ### Do not
 - Move data fetching into `IntroGate` — it must stay a Client Component; all server-only work
   (GitHub API, secrets) belongs in `page.tsx` or `src/lib/*.ts`.
 - Skip the `ErrorBoundary` wrapper on a new data-dependent section.
+- Wrap `<Hero>` (or any future LCP candidate) in `<AnimatedSection>` — see above.
+- Reintroduce a `useEffect`-driven mount gate on the page content — it re-creates the "blank until
+  JS loads" regression this file's history fixed.
 
 ---
 
@@ -376,19 +390,20 @@ percentages, and **fails closed**: any error (network, non-2xx, thrown exception
 **Responsibility:** One-time typewriter-style terminal boot sequence shown before the site reveals on a visitor's first session.
 
 ### Behavior
+- Renders as an opaque, fixed, full-screen overlay (`z-[200]`) on top of the already-rendered page — it does not gate the page content's existence, only its visibility.
 - Types out a fixed sequence of `{ cmd, out }` lines (from `t[lang].terminal.lines`) character by character.
-- `onDone` fires after the last line finishes (plus a short pause); `IntroGate` marks `sessionStorage["portfolio-intro-seen"]` and crossfades to the real page.
+- `onDone` fires after the last line finishes (plus a short pause); `IntroGate` marks `sessionStorage["portfolio-intro-seen"]` and crossfades the overlay itself out, revealing the (already-painted) page underneath.
 - A "Skip intro" button calls `onDone` immediately.
 
 ### Do not
-- Slow down `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN` — they were tuned down once already to fix an LCP/Speed-Index regression (see CHANGELOG 1.9.0).
+- Slow down `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN` — they were tuned down once already to fix an LCP/Speed-Index regression (see CHANGELOG 1.9.0), and a second regression of the same shape (page content itself gated behind the intro) was fixed in the mobile-performance pass — see CHANGELOG.
 
 ---
 
 ## AnimatedSection
 
 **File:** `src/components/AnimatedSection.tsx`
-**Type:** Client Component (loaded via `dynamic()` in `IntroGate`)
+**Type:** Client Component, statically imported in `IntroGate`
 **Responsibility:** Wraps a section in a Framer Motion scroll-triggered entrance animation.
 
 ### Variants
@@ -397,6 +412,8 @@ percentages, and **fails closed**: any error (network, non-2xx, thrown exception
 ### Do not
 - Add a new variant without also respecting `useReducedMotion()` — every variant renders as a plain `<div>` (no animation) when the user prefers reduced motion.
 - Animate non-`transform`/`opacity` properties — keeps every entrance at 60fps.
+- Wrap `<Hero>` (or any other LCP candidate) with this — `whileInView`'s `initial="hidden"` renders `opacity: 0` in the SSR output until an `IntersectionObserver` fires client-side, which delays LCP. Reserve this for below-the-fold sections only.
+- Import this with `dynamic(..., { ssr: false })` again — it previously wrapped the entire page tree that way, which meant *nothing* rendered server-side. Keep it a plain static import so its children stay in the SSR output.
 
 ---
 
