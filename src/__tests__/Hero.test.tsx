@@ -39,6 +39,13 @@ describe("Hero", () => {
     expect(screen.getByLabelText("LinkedIn Profile")).toBeInTheDocument();
   });
 
+  it("renders WhatsApp social link", () => {
+    renderWithProviders(<Hero />);
+    const waLink = screen.getByLabelText("Chat on WhatsApp");
+    expect(waLink).toBeInTheDocument();
+    expect(waLink.getAttribute("href")).toContain("wa.me");
+  });
+
   it("renders CV download button", () => {
     renderWithProviders(<Hero />);
     // label is "Download CV" (EN) or "Baixar CV" (PT)
