@@ -35,39 +35,40 @@ describe("IntroGate", () => {
     sessionStorage.clear();
   });
 
-  it("renders page content directly when intro has already been seen", async () => {
+  it("renders page content immediately regardless of intro state", async () => {
+    renderWithProviders(<IntroGate />);
+    // Content is mounted on first render (server + first paint) so it
+    // counts for LCP/SEO — it is never gated behind a client-only check.
+    expect(screen.getByText("Navbar")).toBeInTheDocument();
+    expect(screen.getByText("Hero")).toBeInTheDocument();
+  });
+
+  it("does not show the terminal intro when it has already been seen", () => {
     sessionStorage.setItem("portfolio-intro-seen", "1");
     renderWithProviders(<IntroGate />);
-    await waitFor(() => {
-      expect(screen.getByText("Navbar")).toBeInTheDocument();
-    });
+    expect(screen.queryByText("Complete intro")).not.toBeInTheDocument();
   });
 
-  it("shows terminal intro on first visit", async () => {
+  it("shows terminal intro as an overlay on top of the page content on first visit", async () => {
     renderWithProviders(<IntroGate />);
     await waitFor(() => {
       expect(screen.getByText("Complete intro")).toBeInTheDocument();
     });
+    // The overlay covers the content visually (fixed, opaque, high z-index)
+    // but the content underneath stays mounted rather than being unmounted.
+    expect(screen.getByText("Navbar")).toBeInTheDocument();
   });
 
-  it("does not show page content until intro is dismissed on first visit", async () => {
-    renderWithProviders(<IntroGate />);
-    await waitFor(() => {
-      expect(screen.getByText("Complete intro")).toBeInTheDocument();
-    });
-    expect(screen.queryByText("Navbar")).not.toBeInTheDocument();
-  });
-
-  it("shows page content and marks intro seen after completion", async () => {
+  it("marks the intro as seen and dismisses the overlay on completion", async () => {
     const user = userEvent.setup();
     renderWithProviders(<IntroGate />);
     await waitFor(() => {
       expect(screen.getByText("Complete intro")).toBeInTheDocument();
     });
     await user.click(screen.getByText("Complete intro"));
-    await waitFor(() => {
-      expect(screen.getByText("Navbar")).toBeInTheDocument();
-    });
     expect(sessionStorage.getItem("portfolio-intro-seen")).toBe("1");
+    await waitFor(() => {
+      expect(screen.queryByText("Complete intro")).not.toBeInTheDocument();
+    });
   });
 });

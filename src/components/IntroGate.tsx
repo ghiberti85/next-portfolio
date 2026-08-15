@@ -11,10 +11,13 @@ import Footer from "@/components/Footer";
 import TerminalIntro from "@/components/TerminalIntro";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import GitHubActivity from "@/components/GitHubActivity";
+import AnimatedSection from "@/components/AnimatedSection";
 import type { GitHubStats } from "@/lib/github";
 
-const SkillsSlider = dynamic(() => import("@/components/SkillsSlider"), { ssr: false });
-const AnimatedSection = dynamic(() => import("@/components/AnimatedSection"), { ssr: false });
+const SkillsSlider = dynamic(() => import("@/components/SkillsSlider"), {
+  ssr: false,
+  loading: () => <div aria-hidden="true" className="min-h-[560px]" />,
+});
 
 interface IntroGateProps {
   github?: GitHubStats | null;
@@ -23,21 +26,17 @@ interface IntroGateProps {
 export default function IntroGate({ github = null }: IntroGateProps) {
   const [showIntro, setShowIntro] = useState(false);
   const [exiting, setExiting] = useState(false);
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const seen = sessionStorage.getItem("portfolio-intro-seen");
     if (!seen) {
       setShowIntro(true);
-    } else {
-      setReady(true);
     }
   }, []);
 
   const handleIntroDone = () => {
     sessionStorage.setItem("portfolio-intro-seen", "1");
     setExiting(true);
-    setReady(true);
   };
 
   useEffect(() => {
@@ -48,25 +47,26 @@ export default function IntroGate({ github = null }: IntroGateProps) {
 
   return (
     <>
-      {ready && (
-        <div
-          style={{
-            opacity: showIntro && !exiting ? 0 : 1,
-            transition: exiting ? "opacity 0.8s ease 0.2s" : "none",
-          }}
-        >
-          <Navbar />
-          <main id="main-content">
-            <AnimatedSection variant="fadeUp"  delay={0}   ><Hero /></AnimatedSection>
-            <ErrorBoundary><AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection></ErrorBoundary>
-            <ErrorBoundary><AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection></ErrorBoundary>
-            <ErrorBoundary><AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection></ErrorBoundary>
-            <ErrorBoundary><AnimatedSection variant="fadeUp"  delay={0.05}><GitHubActivity data={github} /></AnimatedSection></ErrorBoundary>
-            <AnimatedSection variant="flip"    delay={0.05}><Contact /></AnimatedSection>
-          </main>
-          <AnimatedSection variant="fadeUp"  delay={0.05}><Footer /></AnimatedSection>
-        </div>
-      )}
+      {/*
+        Page content always renders (server + first paint) so it counts for
+        LCP/SEO/no-JS instead of waiting on a client-only sessionStorage
+        check. On first visit, TerminalIntro mounts as an opaque full-screen
+        overlay on top of it (z-[200]) — the content underneath is already
+        painted, just visually covered until the intro finishes.
+      */}
+      <Navbar />
+      <main id="main-content">
+        {/* Hero is the LCP element — rendered directly, no scroll-reveal
+            animation, so it never sits at opacity:0 waiting on an
+            IntersectionObserver before it counts as painted. */}
+        <Hero />
+        <ErrorBoundary><AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection></ErrorBoundary>
+        <ErrorBoundary><AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection></ErrorBoundary>
+        <ErrorBoundary><AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection></ErrorBoundary>
+        <ErrorBoundary><AnimatedSection variant="fadeUp"  delay={0.05}><GitHubActivity data={github} /></AnimatedSection></ErrorBoundary>
+        <AnimatedSection variant="flip"    delay={0.05}><Contact /></AnimatedSection>
+      </main>
+      <AnimatedSection variant="fadeUp"  delay={0.05}><Footer /></AnimatedSection>
       {showIntro && <TerminalIntro onDone={handleIntroDone} exiting={exiting} />}
     </>
   );

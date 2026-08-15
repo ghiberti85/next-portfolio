@@ -3,10 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import dynamic from "next/dynamic";
 import { headers } from "next/headers";
 import "./globals.css";
-import MouseSpotlight from "@/components/MouseSpotlight";
-import CustomCursor from "@/components/CustomCursor";
 import SkipLink from "@/components/SkipLink";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
+import PointerOnlyEffects from "@/components/PointerOnlyEffects";
 const AskFernando = dynamic(() => import("@/components/AskFernando"), {
   loading: () => (
     <div
@@ -163,8 +162,7 @@ export default async function RootLayout({
             <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
             <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
             <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
-            <CustomCursor />
-            <MouseSpotlight />
+            <PointerOnlyEffects />
             <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-hidden">{children}</div>
             <AskFernando />
             <CommandPalette />
