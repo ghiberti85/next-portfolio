@@ -14,6 +14,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `src/__tests__/seo-metadata-routes.test.ts` covering `robots.ts` and `sitemap.ts` (rules, `/api/` disallow, correct production domain).
 - `PointerOnlyEffects` — gates `CustomCursor`/`MouseSpotlight` behind a `(pointer: fine)` check *before* importing them, so touch/mobile devices never fetch, parse, or hydrate that JS at all (previously both were imported unconditionally and only no-opped internally after mounting).
 - `SkillsSlider`'s `dynamic()` import now has a sized loading skeleton (`min-h-[560px]`) to avoid a layout shift when its chunk finishes loading.
+- `public/llms.txt` — a static, [llmstxt.org](https://llmstxt.org)-convention summary of the site for AI agents/crawlers (profile sections, projects, CV, sitemap). Added after Lighthouse's experimental "Agentic Browsing" category flagged it as inapplicable; the category's other checks (WebMCP form/tool/schema audits) aren't relevant to a static portfolio with no agent-invokable tools, so weren't pursued.
 
 ### Changed
 - Downloadable CV (`public/fernando-ghiberti-cv-en.pdf`) refreshed with a newer revision. Same filename — no code changes required.
