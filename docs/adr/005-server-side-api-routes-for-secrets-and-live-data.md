@@ -48,7 +48,7 @@ no persistence. Skills, projects, and timeline content remain typed arrays edite
 - Before adding a new `src/app/api/` route or server-side fetch, check whether it fits one of the
   two categories above. If not, write a new ADR — don't add it quietly.
 - Every server-side secret access must go through `src/lib/env.ts`, never a bare `process.env` read
-  in a component or route file (enforced in the Security Checklist in `CLAUDE.md`).
+  in a component or route file (enforced in the Security Checklist in `AGENTS.md`).
 - Every ISR-cached fetch must fail closed: on any error, render nothing rather than a broken or
   stale-looking state.
 - `docs/ARCHITECTURE.md` documents both exceptions explicitly so this ADR doesn't drift out of sync

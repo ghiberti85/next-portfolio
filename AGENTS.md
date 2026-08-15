@@ -1,0 +1,312 @@
+# AGENTS.md — AI Agent Instructions for next-portfolio
+
+This file is the **canonical source of instructions for every AI agent** working on this repository,
+regardless of model or tooling (Claude Code, opencode, Codex, Cursor, etc.).
+All rules below are mandatory. Follow them on every task without exception.
+
+---
+
+## Documentation Map
+
+Read the right file for the job — do not re-derive this context from the code alone:
+
+| File | What it gives you |
+|---|---|
+| `AGENTS.md` (this file) | Mandatory workflow, security checklist, conventions, structure |
+| `README.md` | Product-facing overview, features, env vars, highlighted projects |
+| `docs/ARCHITECTURE.md` | Stack decisions (why), data layer, styling conventions, security architecture, CI/CD |
+| `docs/COMPONENTS.md` | Per-component reference: behavior, local state, invariants, "do not" rules |
+| `docs/adr/` | Architectural Decision Records — read before reversing or bypassing a decision |
+| `docs/ROADMAP.md` | Where the project is going: current priorities, backlog, technical debt |
+| `SECURITY.md` | Full threat model and control inventory |
+| `CHANGELOG.md` | What changed and why — one entry per merged PR under `[Unreleased]` |
+| `public/llms.txt` | Summary of the *deployed site* for AI crawlers (not for development) |
+
+If two documents disagree, the code is truth; then fix the docs in the same PR.
+
+---
+
+## Project Overview
+
+Personal portfolio SPA built with **Next.js 15 (App Router)**, **TypeScript**, and **Tailwind CSS**.
+Single page composed of: Navbar → Hero → SkillsSlider → ProjectsGrid → Timeline → GitHubActivity → Contact → Footer.
+Global overlays: AskFernando (AI chat), CommandPalette (⌘K), InteractiveTerminal (Ctrl+`).
+AI chat powered by **Groq (LLaMA 3.3-70b)** via `/api/chat`. GitHub Activity data fetched server-side (ISR, 1h) in `page.tsx`.
+Deployed automatically to Vercel on every push to `main`.
+
+---
+
+## Quick Start
+
+```bash
+npm install
+cp .env.example .env.local   # then fill GROQ_API_KEY if you need local AI chat
+npm run dev                  # http://localhost:3000
+```
+
+The app runs without any env vars except the AI chat (`/api/chat` returns 503 without
+`GROQ_API_KEY` by design) and GitHub Activity falls back gracefully. See `README.md` →
+Environment Variables for the full table. All env access goes through `src/lib/env.ts`.
+
+---
+
+## Workflow — Mandatory for Every Change
+
+### 1. Branch
+Always work on a dedicated branch. Never commit directly to `main`.
+
+```bash
+git checkout -b <type>/<short-description>
+# e.g. feat/add-dark-mode, fix/modal-close-button, docs/update-readme
+```
+
+Branch naming convention: `feat/`, `fix/`, `docs/`, `refactor/`, `security/`, `test/`.
+
+### 2. Code
+- Keep changes minimal and focused — no unrelated refactors.
+- Do not add abstractions beyond what the task requires.
+- Follow the existing code patterns in each file.
+- No comments unless the WHY is non-obvious.
+- No `console.log` in committed code (enforced by `removeConsole` in production).
+
+### 3. Tests — Required for every functional change
+Run the full test suite before committing:
+
+```bash
+npm test
+```
+
+**Rules:**
+- Every new component or feature must ship with tests in `src/__tests__/<ComponentName>.test.tsx`.
+- Every new API route must have a corresponding test file in `src/__tests__/api-<name>.test.ts`.
+- Every bug fix must include a regression test.
+- When a component is removed, delete its test file too.
+- Coverage threshold is **70% lines** (enforced by Jest). Do not lower it.
+- Tests must pass locally before pushing.
+- API route tests use a JSDoc block `/** @jest-environment node */` at the very top of the file (single-line `//` comment is not recognised by Jest). Browser APIs guarded by `typeof window !== "undefined"` in `jest.setup.ts`.
+
+Test commands:
+```bash
+npm test                  # run all tests once
+npm run test:watch        # watch mode during development
+npm run test:coverage     # run with coverage report
+```
+
+### 4. Lint & Build
+Run lint and build before opening a PR:
+
+```bash
+npm run lint
+npm run build
+```
+
+Both must pass with zero errors.
+
+### 5. Commit
+Write clear, conventional commit messages:
+
+```
+<type>(<scope>): <short summary>
+
+- bullet detail if needed
+```
+
+Types: `feat`, `fix`, `docs`, `refactor`, `test`, `security`, `chore`.
+
+### 6. Pull Request
+Always open a PR to merge into `main`. Never push directly.
+
+PR checklist:
+- [ ] Tests pass (`npm test`)
+- [ ] Lint passes (`npm run lint`)
+- [ ] Build passes (`npm run build`)
+- [ ] Tests added for new/changed functionality
+- [ ] Documentation updated if the feature surface changed
+- [ ] Security implications reviewed (see Security section)
+
+Merge method: **squash**.
+
+### 7. Documentation
+Keep the following in sync after every change:
+
+| File | Update when |
+|---|---|
+| `README.md` | Tech stack, features, project structure, commands, or env vars change |
+| `AGENTS.md` | Workflow, tooling, or project architecture changes |
+| `docs/COMPONENTS.md` | A component is added, removed, or its behavior/data shape/local state changes |
+| `docs/ARCHITECTURE.md` | A stack decision, data-layer shape, styling convention, or security control changes |
+| `docs/adr/` | An architectural decision changes or is reversed — write a new ADR and mark the old one Superseded; never leave an ADR contradicting the code |
+| `docs/ROADMAP.md` | A priority ships (move it to CHANGELOG), a new idea/debt item is confirmed, or a baseline metric changes |
+| `CHANGELOG.md` | Every merged PR gets an entry under `[Unreleased]` at merge time — don't let it fall behind |
+| `src/__tests__/` | Any component or API route is added, changed, or removed |
+
+If you add a feature → add it to the README features section.
+If you remove a feature → remove it from README, delete its tests, remove dead code.
+
+### 8. Deploy
+The Vercel deployment is triggered automatically when a PR is merged to `main`.
+No manual deploy step is needed — merging IS deploying.
+The CI pipeline (`ci.yml`) must be green before merging.
+
+---
+
+## Security Checklist
+
+Review the following on every PR:
+
+- [ ] No secrets, tokens, API keys, or credentials committed — use environment variables.
+- [ ] All env-var access goes through `src/lib/env.ts`. Server-only vars (GROQ_API_KEY, VERCEL_URL, GITHUB_TOKEN) must be accessed via exported functions — never as bare `process.env` in component or route files.
+- [ ] No new `dangerouslyAllowSVG` usages without a tight `contentSecurityPolicy`.
+- [ ] External URLs hardcoded in components must be trusted, static origins.
+- [ ] New `remotePatterns` in `next.config.ts` must be limited to the exact hostname needed — no wildcard hostnames.
+- [ ] HTTP security headers in `next.config.ts` must not be weakened. `unsafe-eval` must NOT be added to production CSP.
+- [ ] No `eval()`, `dangerouslySetInnerHTML`, or unescaped user input.
+- [ ] Dependencies added via `npm install` must be audited with `npm audit`.
+- [ ] Any new API route must implement: rate limiting, input validation (type + length), and fail-closed CORS headers.
+- [ ] User-supplied values must never be interpolated raw into LLM prompts — validate against an allowlist first.
+- [ ] New GitHub Actions must be pinned to a full commit SHA (not a mutable tag like `@v4`). Use Dependabot to keep them updated.
+- [ ] See [`SECURITY.md`](./SECURITY.md) for the full threat model and current control inventory.
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx              # Root layout — metadata, JSON-LD, fonts, providers, global overlays
+│   ├── page.tsx                # Server Component — fetches GitHub stats, renders <IntroGate>
+│   ├── globals.css             # Global styles, CSS custom properties, color tokens
+│   ├── opengraph-image.tsx     # Dynamic OG image (1200×630) generated via next/og
+│   ├── sitemap.ts              # Sitemap auto-generated by App Router
+│   ├── robots.ts               # robots.txt auto-generated by App Router
+│   └── api/
+│       ├── chat/
+│       │   └── route.ts        # Groq AI chat endpoint (rate-limited, input-validated, CORS)
+│       └── csp-report/
+│           └── route.ts        # CSP violation report receiver (report-uri target)
+├── middleware.ts               # Per-request CSP nonce generation + header injection
+├── components/
+│   ├── IntroGate.tsx           # Client Component — page composition + terminal-intro gating
+│   ├── Navbar.tsx              # Fixed top nav, smooth scroll, language & theme toggles
+│   ├── Hero.tsx                # Profile, typewriter, social links, CV download
+│   ├── StatsCounter.tsx        # Animated statistics counters
+│   ├── SkillsSlider.tsx        # Dual auto-scroll carousels with SkillsRadar
+│   ├── SkillsRadar.tsx         # Recharts radar chart for expertise areas
+│   ├── ProjectsGrid.tsx        # Filterable grid with modals (tag filter + pagination)
+│   ├── Timeline.tsx            # Career & education timeline (horizontal/vertical) with modals
+│   ├── GitHubActivity.tsx      # Live GitHub stats section (data fetched server-side via ISR)
+│   ├── Contact.tsx             # Email, WhatsApp, LinkedIn, GitHub contact cards
+│   ├── Footer.tsx              # Back-to-top button + author credit
+│   ├── AskFernando.tsx         # Floating AI chat widget (Groq-powered)
+│   ├── CommandPalette.tsx      # Cmd/Ctrl+K command palette overlay (navigation + actions)
+│   ├── InteractiveTerminal.tsx # Persistent interactive terminal widget (Ctrl+` or navbar)
+│   ├── DecryptText.tsx         # Scramble-and-resolve heading animation (a11y + reduced-motion safe)
+│   ├── TerminalIntro.tsx       # One-time terminal boot animation
+│   ├── AnimatedSection.tsx     # Scroll-triggered Framer Motion entrance animations
+│   ├── PointerOnlyEffects.tsx  # Gates CustomCursor/MouseSpotlight behind (pointer: fine)
+│   ├── CustomCursor.tsx        # Custom animated cursor (pointer devices only)
+│   ├── MouseSpotlight.tsx      # Mouse-following radial spotlight overlay
+│   ├── ScrollProgressBar.tsx   # Fixed top reading-progress bar
+│   ├── SkipLink.tsx            # Accessibility skip-to-content link
+│   └── ErrorBoundary.tsx       # React class ErrorBoundary for per-section failure isolation
+├── context/
+│   ├── LanguageContext.tsx     # EN / PT-BR language state (React Context + document.lang sync)
+│   └── ThemeContext.tsx        # Dark / light theme state (React Context)
+├── hooks/
+│   ├── useEscapeKey.ts         # Shared Escape-key listener (used by all modal components)
+│   └── useFocusTrap.ts         # WCAG 2.4.7 focus trap for modal dialogs (save + restore focus)
+└── lib/
+    ├── env.ts                  # Centralised env-var access — server vars as functions, public as constants
+    ├── github.ts               # Server-only GitHub API fetch (ISR, fails closed) for GitHubActivity
+    ├── projects.ts             # Project data array (extracted from ProjectsGrid)
+    ├── translations.ts         # All UI strings for EN and PT-BR
+    └── uiEvents.ts             # CustomEvent names + dispatch helpers for palette/terminal overlays
+
+src/__tests__/                  # One test file per component + one per API route
+    └── hooks/                  # Hook-specific tests (useFocusTrap, useEscapeKey)
+__mocks__/                      # Static file stubs for Jest
+.github/
+├── workflows/ci.yml            # CI: lint → test → build on every PR and push to main (SHA-pinned)
+└── dependabot.yml              # Automated dependency update PRs (npm + GitHub Actions, weekly)
+.claude/commands/               # Claude Code slash commands (scaffolding + security check)
+SECURITY.md                     # Full security architecture documentation
+public/
+├── fernando-ghiberti-cv-en.pdf
+├── llms.txt                    # Site summary for AI crawlers (llmstxt.org convention)
+└── images/
+    └── move-it.svg             # Local placeholder (no third-party image services)
+```
+
+---
+
+## Color System
+
+CSS custom properties defined in `globals.css` drive all accent colors. Always use these variables — never hardcode `#14b8a6` or `#3b82f6` directly in components.
+
+| Token | Dark mode | Light mode | WCAG contrast on bg |
+|---|---|---|---|
+| `--accent-teal` | `#14b8a6` (teal-400) | `#0f766e` (teal-700) | 4.6:1 ✅ |
+| `--accent-blue` | `#3b82f6` (blue-500) | `#1d4ed8` (blue-700) | 5.7:1 ✅ |
+| `--gradient-accent` | `linear-gradient(135deg, teal, blue)` | same direction, darker stops | — |
+| `--gradient-accent-r` | same, `to right` direction | same | — |
+
+Light mode Tailwind class overrides (`.text-teal-400`, `.bg-teal-400`, `.from-teal-400`, etc.) are declared in `globals.css` — do not add per-component overrides.
+
+---
+
+## Testing Conventions
+
+- Use `@testing-library/react` — test behavior, not implementation.
+- Do not test internal state or implementation details.
+- Prefer `getByRole`, `getByText`, `getByLabelText` over `getByTestId`.
+- Use `data-testid` only as a last resort when no semantic query works.
+- Mock external dependencies (e.g. `typewriter-effect`, `next/image`, `next/font`) at the top of the test file.
+- Each describe block maps to one component. Group tests by feature within the block.
+- API route tests must be in a `.test.ts` (not `.tsx`) file with `/** @jest-environment node */` JSDoc block at the very top.
+- Prefer `userEvent` (from `@testing-library/user-event`) over `fireEvent` for simulating user interactions. Use `const user = userEvent.setup()` inside each test and `await user.click(...)` / `await user.type(...)` / `await user.keyboard('{Enter}')`. Exceptions: `fireEvent.keyDown(document, ...)` for document-level listeners, and `fireEvent.scroll` (no userEvent equivalent).
+- For keyboard events on `document` listeners (e.g. `useEscapeKey`), use `fireEvent.keyDown(document, ...)` — NOT `fireEvent.keyDown(window, ...)`. JSDOM does not propagate window events to document.
+- When testing components with fake timers that drive multiple React state transitions (e.g. TerminalIntro), use an iterative loop (`for (let i = 0; i < N; i++) { act(() => jest.advanceTimersByTime(delta)); }`) — a single `advanceTimersByTime` only flushes one React update cycle.
+- Hook tests go in `src/__tests__/hooks/<hookName>.test.ts`. New hooks in `src/hooks/` must have a test file.
+
+Minimum test coverage per component:
+- Renders without crashing
+- Renders key content (headings, labels, links)
+- Interactive behavior (clicks, toggles, modals)
+- Edge cases relevant to the component's logic
+
+Minimum test coverage per API route:
+- Happy path returns expected response
+- Input validation returns 400 for each invalid field
+- Rate limiting returns 429
+- Missing env var returns 503
+
+---
+
+## Tech Stack Reference
+
+| Layer | Technology | Version |
+|---|---|---|
+| Framework | Next.js (App Router) | 15.x |
+| Language | TypeScript | 5.x |
+| Styling | Tailwind CSS | 3.x |
+| Icons | Font Awesome React | 6.x |
+| Carousel | React Slick | 0.30.x |
+| Animation | Typewriter Effect | 2.x |
+| Motion | Framer Motion | 12.x |
+| Charts | Recharts | 3.x |
+| AI | Groq SDK (LLaMA 3.3-70b) | — |
+| Testing | Jest + React Testing Library | 30.x / 16.x |
+| CI/CD | GitHub Actions + Vercel | — |
+
+---
+
+## Commands Reference
+
+```bash
+npm run dev            # start dev server at localhost:3000
+npm run build          # production build (must pass before PR)
+npm run lint           # ESLint check (must pass before PR)
+npm test               # run all tests (must pass before PR)
+npm run test:coverage  # tests + coverage report
+```
