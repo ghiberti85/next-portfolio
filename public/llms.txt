@@ -1,0 +1,29 @@
+# Fernando Ghiberti
+
+> Senior Full-Stack Engineer — React, Next.js, Node.js, TypeScript. Personal portfolio with live GitHub activity, an AI-powered "Ask Fernando" chat assistant, and a project showcase.
+
+Based in Vinhedo, São Paulo, Brazil. 8+ years building scalable web applications, leading front-end architecture, design systems, and engineering teams.
+
+## Profile
+
+- [About & Experience](https://fernando-ghiberti.vercel.app/#hero): Introduction, role, and social links.
+- [Skills](https://fernando-ghiberti.vercel.app/#skills): Core stack — React, Next.js, TypeScript, Node.js, PostgreSQL, Supabase, Tailwind CSS, and AI integrations.
+- [Timeline](https://fernando-ghiberti.vercel.app/#timeline): Career history and education.
+- [GitHub Activity](https://fernando-ghiberti.vercel.app/#github-activity): Live public repo stats, top languages, and recently updated repos.
+- [Contact](https://fernando-ghiberti.vercel.app/#contact): Email, WhatsApp, LinkedIn, and GitHub.
+
+## Projects
+
+- [AI Code Reviewer](https://github.com/ghiberti85/ai-code-reviewer): AI-powered static code analysis tool (React, TypeScript, Groq).
+- [DevInterviewLab](https://github.com/ghiberti85/devinterviewlab): AI-assisted technical interview practice platform (Next.js, Supabase, Groq).
+- [Interview Command Center](https://github.com/ghiberti85/interview-command-center): Interview preparation dashboard (React, Vite, Claude AI).
+- [Ghiberti UI](https://github.com/ghiberti85/ui): Open-source design-system monorepo (Turborepo, Storybook, Radix UI).
+- [Finanças do Casal](https://github.com/ghiberti85/financa-casal): Couples finance tracker with JWT-secured row-level security (React, Vite, Supabase).
+- [Philosophia](https://github.com/ghiberti85/philosophia): Bilingual PWA (Next.js, i18n, DALL-E).
+
+## Optional
+
+- [Resume / CV (PDF)](https://fernando-ghiberti.vercel.app/fernando-ghiberti-cv-en.pdf)
+- [Sitemap](https://fernando-ghiberti.vercel.app/sitemap.xml)
+- [GitHub profile](https://github.com/ghiberti85)
+- [LinkedIn](https://linkedin.com/in/fernando-ghiberti)
