@@ -140,14 +140,28 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const nonce = (await headers()).get("x-nonce") ?? "";
+  // Reading headers() forces this route to render dynamically per request,
+  // which Next.js's own nonce-based CSP script injection requires (its
+  // internal inline scripts are threaded with the same per-request nonce
+  // middleware sets — that only stays consistent if the route isn't
+  // statically cached). We don't consume the header's value ourselves: see
+  // the comment on the JSON-LD <script> below for why.
+  await headers();
 
   return (
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" type="image/x-icon" />
+        {/*
+          No CSP nonce on this script on purpose: `application/ld+json` is
+          inert data, never executed as script, so `script-src` doesn't
+          govern it. Giving it the per-request nonce caused a hydration
+          mismatch — the value used to render this attribute during SSR
+          didn't consistently match what hydration expected, forcing React
+          to discard the SSR output and fully re-render client-side on
+          every load (a major, largely invisible perf hit — see CHANGELOG).
+        */}
         <script
-          nonce={nonce}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />

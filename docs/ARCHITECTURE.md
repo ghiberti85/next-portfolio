@@ -141,9 +141,13 @@ switch (single-column → multi-column; horizontal timeline track only exists at
 Full details and control inventory in [`SECURITY.md`](../SECURITY.md). Summary:
 
 - **Per-request CSP nonce** — `src/middleware.ts` generates a nonce per request, injects it as the
-  `x-nonce` request header (read by `layout.tsx` via `headers()`) and as `'nonce-{nonce}'` in the
-  `script-src` directive. No `unsafe-eval` in production; `report-uri /api/csp-report` is backed by
-  a real endpoint.
+  `x-nonce` request header and as `'nonce-{nonce}'` in the `script-src` directive. Next.js threads
+  this nonce through to its own internal inline (hydration/bootstrap) scripts automatically, but
+  only if the route renders dynamically per request — `layout.tsx` calls `headers()` (ignoring the
+  return value) purely to force that. It does *not* apply the nonce to the JSON-LD `<script
+  type="application/ld+json">` — that's inert data, never executed as script, so `script-src`
+  doesn't govern it; giving it a nonce previously caused a hydration mismatch (see CHANGELOG). No
+  `unsafe-eval` in production; `report-uri /api/csp-report` is backed by a real endpoint.
 - **Static HTTP headers** (`next.config.ts` → `headers()`): HSTS, `X-Frame-Options: SAMEORIGIN`,
   `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy` (camera/mic/geo disabled).
 - **`src/lib/env.ts`** — the only place server secrets (`GROQ_API_KEY`, `VERCEL_URL`,
