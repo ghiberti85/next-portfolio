@@ -8,6 +8,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- `AGENTS.md` — canonical, model-agnostic instruction set for AI agents (mandatory workflow, security checklist, conventions, updated project structure, documentation map, quick start). `CLAUDE.md` is now a short pointer to it, so all tooling (Claude Code, opencode, Codex, Cursor, …) reads the same rules from one place.
+- `.env.example` — environment template (`GROQ_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `GITHUB_TOKEN`) so agents and new setups can bootstrap without guessing variable names. `.gitignore` gains an `!.env.example` opt-in so the template is tracked while real env files stay ignored.
+- `docs/ROADMAP.md` — forward-looking priorities (mobile PageSpeed ≥ 97; programmatic PageSpeed Insights API checks), backlog, and technical-debt tracker, so incoming agents know where the project is going, not just how it works.
+- `README.md` — new "Development & AI Agents" section pointing at `AGENTS.md`; env-var setup now references `.env.example`.
 - **Hero** — added a WhatsApp icon alongside Email, LinkedIn, and GitHub in the social row, matching the four contact channels already offered in `<Contact />`.
 - Explicit `viewport` export with light/dark `themeColor` in `layout.tsx`.
 - `ProfilePage` node added to the home JSON-LD `@graph` (wraps the existing `Person`/`WebSite`), plus `inLanguage` on the profile and website nodes.
@@ -17,6 +21,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `public/llms.txt` — a static, [llmstxt.org](https://llmstxt.org)-convention summary of the site for AI agents/crawlers (profile sections, projects, CV, sitemap). Added after Lighthouse's experimental "Agentic Browsing" category flagged it as inapplicable; the category's other checks (WebMCP form/tool/schema audits) aren't relevant to a static portfolio with no agent-invokable tools, so weren't pursued.
 
 ### Changed
+- `.claude/commands/new-component.md` resynced with current conventions: `.glass-card` class instead of hand-rolled inline glassmorphism, `DecryptText` heading fed by `translations.ts`, section composition in `IntroGate.tsx` (was wrongly pointing at `page.tsx`), and the `ErrorBoundary`/`AnimatedSection` wrapper rule.
 - Downloadable CV (`public/fernando-ghiberti-cv-en.pdf`) refreshed with a newer revision. Same filename — no code changes required.
 - `robots.ts` now `disallow`s `/api/` so the chat and CSP-report endpoints are excluded from indexing.
 - Home `<meta name="description">` trimmed to 155 characters (from 175) for clean SERP display, still leading with name + stack.

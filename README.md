@@ -167,7 +167,21 @@ npm run test:coverage
 | `VERCEL_URL` | No | Injected automatically by Vercel. Used as fallback CORS origin when `NEXT_PUBLIC_SITE_URL` is not set. |
 | `GITHUB_TOKEN` | No | Optional GitHub token to raise API rate limits for the GitHub Activity section. Unauthenticated access (60 req/h) is enough with hourly ISR. |
 
-Create a `.env.local` file at the root with the variables above for local AI chat support.
+Copy the environment template and fill in what you need:
+
+```bash
+cp .env.example .env.local
+```
+
+---
+
+## Development & AI Agents
+
+This repository is maintained with AI coding agents as first-class contributors.
+**[`AGENTS.md`](./AGENTS.md)** is the canonical instruction set for any agent working here —
+mandatory workflow (branch → test → lint → build → PR), security checklist, conventions,
+and project structure. Supporting docs live in [`docs/`](./docs): architecture, per-component
+reference, ADRs, and the [roadmap](./docs/ROADMAP.md).
 
 ---
 

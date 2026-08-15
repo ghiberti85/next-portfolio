@@ -163,7 +163,7 @@ fall back to a teal glow.
 - Stroke/fill/grid/tooltip colors adapt to the active theme via `useTheme()`.
 
 ### Do not
-- Hardcode teal/blue hex values — read them conditionally from `theme === "light"` to stay WCAG AA compliant in both modes (see Color System in `CLAUDE.md`).
+- Hardcode teal/blue hex values — read them conditionally from `theme === "light"` to stay WCAG AA compliant in both modes (see Color System in `AGENTS.md`).
 
 ---
 

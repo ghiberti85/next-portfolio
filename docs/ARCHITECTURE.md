@@ -121,7 +121,7 @@ adapts correctly between dark and light mode:
 | `--gradient-accent` | `linear-gradient(135deg, teal, blue)` | darker stops, same direction | — |
 
 Never hardcode `#14b8a6`/`#3b82f6` in a component — read the variable. Full token list and rules in
-`CLAUDE.md` → Color System.
+`AGENTS.md` → Color System.
 
 ### Theme & Language
 `ThemeContext` (dark/light, `localStorage`-persisted) and `LanguageContext` (EN/PT-BR,
