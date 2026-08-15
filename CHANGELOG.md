@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- Downloadable CV (`public/fernando-ghiberti-cv-en.pdf`) refreshed with a newer revision. Same filename — no code changes required.
+
 ### Fixed
 - **SEO — canonical domain corrected to `fernando-ghiberti.vercel.app`** across `layout.tsx` (`metadataBase`, canonical, Open Graph, JSON-LD), `sitemap.ts`, `robots.ts`, the OG image, and `README.md`. The codebase had been split between two domains.
 - Removed stray `public/robot.txt` — misnamed (never served at `/robots.txt`), pointed at the wrong domain, and duplicated by the dynamic `robots.ts`. The App Router `robots.ts`/`sitemap.ts` are now the single source of truth.
