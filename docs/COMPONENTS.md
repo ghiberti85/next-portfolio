@@ -394,9 +394,10 @@ percentages, and **fails closed**: any error (network, non-2xx, thrown exception
 - Types out a fixed sequence of `{ cmd, out }` lines (from `t[lang].terminal.lines`) character by character.
 - `onDone` fires after the last line finishes (plus a short pause); `IntroGate` marks `sessionStorage["portfolio-intro-seen"]` and crossfades the overlay itself out, revealing the (already-painted) page underneath.
 - A "Skip intro" button calls `onDone` immediately.
+- `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN` are ~2.4x faster on mobile viewports (`matchMedia("(max-width: 1023px)")`, checked once at mount via a lazy `useState` initializer — this component only ever mounts client-side, never during SSR). Desktop keeps the original, slower pacing. Mobile PageSpeed audits always simulate a first-time visit, so this animation's full duration counts directly against Speed Index/TBT on every run; desktop was already scoring well and didn't need it.
 
 ### Do not
-- Slow down `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN` — they were tuned down once already to fix an LCP/Speed-Index regression (see CHANGELOG 1.9.0), and a second regression of the same shape (page content itself gated behind the intro) was fixed in the mobile-performance pass — see CHANGELOG.
+- Slow down the desktop `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN` values, or the mobile ones back toward the desktop pace — both were tuned to fix LCP/Speed-Index regressions (see CHANGELOG 1.9.0 and the mobile-performance pass), and this is now the second time the same class of regression (this animation's duration counting against paint/visual-completeness metrics) has needed a fix.
 
 ---
 
