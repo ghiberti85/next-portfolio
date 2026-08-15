@@ -272,7 +272,6 @@ const t = {
       topLanguages: "Top languages",
       recentRepos: "Recently updated",
       updated: "Updated",
-      viewProfile: "View full profile",
     },
   },
 
@@ -539,7 +538,6 @@ const t = {
       topLanguages: "Principais linguagens",
       recentRepos: "Atualizados recentemente",
       updated: "Atualizado",
-      viewProfile: "Ver perfil completo",
     },
   },
 };

@@ -76,12 +76,4 @@ describe("GitHubActivity", () => {
     expect(repoLinks[0]).toHaveAttribute("rel", "noopener noreferrer");
     expect(screen.getByText("Personal portfolio")).toBeInTheDocument();
   });
-
-  it("renders the profile link", () => {
-    renderWithProviders(<GitHubActivity data={stats} />);
-    expect(screen.getByRole("link", { name: /view full profile/i })).toHaveAttribute(
-      "href",
-      "https://github.com/ghiberti85"
-    );
-  });
 });
