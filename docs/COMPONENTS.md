@@ -81,7 +81,7 @@ Two-column (`lg:flex-row`): left = glassmorphism card with photo, name, role, so
 |---|---|
 | Profile photo | `next/image` from `github.com/ghiberti85.png`, `priority` + `loading="eager"` (LCP element) |
 | Typewriter | `typewriter-effect` (dynamic import, `ssr: false`); separate string sets for mobile vs. desktop |
-| Social icons | GitHub, LinkedIn, Email — Font Awesome brand icons |
+| Social icons | Email, WhatsApp, LinkedIn, GitHub — Font Awesome brand icons, same four channels as `<Contact />` |
 | CV download | `<a href="/fernando-ghiberti-cv-en.pdf" download>` |
 
 ### Do not

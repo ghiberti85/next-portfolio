@@ -1,7 +1,7 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faLinkedin, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faFileDownload } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -53,9 +53,14 @@ export default function Hero() {
         {/* Social Icons */}
         <div className="flex space-x-6 mt-4" style={{ color: "var(--color-text)" }}>
           {[
-            { icon: faGithub, link: "https://github.com/ghiberti85", label: "GitHub Profile" },
-            { icon: faLinkedin, link: "https://linkedin.com/in/fernando-ghiberti", label: "LinkedIn Profile" },
             { icon: faEnvelope, link: "mailto:ghiberti85@gmail.com", label: "Send an Email" },
+            {
+              icon: faWhatsapp,
+              link: "https://wa.me/5511996186115?text=Hello%20Fernando,%20I%20found%20your%20portfolio%20and%20I'd%20like%20to%20talk!",
+              label: "Chat on WhatsApp",
+            },
+            { icon: faLinkedin, link: "https://linkedin.com/in/fernando-ghiberti", label: "LinkedIn Profile" },
+            { icon: faGithub, link: "https://github.com/ghiberti85", label: "GitHub Profile" },
           ].map(({ icon, link, label }, idx) => (
             <a
               key={idx}

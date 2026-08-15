@@ -23,6 +23,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Home `<meta name="description">` trimmed to 155 characters (from 175) for clean SERP display, still leading with name + stack.
 
 ### Added
+- **Hero** — added a WhatsApp icon alongside Email, LinkedIn, and GitHub in the social row, matching the four contact channels already offered in `<Contact />`.
 - Explicit `viewport` export with light/dark `themeColor` in `layout.tsx`.
 - `ProfilePage` node added to the home JSON-LD `@graph` (wraps the existing `Person`/`WebSite`), plus `inLanguage` on the profile and website nodes.
 - `src/__tests__/seo-metadata-routes.test.ts` covering `robots.ts` and `sitemap.ts` (rules, `/api/` disallow, correct production domain).
