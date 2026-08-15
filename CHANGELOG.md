@@ -7,26 +7,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### Changed
-- Downloadable CV (`public/fernando-ghiberti-cv-en.pdf`) refreshed with a newer revision. Same filename — no code changes required.
-
-### Fixed
-- **SEO — canonical domain corrected to `fernando-ghiberti.vercel.app`** across `layout.tsx` (`metadataBase`, canonical, Open Graph, JSON-LD), `sitemap.ts`, `robots.ts`, the OG image, and `README.md`. The codebase had been split between two domains.
-- Removed stray `public/robot.txt` — misnamed (never served at `/robots.txt`), pointed at the wrong domain, and duplicated by the dynamic `robots.ts`. The App Router `robots.ts`/`sitemap.ts` are now the single source of truth.
-- **Timeline (desktop)** — the horizontal gradient line's fill was scroll-scrubbed (`useScroll`/`useSpring`), but the whole row is already visible without vertical scrolling, so it visually stalled partway and looked broken. The desktop line is now a static, fully-filled gradient; the mobile left-rail line keeps its scroll-linked reveal, where it makes sense.
-
-### Removed
-- **GitHubActivity** — dropped the "View full profile" CTA at the bottom of the section; the GitHub link already lives in the `<Contact />` cards, so it was a redundant, unused `viewProfile` translation key plus an extra external link doing the same thing.
-
-### Changed
-- `robots.ts` now `disallow`s `/api/` so the chat and CSP-report endpoints are excluded from indexing.
-- Home `<meta name="description">` trimmed to 155 characters (from 175) for clean SERP display, still leading with name + stack.
-
 ### Added
 - **Hero** — added a WhatsApp icon alongside Email, LinkedIn, and GitHub in the social row, matching the four contact channels already offered in `<Contact />`.
 - Explicit `viewport` export with light/dark `themeColor` in `layout.tsx`.
 - `ProfilePage` node added to the home JSON-LD `@graph` (wraps the existing `Person`/`WebSite`), plus `inLanguage` on the profile and website nodes.
 - `src/__tests__/seo-metadata-routes.test.ts` covering `robots.ts` and `sitemap.ts` (rules, `/api/` disallow, correct production domain).
+
+### Changed
+- Downloadable CV (`public/fernando-ghiberti-cv-en.pdf`) refreshed with a newer revision. Same filename — no code changes required.
+- `robots.ts` now `disallow`s `/api/` so the chat and CSP-report endpoints are excluded from indexing.
+- Home `<meta name="description">` trimmed to 155 characters (from 175) for clean SERP display, still leading with name + stack.
+
+### Removed
+- **GitHubActivity** — dropped the "View full profile" CTA at the bottom of the section; the GitHub link already lives in the `<Contact />` cards, so it was a redundant, unused `viewProfile` translation key plus an extra external link doing the same thing.
+
+### Fixed
+- **SEO — canonical domain corrected to `fernando-ghiberti.vercel.app`** across `layout.tsx` (`metadataBase`, canonical, Open Graph, JSON-LD), `sitemap.ts`, `robots.ts`, the OG image, and `README.md`. The codebase had been split between two domains.
+- Removed stray `public/robot.txt` — misnamed (never served at `/robots.txt`), pointed at the wrong domain, and duplicated by the dynamic `robots.ts`. The App Router `robots.ts`/`sitemap.ts` are now the single source of truth.
+- **Timeline (desktop)** — the horizontal gradient line's fill was scroll-scrubbed (`useScroll`/`useSpring`), but the whole row is already visible without vertical scrolling, so it visually stalled partway and looked broken. The desktop line is now a static, fully-filled gradient; the mobile left-rail line keeps its scroll-linked reveal, where it makes sense.
 
 ### Docs
 - `CHANGELOG.md` backfilled with everything from v1.5.0 through v2.1.1 (previously last updated 2026-06-04, 8 releases behind).
