@@ -80,4 +80,41 @@ describe("TerminalIntro", () => {
     expect(screen.getByText("▋")).toBeInTheDocument();
     jest.useRealTimers();
   });
+
+  it("completes faster on mobile viewports — PageSpeed always audits a first visit, so this animation's duration counts directly against Speed Index/TBT on mobile", () => {
+    jest.useFakeTimers();
+
+    const onDoneDesktop = jest.fn();
+    const { unmount } = renderWithProviders(<TerminalIntro onDone={onDoneDesktop} />);
+    let desktopIterations = 0;
+    for (; desktopIterations < 500 && onDoneDesktop.mock.calls.length === 0; desktopIterations++) {
+      act(() => { jest.advanceTimersByTime(30); });
+    }
+    expect(onDoneDesktop).toHaveBeenCalled();
+    unmount();
+
+    const originalMatchMedia = window.matchMedia;
+    window.matchMedia = jest.fn().mockImplementation((query: string) => ({
+      matches: true,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
+
+    const onDoneMobile = jest.fn();
+    renderWithProviders(<TerminalIntro onDone={onDoneMobile} />);
+    let mobileIterations = 0;
+    for (; mobileIterations < 500 && onDoneMobile.mock.calls.length === 0; mobileIterations++) {
+      act(() => { jest.advanceTimersByTime(30); });
+    }
+    expect(onDoneMobile).toHaveBeenCalled();
+    expect(mobileIterations).toBeLessThan(desktopIterations);
+
+    window.matchMedia = originalMatchMedia;
+    jest.useRealTimers();
+  });
 });

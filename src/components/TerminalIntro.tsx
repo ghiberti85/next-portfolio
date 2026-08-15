@@ -18,9 +18,17 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
   const [outChars, setOutChars] = useState(0);
   const [phase, setPhase] = useState<"cmd" | "out" | "pause">("cmd");
   const bottomRef = useRef<HTMLDivElement>(null);
-  const SPEED_CMD = 22;
-  const SPEED_OUT = 9;
-  const PAUSE_BETWEEN = 180;
+  // Mobile PageSpeed audits always simulate a first-time visit, so this
+  // animation's full duration counts directly against Speed Index/TBT on
+  // every run. Desktop is already scoring well, so only mobile gets the
+  // faster pacing — computed once at mount (this component never renders
+  // during SSR, so `window` is always available here).
+  const [isMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches
+  );
+  const SPEED_CMD = isMobile ? 9 : 22;
+  const SPEED_OUT = isMobile ? 4 : 9;
+  const PAUSE_BETWEEN = isMobile ? 70 : 180;
 
   useEffect(() => {
     setLines([]);
@@ -64,7 +72,7 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
         return () => clearTimeout(timer);
       }
     }
-  }, [currentLine, phase, cmdChars, outChars, tr.lines, onDone]);
+  }, [currentLine, phase, cmdChars, outChars, tr.lines, onDone, SPEED_CMD, SPEED_OUT, PAUSE_BETWEEN]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
