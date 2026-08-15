@@ -17,6 +17,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Downloadable CV (`public/fernando-ghiberti-cv-en.pdf`) refreshed with a newer revision. Same filename — no code changes required.
 - `robots.ts` now `disallow`s `/api/` so the chat and CSP-report endpoints are excluded from indexing.
 - Home `<meta name="description">` trimmed to 155 characters (from 175) for clean SERP display, still leading with name + stack.
+- **Timeline — professional experience cards synced with the updated CV** (EN and PT-BR): `+A Educação`'s period changed from "2022 – Present" to "2022 – 2026" (the CV lists it as ended) and its title/bullets now reflect the CMS migration, design system, and team-lead scope; EBANX's title gained the "(Mid-Senior)" qualifier; the freelance/personal-projects entry now lists the actual shipped projects (DevFactory, Ghiberti UI, DevInterviewLab, Interview Command Center, Finanças do Casal) instead of generic bullets.
 
 ### Removed
 - **GitHubActivity** — dropped the "View full profile" CTA at the bottom of the section; the GitHub link already lives in the `<Contact />` cards, so it was a redundant, unused `viewProfile` translation key plus an extra external link doing the same thing.
