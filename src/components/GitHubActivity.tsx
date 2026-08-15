@@ -1,8 +1,7 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faCodeBranch, faUsers, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faStar, faCodeBranch, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import t from "@/lib/translations";
 import type { GitHubStats } from "@/lib/github";
@@ -129,20 +128,6 @@ export default function GitHubActivity({ data }: GitHubActivityProps) {
             ))}
           </ul>
         </div>
-      </div>
-
-      <div className="text-center mt-10">
-        <a
-          href={data.profileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-white font-semibold hover:scale-105 transition-transform"
-          style={{ background: "var(--gradient-accent)" }}
-        >
-          <FontAwesomeIcon icon={faGithub} />
-          {tr.viewProfile}
-          <FontAwesomeIcon icon={faExternalLinkAlt} className="text-xs" />
-        </a>
       </div>
     </section>
   );

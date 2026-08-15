@@ -160,19 +160,13 @@ export default function Timeline() {
 
             {/* Central horizontal line — centered at 200px from content top (dot center) */}
             <div
-              className="absolute left-0 right-0 h-0.5 pointer-events-none overflow-hidden"
-              style={{ top: "calc(20px + 200px)", background: "var(--card-border)" }}
+              className="absolute left-0 right-0 h-0.5 pointer-events-none"
+              style={{
+                top: "calc(20px + 200px)",
+                background: "linear-gradient(to right, var(--accent-teal), var(--accent-blue))",
+              }}
               aria-hidden="true"
-            >
-              <motion.div
-                className="h-full origin-left"
-                style={{
-                  scaleX: lineProgress,
-                  width: "100%",
-                  background: "linear-gradient(to right, var(--accent-teal), var(--accent-blue))",
-                }}
-              />
-            </div>
+            />
 
             {timelineItems.map((item) => {
               const isProfessional = item.type === "professional";

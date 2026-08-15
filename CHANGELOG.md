@@ -10,6 +10,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - **SEO — canonical domain corrected to `fernando-ghiberti.vercel.app`** across `layout.tsx` (`metadataBase`, canonical, Open Graph, JSON-LD), `sitemap.ts`, `robots.ts`, the OG image, and `README.md`. The codebase had been split between two domains.
 - Removed stray `public/robot.txt` — misnamed (never served at `/robots.txt`), pointed at the wrong domain, and duplicated by the dynamic `robots.ts`. The App Router `robots.ts`/`sitemap.ts` are now the single source of truth.
+- **Timeline (desktop)** — the horizontal gradient line's fill was scroll-scrubbed (`useScroll`/`useSpring`), but the whole row is already visible without vertical scrolling, so it visually stalled partway and looked broken. The desktop line is now a static, fully-filled gradient; the mobile left-rail line keeps its scroll-linked reveal, where it makes sense.
+
+### Removed
+- **GitHubActivity** — dropped the "View full profile" CTA at the bottom of the section; the GitHub link already lives in the `<Contact />` cards, so it was a redundant, unused `viewProfile` translation key plus an extra external link doing the same thing.
 
 ### Changed
 - `robots.ts` now `disallow`s `/api/` so the chat and CSP-report endpoints are excluded from indexing.

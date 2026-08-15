@@ -215,9 +215,8 @@ interface TimelineItemData {
 Data lives in `t[lang].timeline.items` (no `location` field — removed as dead data in the 1.13.0 cleanup).
 
 ### Layout
-- Desktop (`lg:`): horizontal scroll track with a centered gradient line; professional cards anchored above it, education cards below; a colored `<Dot>` (teal/blue) sits between each card and the line. Scroll arrows shift by 320px.
-- Mobile: left-rail vertical line, cards full-width to the right of the rail, dot centered on the line at each card.
-- `useScroll` + `useSpring` drive the line's fill progress as the section scrolls into view.
+- Desktop (`lg:`): horizontal scroll track with a centered gradient line, fully filled statically (the whole row is visible without vertical scrolling, so a scroll-scrubbed fill only ever looked half-drawn); professional cards anchored above it, education cards below; a colored `<Dot>` (teal/blue) sits between each card and the line. Scroll arrows shift by 320px.
+- Mobile: left-rail vertical line, cards full-width to the right of the rail, dot centered on the line at each card. `useScroll` + `useSpring` still drive this line's fill progress as the section scrolls into view, since cards are revealed progressively down the page.
 
 ### Local state
 | State | Type | Purpose |
@@ -234,7 +233,7 @@ Data lives in `t[lang].timeline.items` (no `location` field — removed as dead 
 
 **File:** `src/components/GitHubActivity.tsx`
 **Type:** Client Component, fed by server data
-**Responsibility:** Renders live GitHub stats (public repos, stars, followers), a top-languages bar chart, and recently updated repos.
+**Responsibility:** Renders live GitHub stats (public repos, stars, followers), a top-languages bar chart, and recently updated repos. No "view full profile" CTA — the GitHub link already lives in `<Contact />`.
 
 ### Data flow
 `page.tsx` (Server Component) calls `getGitHubStats()` from `src/lib/github.ts` at request time
