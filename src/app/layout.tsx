@@ -132,7 +132,7 @@ export default async function RootLayout({
   // Reading headers() forces this route to render dynamically per request,
   // which Next.js's own nonce-based CSP script injection requires (its
   // internal inline scripts are threaded with the same per-request nonce
-  // middleware sets — that only stays consistent if the route isn't
+  // src/proxy.ts sets — that only stays consistent if the route isn't
   // statically cached). We don't consume the header's value ourselves: see
   // the comment on the JSON-LD <script> below for why.
   await headers();

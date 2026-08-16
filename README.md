@@ -237,11 +237,11 @@ Key achievements:
 
 See [`SECURITY.md`](./SECURITY.md) for the full security architecture. Summary below.
 
-### HTTP Layer (`next.config.ts` + `src/middleware.ts`)
+### HTTP Layer (`next.config.ts` + `src/proxy.ts`)
 
 | Header | Value |
 |---|---|
-| `Content-Security-Policy` | Per-request nonce via middleware. No `unsafe-eval` in production. `report-uri /api/csp-report`. |
+| `Content-Security-Policy` | Per-request nonce via `proxy.ts`. No `unsafe-eval` in production. `report-uri /api/csp-report`. |
 | `X-Frame-Options` | `SAMEORIGIN` — prevents clickjacking |
 | `X-Content-Type-Options` | `nosniff` — blocks MIME-type sniffing |
 | `Strict-Transport-Security` | Forces HTTPS with 2-year max-age and preload |
