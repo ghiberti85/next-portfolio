@@ -36,8 +36,23 @@ Constraints:
 
 ### 2. Get Best Practices to 100 (mobile + desktop)
 
-Currently 96/100 on both. Use `npm run psi` to see the current failing audits and work
-through them.
+Currently 96/100 on both, and — confirmed by filtering `npm run psi`'s output by the
+category's actual `auditRefs`, not just any audit with score < 1 — `errors-in-console`
+(a React error #418 hydration mismatch) is the **only** failing audit in this category
+on either strategy. Nothing else to fix here.
+
+That error resisted 5 separate, targeted fixes in one session (see CHANGELOG "Fixed"
+entries and closed PRs #108, #110, #111, #112 for the full elimination trail):
+Typewriter's `ssr:false` boundary, SkillsSlider's `AnimatedSection` wrapper, the
+`useLayoutEffect` timing in `IntroGate`, and a deliberate delay between SkillsSlider's
+chunk load and TerminalIntro's timer chain. It only reproduces under real Lighthouse
+CPU throttling — never locally (`dev`, `next start`), nor via a real-network headless
+repro against the live URL without throttling — so it's a genuine timing-sensitive race
+inside React/Next's own hydration machinery, not a static SSR/CSR content mismatch in
+app code.
+
+Next step: re-check after the Next 16 migration below before attempting further guesses
+— it's plausible this is a Next 15.5.x-specific issue, same as the DevTools bundling bug.
 
 ### 3. Migrate to Next.js 16
 
