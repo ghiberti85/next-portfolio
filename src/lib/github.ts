@@ -8,7 +8,7 @@ import { githubToken } from "@/lib/env";
 const GITHUB_USER = "ghiberti85";
 const REVALIDATE_SECONDS = 3600;
 
-export interface GitHubRepo {
+interface GitHubRepo {
   name: string;
   description: string | null;
   url: string;
@@ -17,7 +17,7 @@ export interface GitHubRepo {
   pushedAt: string;
 }
 
-export interface GitHubLanguage {
+interface GitHubLanguage {
   name: string;
   count: number;
   percent: number;
