@@ -91,10 +91,23 @@ export default function Hero() {
 
       {/* Right Column */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center text-center px-2 lg:px-0">
-        {/* Mobile typewriter */}
+        {/* Mobile typewriter — single pass that settles on the last string:
+            an infinite loop keeps mutating text forever, which delays LCP
+            finalization and adds perpetual main-thread work on throttled
+            mobile CPUs (desktop keeps looping — see desktop instance below). */}
         <h2 className="text-xl font-semibold mb-6 lg:hidden" style={{ color: "var(--color-text)" }}>
           <Typewriter
-            options={{ strings: tr.typewriterMobile, autoStart: true, loop: true, delay: 75 }}
+            key={lang}
+            options={{ autoStart: false, loop: false, delay: 75 }}
+            onInit={(tw) => {
+              tr.typewriterMobile.forEach((s, i) => {
+                tw.typeString(s);
+                if (i < tr.typewriterMobile.length - 1) {
+                  tw.pauseFor(1800).deleteAll();
+                }
+              });
+              tw.start();
+            }}
           />
         </h2>
 
