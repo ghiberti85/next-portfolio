@@ -19,9 +19,6 @@ const nextConfig: NextConfig = {
   // costs nothing security-wise and lets both us and PSI attribute bundle
   // weight to real files instead of minified chunk names.
   productionBrowserSourceMaps: true,
-  experimental: {
-    optimizeCss: true,
-  },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
