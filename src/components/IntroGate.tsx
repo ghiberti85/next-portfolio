@@ -74,7 +74,19 @@ export default function IntroGate({ github = null }: IntroGateProps) {
             animation, so it never sits at opacity:0 waiting on an
             IntersectionObserver before it counts as painted. */}
         <Hero />
-        <ErrorBoundary><AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection></ErrorBoundary>
+        {/* Not wrapped in AnimatedSection: SkillsSlider is the only
+            remaining next/dynamic(..., { ssr: false }) boundary in the
+            tree (react-slick genuinely needs it, unlike the Typewriter
+            fix above). Stacking framer-motion's opacity:0/whileInView
+            reveal on top of React's streaming "bail out to client
+            rendering" marker for that same node is the leading suspect
+            for the React #418 hydration error PSI still flags — it
+            never showed up on Hero's Typewriter, which never had this
+            double layering. Losing the scroll-in fade for this one
+            section is cheap; keeping ssr:false is not (loses the
+            deferred-chunk-load benefit that keeps react-slick out of
+            the initial bundle). */}
+        <ErrorBoundary><SkillsSlider /></ErrorBoundary>
         <ErrorBoundary><AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection></ErrorBoundary>
         <ErrorBoundary><AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection></ErrorBoundary>
         <ErrorBoundary><AnimatedSection variant="fadeUp"  delay={0.05}><GitHubActivity data={github} /></AnimatedSection></ErrorBoundary>
