@@ -114,7 +114,7 @@ Two-column (`lg:flex-row`): left = glassmorphism card with photo, name, role, so
 ### Behavior
 - Each stat animates independently once it enters the viewport (`IntersectionObserver`, threshold 0.5).
 - Count-up uses `easeOutExpo` (`1 - 2^(-10t)`) over 1400ms — slow start, explosive finish.
-- Data comes from `t[lang].stats` in `translations.ts`.
+- Data comes from `src/lib/translations/stats.ts` → `stats[lang]`.
 
 ### Do not
 - Start the count-up before the element is visible — the `IntersectionObserver` gate is what makes the animation feel intentional on scroll.
@@ -217,7 +217,7 @@ Descriptions live separately in `t[lang].projectDescriptions`, indexed positiona
 
 ### Data shape
 ```ts
-// src/lib/translations.ts
+// src/lib/translations/types.ts
 interface TimelineItemData {
   title: string;
   period: string;
@@ -226,7 +226,8 @@ interface TimelineItemData {
   details: string[]; // bullet points shown in the modal
 }
 ```
-Data lives in `t[lang].timeline.items` (no `location` field — removed as dead data in the 1.13.0 cleanup).
+Data lives in `src/lib/translations/timeline.ts` → `timeline[lang].items` (no `location`
+field — removed as dead data in the 1.13.0 cleanup).
 
 ### Layout
 - Desktop (`lg:`): horizontal scroll track with a centered gradient line, fully filled statically (the whole row is visible without vertical scrolling, so a scroll-scrubbed fill only ever looked half-drawn); professional cards anchored above it, education cards below; a colored `<Dot>` (teal/blue) sits between each card and the line. Scroll arrows shift by 320px.

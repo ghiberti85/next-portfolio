@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import t from "@/lib/translations";
+import palette from "@/lib/translations/palette";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { OPEN_PALETTE_EVENT, openTerminal } from "@/lib/uiEvents";
@@ -21,7 +21,7 @@ interface Command {
 export default function CommandPalette() {
   const { lang, setLang } = useLanguage();
   const { toggleTheme } = useTheme();
-  const tr = t[lang].palette;
+  const tr = palette[lang];
 
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");

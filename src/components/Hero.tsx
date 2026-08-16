@@ -6,7 +6,7 @@ import { faEnvelope, faFileDownload } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import Typewriter from "typewriter-effect";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import hero from "@/lib/translations/hero";
 import StatsCounter from "@/components/StatsCounter";
 
 // typewriter-effect only touches the DOM inside its own componentDidMount
@@ -19,7 +19,7 @@ import StatsCounter from "@/components/StatsCounter";
 // the widget still never runs during SSR.
 export default function Hero() {
   const { lang } = useLanguage();
-  const tr = t[lang].hero;
+  const tr = hero[lang];
   return (
     <section
       id="hero"

@@ -112,7 +112,7 @@ src/
     ├── env.ts                  # Centralised env-var access — server vars as functions, public as constants
     ├── github.ts               # Server-side GitHub API fetch for the GitHub Activity section
     ├── projects.ts             # Project data array extracted from ProjectsGrid
-    ├── translations.ts         # All UI strings for EN and PT-BR
+    ├── translations/           # All UI strings for EN and PT-BR — one file per section (nav, hero, skills, …) so a component only pulls in its own strings, not the whole app's
     └── uiEvents.ts             # Custom events for the command palette / terminal overlays
 
 src/__tests__/                  # One test file per component + API route (Jest + RTL)

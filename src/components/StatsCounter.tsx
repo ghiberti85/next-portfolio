@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import statsData from "@/lib/translations/stats";
 
 function useCountUp(target: number, duration = 2000, active: boolean) {
   const [value, setValue] = useState(0);
@@ -53,7 +53,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
 
 export default function StatsCounter() {
   const { lang } = useLanguage();
-  const stats = t[lang].stats;
+  const stats = statsData[lang];
 
   return (
     <div
