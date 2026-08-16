@@ -10,12 +10,12 @@ import {
 } from "recharts";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import t from "@/lib/translations";
+import skills from "@/lib/translations/skills";
 
 export default function SkillsRadar() {
   const { lang } = useLanguage();
   const { theme } = useTheme();
-  const tr = t[lang].skills;
+  const tr = skills[lang];
   const isLight = theme === "light";
 
   return (

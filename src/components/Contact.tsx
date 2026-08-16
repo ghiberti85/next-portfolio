@@ -5,13 +5,13 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faGithub, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import contact from "@/lib/translations/contact";
 import DecryptText from "@/components/DecryptText";
 
 interface CardConfig {
   icon: IconDefinition;
   iconBg: string;
-  key: keyof typeof t.en.contact.cards;
+  key: keyof typeof contact.en.cards;
   href: string;
   linkColor: string;
   external?: boolean;
@@ -26,7 +26,7 @@ const cardConfigs: CardConfig[] = [
 
 export default function Contact() {
   const { lang } = useLanguage();
-  const tr = t[lang].contact;
+  const tr = contact[lang];
 
   return (
     <section id="contact" className="py-12 lg:py-20 px-4">

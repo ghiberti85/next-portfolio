@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faCodeBranch, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import github from "@/lib/translations/github";
 import type { GitHubStats } from "@/lib/github";
 import DecryptText from "@/components/DecryptText";
 
@@ -13,7 +13,7 @@ interface GitHubActivityProps {
 
 export default function GitHubActivity({ data }: GitHubActivityProps) {
   const { lang } = useLanguage();
-  const tr = t[lang].github;
+  const tr = github[lang];
 
   if (!data) return null;
 

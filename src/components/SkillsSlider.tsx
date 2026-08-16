@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import skillsText from "@/lib/translations/skills";
 import DecryptText from "@/components/DecryptText";
 
 // Recharts is the heaviest dependency on the page. Keep it out of the
@@ -113,7 +113,7 @@ const secondSliderSkills = skills.slice(midIndex);
 
 export default function SkillsSlider() {
   const { lang } = useLanguage();
-  const tr = t[lang].skills;
+  const tr = skillsText[lang];
   const [radarNear, setRadarNear] = useState(false);
   const radarAnchorRef = useRef<HTMLDivElement>(null);
 

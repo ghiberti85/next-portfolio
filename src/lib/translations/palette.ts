@@ -1,0 +1,46 @@
+const palette = {
+  en: {
+    openLabel: "Open command palette (Ctrl+K)",
+    placeholder: "Type a command or search…",
+    noResults: "No matching commands",
+    hint: "↑↓ navigate · Enter select · Esc close",
+    commands: {
+      goHome: "Go to Home",
+      goSkills: "Go to Skills",
+      goProjects: "Go to Projects",
+      goTimeline: "Go to Timeline",
+      goGitHub: "Go to GitHub Activity",
+      goContact: "Go to Contact",
+      toggleTheme: "Toggle dark / light theme",
+      switchLang: "Mudar idioma para Português",
+      downloadCV: "Download CV",
+      openTerminal: "Open interactive terminal",
+      openGitHub: "Open GitHub profile",
+      openLinkedIn: "Open LinkedIn profile",
+      sendEmail: "Send an email",
+    },
+  },
+  pt: {
+    openLabel: "Abrir paleta de comandos (Ctrl+K)",
+    placeholder: "Digite um comando ou busque…",
+    noResults: "Nenhum comando encontrado",
+    hint: "↑↓ navegar · Enter selecionar · Esc fechar",
+    commands: {
+      goHome: "Ir para Início",
+      goSkills: "Ir para Habilidades",
+      goProjects: "Ir para Projetos",
+      goTimeline: "Ir para Carreira",
+      goGitHub: "Ir para Atividade no GitHub",
+      goContact: "Ir para Contato",
+      toggleTheme: "Alternar tema claro / escuro",
+      switchLang: "Switch language to English",
+      downloadCV: "Baixar CV",
+      openTerminal: "Abrir terminal interativo",
+      openGitHub: "Abrir perfil no GitHub",
+      openLinkedIn: "Abrir perfil no LinkedIn",
+      sendEmail: "Enviar um e-mail",
+    },
+  },
+};
+
+export default palette;

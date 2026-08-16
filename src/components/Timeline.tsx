@@ -5,7 +5,8 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faGraduationCap, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
-import t, { type TimelineItemData as TimelineItem } from "@/lib/translations";
+import timeline from "@/lib/translations/timeline";
+import type { TimelineItemData as TimelineItem } from "@/lib/translations/types";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import DecryptText from "@/components/DecryptText";
@@ -70,7 +71,7 @@ function Dot({ type }: { type: "professional" | "education" }) {
 
 export default function Timeline() {
   const { lang } = useLanguage();
-  const tr = t[lang].timeline;
+  const tr = timeline[lang];
   const timelineItems = tr.items;
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);

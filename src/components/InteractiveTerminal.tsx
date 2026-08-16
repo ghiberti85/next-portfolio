@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import t from "@/lib/translations";
+import shell from "@/lib/translations/shell";
 import { projects } from "@/lib/projects";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { OPEN_TERMINAL_EVENT } from "@/lib/uiEvents";
@@ -16,7 +16,7 @@ interface TerminalEntry {
 export default function InteractiveTerminal() {
   const { lang, setLang } = useLanguage();
   const { toggleTheme } = useTheme();
-  const tr = t[lang].shell;
+  const tr = shell[lang];
 
   const [open, setOpen] = useState(false);
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
@@ -81,7 +81,7 @@ export default function InteractiveTerminal() {
         const target = args[0]?.toLowerCase();
         if (target === "en" || target === "pt") {
           setLang(target);
-          return [t[target].shell.langChanged];
+          return [shell[target].langChanged];
         }
         return [tr.langUsage];
       }

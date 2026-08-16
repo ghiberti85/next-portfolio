@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import footer from "@/lib/translations/footer";
 
 export default function Footer() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { lang } = useLanguage();
-  const tr = t[lang].footer;
+  const tr = footer[lang];
 
   useEffect(() => {
     const handleScroll = () => {

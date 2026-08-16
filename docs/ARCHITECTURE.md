@@ -36,7 +36,7 @@ Browser → Vercel Edge/CDN → Next.js proxy (per-request CSP nonce)
 ## The "no backend" policy, and its exceptions
 
 The default is still: **no database, no CMS, no user accounts.** Skills, projects, and timeline
-data are typed arrays in `src/lib/*.ts` and `src/lib/translations.ts` — editing content is a
+data are typed arrays in `src/lib/*.ts` and `src/lib/translations/*.ts` — editing content is a
 one-file change and a commit, not a dashboard or a migration.
 
 Three things intentionally break the "static site" framing, each for a specific, narrow reason:
@@ -90,12 +90,12 @@ palette from the Navbar, open the terminal from the palette) go through the tiny
 | Data | Location | Shape |
 |---|---|---|
 | Skills carousel | `SkillsSlider.tsx` → `skills: Skill[]` | `{ name, icon (URL or local path) }` |
-| Skills radar | `translations.ts` → `t[lang].skills.radarData` | `{ subject, value (0–100) }[]` |
+| Skills radar | `translations/skills.ts` → `skills[lang].radarData` | `{ subject, value (0–100) }[]` |
 | Projects | `src/lib/projects.ts` → `projects: Project[]` | `{ title, image, github, live, tags[] }` |
-| Project descriptions | `translations.ts` → `t[lang].projectDescriptions` | `string[]`, indexed positionally against `projects` |
-| Timeline items | `translations.ts` → `t[lang].timeline.items` | `{ title, period, type, institution, details[] }` |
+| Project descriptions | `translations/projectDescriptions.ts` → `projectDescriptions[lang]` | `string[]`, indexed positionally against `projects` |
+| Timeline items | `translations/timeline.ts` → `timeline[lang].items` | `{ title, period, type, institution, details[] }` |
 | GitHub activity | `src/lib/github.ts` → `GitHubStats` | Fetched server-side, ISR 1h, fails closed (`null` on any error) |
-| UI strings | `translations.ts` → `t["en" \| "pt"]` | One object per language, mirrored key-for-key |
+| UI strings | `translations/<section>.ts` → `<section>["en" \| "pt"]` | One file per section (nav, hero, skills, …), each with one object per language, mirrored key-for-key — split so a component's chunk only pulls in its own section's strings, not every section in the app |
 
 To add/edit static content: update the relevant array. No API calls, no migrations. The only
 runtime data fetch in the app is `getGitHubStats()`.

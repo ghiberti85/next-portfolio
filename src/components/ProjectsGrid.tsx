@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import projectsText from "@/lib/translations/projects";
+import projectDescriptions from "@/lib/translations/projectDescriptions";
 import { projects } from "@/lib/projects";
 import type { Project } from "@/lib/projects";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
@@ -16,7 +17,7 @@ import DecryptText from "@/components/DecryptText";
 
 export default function ProjectsGrid() {
   const { lang } = useLanguage();
-  const tr = t[lang].projects;
+  const tr = projectsText[lang];
   const [visibleProjects, setVisibleProjects] = useState(6);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -50,7 +51,7 @@ export default function ProjectsGrid() {
 
   const uniqueTags = Array.from(new Set(projects.flatMap((p) => p.tags)));
   const isAllProjects = !activeTag;
-  const descriptions = t[lang].projectDescriptions;
+  const descriptions = projectDescriptions[lang];
   const filteredProjects = activeTag
     ? projects.filter((p) => p.tags.includes(activeTag))
     : projects;

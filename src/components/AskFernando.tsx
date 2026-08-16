@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots, faTimes, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import t from "@/lib/translations";
+import askFernando from "@/lib/translations/askFernando";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 
 interface Message {
@@ -17,7 +17,7 @@ export default function AskFernando() {
   const { lang } = useLanguage();
   const { theme } = useTheme();
   const isLight = theme === "light";
-  const tr = t[lang].askFernando;
+  const tr = askFernando[lang];
 
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([

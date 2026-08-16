@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import t from "@/lib/translations";
+import terminal from "@/lib/translations/terminal";
 
 interface TerminalIntroProps {
   onDone: () => void;
@@ -11,7 +11,7 @@ interface TerminalIntroProps {
 
 export default function TerminalIntro({ onDone, exiting = false }: TerminalIntroProps) {
   const { lang } = useLanguage();
-  const tr = t[lang].terminal;
+  const tr = terminal[lang];
   const [lines, setLines] = useState<{ cmd: string; out: string; doneCmd: boolean; doneOut: boolean }[]>([]);
   const [currentLine, setCurrentLine] = useState(0);
   const [cmdChars, setCmdChars] = useState(0);

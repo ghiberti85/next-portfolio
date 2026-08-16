@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faSun, faMoon, faTerminal } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import t from "@/lib/translations";
+import nav from "@/lib/translations/nav";
+import palette from "@/lib/translations/palette";
+import shell from "@/lib/translations/shell";
 import { useEscapeKey } from "@/hooks/useEscapeKey";
 import { openPalette, openTerminal } from "@/lib/uiEvents";
 
@@ -13,7 +15,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { lang, setLang } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const tr = t[lang].nav;
+  const tr = nav[lang];
 
   const links = [
     { name: tr.home, href: "#hero" },
@@ -68,7 +70,7 @@ export default function Navbar() {
           {/* Command palette trigger */}
           <button
             onClick={openPalette}
-            aria-label={t[lang].palette.openLabel}
+            aria-label={palette[lang].openLabel}
             className="hidden sm:flex items-center gap-1.5 px-2.5 h-8 rounded-full text-xs font-mono text-gray-400 hover:text-teal-400 transition-colors"
             style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
           >
@@ -78,7 +80,7 @@ export default function Navbar() {
           {/* Interactive terminal trigger */}
           <button
             onClick={openTerminal}
-            aria-label={t[lang].shell.openLabel}
+            aria-label={shell[lang].openLabel}
             className="hidden sm:flex w-8 h-8 items-center justify-center rounded-full text-gray-400 hover:text-teal-400 transition-colors"
             style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
           >
