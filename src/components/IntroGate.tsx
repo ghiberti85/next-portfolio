@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -23,25 +23,20 @@ interface IntroGateProps {
   github?: GitHubStats | null;
 }
 
-// This component is still server-rendered by Next.js for the initial HTML,
-// and useLayoutEffect warns (SSR does nothing with it) when used in code
-// that runs on the server. Fall back to useEffect there; on the client we
-// want the synchronous, pre-paint version (see below).
-const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
-
-// useLayoutEffect (not useEffect) is required here: it runs synchronously
-// before the browser paints, so the sessionStorage check resolves and the
-// intro overlay mounts in the *same* frame as first paint. With useEffect,
-// the browser paints the page without the overlay first, then repaints
-// with it a moment later — a visible Hero-then-swap flash that Lighthouse
-// also picks up as a second, later LCP candidate, inflating the metric.
-// SSR always renders with the overlay hidden (no sessionStorage on the
-// server), so this never changes what no-JS clients see.
+// TEMPORARY DIAGNOSTIC REVERT: back to useEffect (was useLayoutEffect) to
+// test whether committing a synchronous state update on the very first
+// paint — while Vercel's real network is still streaming in the rest of
+// the document — is what's triggering the React #418 hydration error PSI
+// keeps flagging. Never reproduced locally (dev or `next start`, both
+// effectively zero-latency loopback), only against the real deployment,
+// which is consistent with a hydration/streaming race rather than a plain
+// content mismatch. If this clears the error, the Hero-flash fix needs a
+// different mechanism than a pre-paint synchronous update.
 export default function IntroGate({ github = null }: IntroGateProps) {
   const [showIntro, setShowIntro] = useState(false);
   const [exiting, setExiting] = useState(false);
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const seen = sessionStorage.getItem("portfolio-intro-seen");
     if (!seen) {
       setShowIntro(true);
