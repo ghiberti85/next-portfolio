@@ -31,6 +31,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 - **GitHubActivity** — dropped the "View full profile" CTA at the bottom of the section; the GitHub link already lives in the `<Contact />` cards, so it was a redundant, unused `viewProfile` translation key plus an extra external link doing the same thing.
+- **`public/images/website-animation.json`** (160KB) — never referenced anywhere in the codebase, a leftover from before the first tracked release. Found via a `knip`/`depcheck` dead-code audit; also deduplicated `LanguageContext.tsx`'s local `Lang` type against the identical one `translations.ts` already exported, and dropped the unnecessary `export` on `GitHubRepo`/`GitHubLanguage` (`github.ts`), which are only ever used internally.
 
 ### Fixed
 - **SEO — canonical domain corrected to `fernando-ghiberti.vercel.app`** across `layout.tsx` (`metadataBase`, canonical, Open Graph, JSON-LD), `sitemap.ts`, `robots.ts`, the OG image, and `README.md`. The codebase had been split between two domains.
