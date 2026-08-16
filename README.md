@@ -154,6 +154,10 @@ npm test
 
 # Run tests with coverage report
 npm run test:coverage
+
+# Query PageSpeed Insights for the deployed site (mobile + desktop scores
+# and failing audits). Set PSI_API_KEY in .env.local to avoid rate limits.
+npm run psi
 ```
 
 ---
@@ -166,6 +170,7 @@ npm run test:coverage
 | `NEXT_PUBLIC_SITE_URL` | No | Full URL of the deployed site (e.g. `https://fernando-ghiberti.vercel.app`). Used to restrict CORS on `/api/chat`. Defaults to permissive when unset. |
 | `VERCEL_URL` | No | Injected automatically by Vercel. Used as fallback CORS origin when `NEXT_PUBLIC_SITE_URL` is not set. |
 | `GITHUB_TOKEN` | No | Optional GitHub token to raise API rate limits for the GitHub Activity section. Unauthenticated access (60 req/h) is enough with hourly ISR. |
+| `PSI_API_KEY` | No | Optional PageSpeed Insights API key used by `npm run psi`. Unauthenticated requests work but 429 within a handful of calls/day. |
 
 Copy the environment template and fill in what you need:
 

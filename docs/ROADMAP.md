@@ -10,20 +10,23 @@ add the CHANGELOG entry in the same PR.
 
 | Metric | Value | Source |
 |---|---|---|
-| PageSpeed Insights — mobile Performance | **95** | Manual PSI run against production |
-| PageSpeed Insights — mobile Accessibility | **100** | Manual PSI run against production |
+| PageSpeed Insights — mobile Performance | **88** | Manual PSI run against production, 2026-08-16 |
+| PageSpeed Insights — desktop Performance | **100** | Manual PSI run against production, 2026-08-16 |
+| PageSpeed Insights — Best Practices (mobile + desktop) | **96** | Manual PSI run against production, 2026-08-16 |
 
 These numbers are the reference point for the performance work below. Update this table
-whenever a new baseline is measured.
+whenever a new baseline is measured — `npm run psi` prints them directly.
 
 ---
 
 ## Active priorities
 
-### 1. Raise mobile PageSpeed Performance to ≥ 97
+### 1. Raise mobile PageSpeed Performance to ≥ 95
 
-Currently 95 on mobile. Target is **97 or higher** with no regression in Accessibility
-(100) or in the features that define the site (terminal intro, animations, AI chat).
+Currently 88 on mobile (desktop is already at 100). The dominant remaining cost is
+Next.js 15.5.x bundling its own DevTools into the production build (~217KB gzipped
+shipped on every page load, confirmed absent from a Next 16.3.1 build) — fixing that
+needs the Next 16 migration below, not a component-level change.
 
 Constraints:
 - Do not weaken any security control (CSP, headers) to gain points — see `SECURITY.md`.
@@ -31,23 +34,23 @@ Constraints:
 - LCP-sensitive rules in `docs/COMPONENTS.md` (Hero not wrapped in `AnimatedSection`, no
   client-only mount gates) still apply.
 
-### 2. Programmatic PageSpeed checks via the PSI API
+### 2. Get Best Practices to 100 (mobile + desktop)
 
-Today, verifying performance requires manually pasting the production URL into the
-PageSpeed Insights web UI. Agents cannot do that, so score regressions go unnoticed
-between deploys.
+Currently 96/100 on both. Use `npm run psi` to see the current failing audits and work
+through them.
 
-Goal: a command agents (and CI) can run to query scores programmatically, e.g.
-`npm run psi`, backed by the [PageSpeed Insights API](https://developers.google.com/speed/docs/insights/v5/get-started)
-against `https://fernando-ghiberti.vercel.app` (strategy: mobile).
+### 3. Migrate to Next.js 16
 
-Acceptance criteria:
-- Runs with no env var (the PSI API works unauthenticated within low quotas) and
-  optionally accepts a key via `src/lib/env.ts` if quotas become a problem.
-- Prints the Lighthouse category scores (at minimum Performance and Accessibility)
-  and exits non-zero if Performance drops below the current target (97 once priority 1
-  ships, so it doubles as a regression gate).
-- Documented in `README.md` (commands) and `AGENTS.md` (commands reference).
+`npm audit` currently reports 4 high-severity vulnerabilities in Next 15.5.19 (DoS,
+SSRF, cache confusion), fixed only by upgrading to 16.3.1. That same upgrade also
+removes the DevTools-in-production bundle bloat blocking priority 1 above.
+
+Confirmed non-trivial — a test upgrade surfaced real breakage that needs its own
+migration work, not a quick swap:
+- `middleware.ts` is deprecated in favor of `proxy.ts`.
+- The Edge Runtime is deprecated (check `/api/chat`, `middleware.ts`).
+- Next 16 defaults to Turbopack for `next build`.
+- A few `.test.tsx` files fail stricter TypeScript checks under Next 16's tsconfig.
 
 ---
 

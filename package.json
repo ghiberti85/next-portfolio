@@ -10,7 +10,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:ci": "jest --forceExit --ci --coverage"
+    "test:ci": "jest --forceExit --ci --coverage",
+    "psi": "ts-node --compiler-options '{\"module\":\"commonjs\",\"moduleResolution\":\"node\"}' scripts/psi.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.0.0",

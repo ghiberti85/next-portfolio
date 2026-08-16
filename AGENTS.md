@@ -155,7 +155,7 @@ The CI pipeline (`ci.yml`) must be green before merging.
 Review the following on every PR:
 
 - [ ] No secrets, tokens, API keys, or credentials committed — use environment variables.
-- [ ] All env-var access goes through `src/lib/env.ts`. Server-only vars (GROQ_API_KEY, VERCEL_URL, GITHUB_TOKEN) must be accessed via exported functions — never as bare `process.env` in component or route files.
+- [ ] All env-var access goes through `src/lib/env.ts`. Server-only vars (GROQ_API_KEY, VERCEL_URL, GITHUB_TOKEN, PSI_API_KEY) must be accessed via exported functions — never as bare `process.env` in component or route files.
 - [ ] No new `dangerouslyAllowSVG` usages without a tight `contentSecurityPolicy`.
 - [ ] External URLs hardcoded in components must be trusted, static origins.
 - [ ] New `remotePatterns` in `next.config.ts` must be limited to the exact hostname needed — no wildcard hostnames.
@@ -225,6 +225,7 @@ src/
 
 src/__tests__/                  # One test file per component + one per API route
     └── hooks/                  # Hook-specific tests (useFocusTrap, useEscapeKey)
+scripts/psi.ts                  # `npm run psi` — queries PageSpeed Insights for the deployed site
 __mocks__/                      # Static file stubs for Jest
 .github/
 ├── workflows/ci.yml            # CI: lint → test → build on every PR and push to main (SHA-pinned)
@@ -309,4 +310,5 @@ npm run build          # production build (must pass before PR)
 npm run lint           # ESLint check (must pass before PR)
 npm test               # run all tests (must pass before PR)
 npm run test:coverage  # tests + coverage report
+npm run psi             # query PageSpeed Insights (mobile + desktop) for the deployed site
 ```
