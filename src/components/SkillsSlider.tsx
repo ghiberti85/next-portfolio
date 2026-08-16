@@ -1,14 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useLanguage } from "@/context/LanguageContext";
 import t from "@/lib/translations";
-import SkillsRadar from "@/components/SkillsRadar";
 import DecryptText from "@/components/DecryptText";
+
+// Recharts is the heaviest dependency on the page. Keep it out of the
+// slider chunk and only fetch/render it once the user scrolls near the
+// radar — on a fresh (e.g. Lighthouse/PSI) visit it never evaluates
+// during the load window. The placeholder reserves the radar's height so
+// nothing shifts when it mounts.
+const SkillsRadar = dynamic(() => import("@/components/SkillsRadar"), {
+  ssr: false,
+  loading: () => <RadarPlaceholder />,
+});
+
+function RadarPlaceholder() {
+  return <div className="mt-16" style={{ minHeight: 440 }} aria-hidden="true" />;
+}
 
 const skillGlow: Record<string, string> = {
   "React":          "rgba(97,218,251,0.55)",
@@ -100,6 +114,26 @@ const secondSliderSkills = skills.slice(midIndex);
 export default function SkillsSlider() {
   const { lang } = useLanguage();
   const tr = t[lang].skills;
+  const [radarNear, setRadarNear] = useState(false);
+  const radarAnchorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = radarAnchorRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setRadarNear(true);
+            observer.disconnect();
+          }
+        }
+      },
+      { rootMargin: "600px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const sliderSettings = {
     autoplay: true,
@@ -137,7 +171,9 @@ export default function SkillsSlider() {
         </Slider>
       </div>
 
-      <SkillsRadar />
+      <div ref={radarAnchorRef}>
+        {radarNear ? <SkillsRadar /> : <RadarPlaceholder />}
+      </div>
     </section>
   );
 }

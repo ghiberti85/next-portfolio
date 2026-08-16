@@ -29,6 +29,10 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
   const SPEED_CMD = isMobile ? 9 : 22;
   const SPEED_OUT = isMobile ? 4 : 9;
   const PAUSE_BETWEEN = isMobile ? 70 : 180;
+  // Characters advanced per timer tick. Batching on mobile cuts React
+  // re-renders ~3x during the intro (each tick is a state update), which
+  // matters because the whole animation runs inside the LCP/TBT window.
+  const CHARS_PER_TICK = isMobile ? 3 : 1;
 
   useEffect(() => {
     setLines([]);
@@ -49,7 +53,10 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
 
     if (phase === "cmd") {
       if (cmdChars < line.cmd.length) {
-        const timer = setTimeout(() => setCmdChars((n) => n + 1), SPEED_CMD);
+        const timer = setTimeout(
+          () => setCmdChars((n) => Math.min(n + CHARS_PER_TICK, line.cmd.length)),
+          SPEED_CMD
+        );
         return () => clearTimeout(timer);
       } else {
         const timer = setTimeout(() => setPhase("out"), PAUSE_BETWEEN);
@@ -59,7 +66,10 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
 
     if (phase === "out") {
       if (outChars < line.out.length) {
-        const timer = setTimeout(() => setOutChars((n) => n + 1), SPEED_OUT);
+        const timer = setTimeout(
+          () => setOutChars((n) => Math.min(n + CHARS_PER_TICK, line.out.length)),
+          SPEED_OUT
+        );
         return () => clearTimeout(timer);
       } else {
         const timer = setTimeout(() => {
@@ -72,11 +82,14 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
         return () => clearTimeout(timer);
       }
     }
-  }, [currentLine, phase, cmdChars, outChars, tr.lines, onDone, SPEED_CMD, SPEED_OUT, PAUSE_BETWEEN]);
+  }, [currentLine, phase, cmdChars, outChars, tr.lines, onDone, SPEED_CMD, SPEED_OUT, PAUSE_BETWEEN, CHARS_PER_TICK]);
 
+  // Scroll only when a line completes (not per character) and skip the
+  // smooth-scroll animation on mobile — hundreds of overlapping smooth
+  // scrolls during the intro were pure main-thread churn.
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [lines, cmdChars, outChars]);
+    bottomRef.current?.scrollIntoView({ behavior: isMobile ? "auto" : "smooth" });
+  }, [lines.length, isMobile]);
 
   const activeLine = currentLine < tr.lines.length ? (tr.lines[currentLine] ?? null) : null;
 

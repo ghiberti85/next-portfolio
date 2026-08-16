@@ -18,7 +18,7 @@ export default function Footer() {
         setShowBackToTop(window.scrollY > skillsSection.offsetTop + skillsSection.offsetHeight);
       }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -47,7 +47,11 @@ export default function Footer() {
           <span className="font-semibold" style={{ color: "var(--color-text)" }}>Fernando Ghiberti</span>
         </p>
         <p className="text-xs" style={{ color: "var(--color-text-muted)", opacity: 0.7 }}>
-          © {new Date().getFullYear()} Fernando Ghiberti · {tr.builtWith}{" "}
+          {/* suppressHydrationWarning: the year is computed at render time on
+              both server and client, which only ever disagrees for visitors
+              hydrating right at a Dec 31 → Jan 1 rollover after the page was
+              cached — React's documented case for this attribute. */}
+          © <span suppressHydrationWarning>{new Date().getFullYear()}</span> Fernando Ghiberti · {tr.builtWith}{" "}
           <span style={{ color: "var(--color-text)" }}>Next.js 15</span> · {tr.deployedOn}{" "}
           <span style={{ color: "var(--color-text)" }}>Vercel</span>
         </p>

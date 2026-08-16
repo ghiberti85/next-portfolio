@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import SkillsSlider from "@/components/SkillsSlider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -57,8 +57,15 @@ describe("SkillsSlider", () => {
     expect(screen.getAllByTestId("slider").length).toBe(2);
   });
 
-  it("renders the SkillsRadar chart", () => {
+  it("renders the SkillsRadar chart only once scrolled near", async () => {
     renderWithProviders(<SkillsSlider />);
-    expect(screen.getByTestId("radar-chart")).toBeInTheDocument();
+    expect(screen.queryByTestId("radar-chart")).not.toBeInTheDocument();
+
+    const ioMock = window.IntersectionObserver as unknown as jest.Mock;
+    act(() => {
+      ioMock.mock.calls.forEach(([callback]) => callback([{ isIntersecting: true }]));
+    });
+
+    expect(await screen.findByTestId("radar-chart")).toBeInTheDocument();
   });
 });

@@ -14,6 +14,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // PageSpeed Insights flags large first-party JS without source maps as a
+  // debuggability diagnostic. The repo is public anyway, so shipping maps
+  // costs nothing security-wise and lets both us and PSI attribute bundle
+  // weight to real files instead of minified chunk names.
+  productionBrowserSourceMaps: true,
   experimental: {
     optimizeCss: true,
   },

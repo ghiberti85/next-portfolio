@@ -1,22 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import dynamic from "next/dynamic";
 import { headers } from "next/headers";
 import "./globals.css";
 import SkipLink from "@/components/SkipLink";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import PointerOnlyEffects from "@/components/PointerOnlyEffects";
-const AskFernando = dynamic(() => import("@/components/AskFernando"), {
-  loading: () => (
-    <div
-      aria-hidden="true"
-      className="fixed bottom-8 left-8 z-50 w-36 h-12 rounded-full animate-pulse"
-      style={{ background: "var(--card-bg)" }}
-    />
-  ),
-});
-const CommandPalette = dynamic(() => import("@/components/CommandPalette"));
-const InteractiveTerminal = dynamic(() => import("@/components/InteractiveTerminal"));
+import DeferredOverlays from "@/components/DeferredOverlays";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 
@@ -178,9 +167,7 @@ export default async function RootLayout({
             <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
             <PointerOnlyEffects />
             <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-hidden">{children}</div>
-            <AskFernando />
-            <CommandPalette />
-            <InteractiveTerminal />
+            <DeferredOverlays />
           </LanguageProvider>
         </ThemeProvider>
       </body>
