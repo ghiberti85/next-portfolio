@@ -92,7 +92,7 @@ export default function Navbar() {
           >
             <button
               onClick={() => setLang("en")}
-              aria-label="Switch to English"
+              aria-label="EN — Switch to English"
               aria-pressed={lang === "en"}
               className={`px-2.5 py-1 rounded-full transition-all ${
                 lang === "en"
@@ -105,7 +105,7 @@ export default function Navbar() {
             </button>
             <button
               onClick={() => setLang("pt")}
-              aria-label="Mudar para Português"
+              aria-label="PT — Mudar para Português"
               aria-pressed={lang === "pt"}
               className={`px-2.5 py-1 rounded-full transition-all ${
                 lang === "pt"
@@ -163,7 +163,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3 pt-2 border-t" style={{ borderColor: "var(--card-border)" }}>
             <button
               onClick={() => setLang("en")}
-              aria-label="Switch to English"
+              aria-label="EN — Switch to English"
               aria-pressed={lang === "en"}
               className={`text-xs px-3 py-1.5 rounded-full font-semibold transition-all ${lang === "en" ? "text-white" : "text-gray-400"}`}
               style={lang === "en" ? { background: "var(--gradient-accent)" } : { background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
@@ -172,7 +172,7 @@ export default function Navbar() {
             </button>
             <button
               onClick={() => setLang("pt")}
-              aria-label="Mudar para Português"
+              aria-label="PT — Mudar para Português"
               aria-pressed={lang === "pt"}
               className={`text-xs px-3 py-1.5 rounded-full font-semibold transition-all ${lang === "pt" ? "text-white" : "text-gray-400"}`}
               style={lang === "pt" ? { background: "var(--gradient-accent)" } : { background: "var(--card-bg)", border: "1px solid var(--card-border)" }}
