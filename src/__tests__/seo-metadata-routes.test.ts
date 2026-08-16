@@ -35,8 +35,9 @@ describe("sitemap.ts", () => {
 
   it("uses the production domain and top priority for the homepage", () => {
     const home = entries[0];
-    expect(home.url).toBe(PROD_URL);
-    expect(home.priority).toBe(1);
-    expect(home.lastModified).toBeInstanceOf(Date);
+    expect(home).toBeDefined();
+    expect(home?.url).toBe(PROD_URL);
+    expect(home?.priority).toBe(1);
+    expect(home?.lastModified).toBeInstanceOf(Date);
   });
 });

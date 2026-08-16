@@ -12,15 +12,18 @@ function ThemeDisplay() {
   );
 }
 
-type DocumentWithViewTransition = Document & {
-  startViewTransition?: (callback: () => void) => unknown;
-};
+// `document.startViewTransition` is now typed as a required, overloaded
+// method by the DOM lib itself, so a plain optional-property type
+// intersects into "required" and rejects both `delete` and assigning a
+// simplified jest.fn() mock. Route through `unknown` to sidestep that for
+// this test-only mocking, matching the type ThemeContext.tsx itself uses.
+type MockableDocument = Record<string, unknown>;
 
 describe("ThemeContext", () => {
   beforeEach(() => {
     localStorage.clear();
     document.documentElement.removeAttribute("data-theme");
-    delete (document as DocumentWithViewTransition).startViewTransition;
+    delete (document as unknown as MockableDocument)["startViewTransition"];
   });
 
   it("defaults to dark theme when localStorage is empty", () => {
@@ -60,7 +63,7 @@ describe("ThemeContext", () => {
 
   it("uses startViewTransition when the browser supports it", () => {
     const startViewTransition = jest.fn((cb: () => void) => { cb(); });
-    (document as DocumentWithViewTransition).startViewTransition = startViewTransition;
+    (document as unknown as MockableDocument)["startViewTransition"] = startViewTransition;
     render(<ThemeProvider><ThemeDisplay /></ThemeProvider>);
     act(() => { screen.getByRole("button", { name: "Toggle with origin" }).click(); });
     expect(startViewTransition).toHaveBeenCalledTimes(1);
@@ -71,7 +74,7 @@ describe("ThemeContext", () => {
 
   it("skips the view transition when prefers-reduced-motion is set", () => {
     const startViewTransition = jest.fn((cb: () => void) => { cb(); });
-    (document as DocumentWithViewTransition).startViewTransition = startViewTransition;
+    (document as unknown as MockableDocument)["startViewTransition"] = startViewTransition;
     const originalMatchMedia = window.matchMedia;
     window.matchMedia = ((query: string) => ({
       matches: query.includes("prefers-reduced-motion"),

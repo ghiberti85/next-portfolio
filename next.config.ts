@@ -10,7 +10,7 @@ const securityHeaders = [
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
-  // CSP is set dynamically per-request via src/middleware.ts (nonce-based, no unsafe-inline)
+  // CSP is set dynamically per-request via src/proxy.ts (nonce-based, no unsafe-inline)
 ];
 
 const nextConfig: NextConfig = {

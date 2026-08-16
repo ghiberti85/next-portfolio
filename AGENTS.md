@@ -185,7 +185,7 @@ src/
 │       │   └── route.ts        # Groq AI chat endpoint (rate-limited, input-validated, CORS)
 │       └── csp-report/
 │           └── route.ts        # CSP violation report receiver (report-uri target)
-├── middleware.ts               # Per-request CSP nonce generation + header injection
+├── proxy.ts                    # Per-request CSP nonce generation + header injection (Next.js "proxy" convention, formerly middleware.ts)
 ├── components/
 │   ├── IntroGate.tsx           # Client Component — page composition + terminal-intro gating
 │   ├── Navbar.tsx              # Fixed top nav, smooth scroll, language & theme toggles

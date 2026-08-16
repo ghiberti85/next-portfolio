@@ -31,7 +31,7 @@ This is a personal portfolio. Only the latest version on `main` is actively main
 
 ## Security Architecture
 
-### HTTP Layer (`next.config.ts` + `src/middleware.ts`)
+### HTTP Layer (`next.config.ts` + `src/proxy.ts`)
 
 | Control | Implementation |
 |---|---|

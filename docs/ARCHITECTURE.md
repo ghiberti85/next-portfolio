@@ -9,7 +9,7 @@ a secret must stay off the client or where truly live data (GitHub stats) is wor
 request. See ADR-002 (superseded) and ADR-005 for the full reasoning.
 
 ```
-Browser → Vercel Edge/CDN → Next.js middleware (per-request CSP nonce)
+Browser → Vercel Edge/CDN → Next.js proxy (per-request CSP nonce)
                            → Server Components (page.tsx, /api/*, next/og)
                            → Client Components (interactive UI)
 ```
@@ -140,7 +140,7 @@ switch (single-column → multi-column; horizontal timeline track only exists at
 
 Full details and control inventory in [`SECURITY.md`](../SECURITY.md). Summary:
 
-- **Per-request CSP nonce** — `src/middleware.ts` generates a nonce per request, injects it as the
+- **Per-request CSP nonce** — `src/proxy.ts` generates a nonce per request, injects it as the
   `x-nonce` request header and as `'nonce-{nonce}'` in the `script-src` directive. Next.js threads
   this nonce through to its own internal inline (hydration/bootstrap) scripts automatically, but
   only if the route renders dynamically per request — `layout.tsx` calls `headers()` (ignoring the
