@@ -23,24 +23,24 @@ interface IntroGateProps {
   github?: GitHubStats | null;
 }
 
-// TEMPORARY DIAGNOSTIC REVERT: back to useEffect (was useLayoutEffect) to
-// test whether committing a synchronous state update on the very first
-// paint — while Vercel's real network is still streaming in the rest of
-// the document — is what's triggering the React #418 hydration error PSI
-// keeps flagging. Never reproduced locally (dev or `next start`, both
-// effectively zero-latency loopback), only against the real deployment,
-// which is consistent with a hydration/streaming race rather than a plain
-// content mismatch. If this clears the error, the Hero-flash fix needs a
-// different mechanism than a pre-paint synchronous update.
 export default function IntroGate({ github = null }: IntroGateProps) {
   const [showIntro, setShowIntro] = useState(false);
   const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
     const seen = sessionStorage.getItem("portfolio-intro-seen");
-    if (!seen) {
-      setShowIntro(true);
-    }
+    if (seen) return;
+    // Mounting TerminalIntro schedules a rapid chain of its own setTimeout
+    // re-renders (character-by-character typing) starting immediately.
+    // SkillsSlider is still a next/dynamic(..., { ssr: false }) boundary
+    // whose chunk fetch+eval also kicks off around now — on a throttled
+    // CPU (real Lighthouse mobile runs, never a fast local dev machine)
+    // PSI intermittently flags a React #418 hydration error under this
+    // exact combination. A short delay here lets that async work get a
+    // head start before TerminalIntro starts churning, which is a cheap,
+    // safe mitigation regardless of the precise mechanism.
+    const timerId = setTimeout(() => setShowIntro(true), 50);
+    return () => clearTimeout(timerId);
   }, []);
 
   const handleIntroDone = () => {
