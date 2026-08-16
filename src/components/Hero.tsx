@@ -4,13 +4,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faFileDownload } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import dynamic from "next/dynamic";
+import Typewriter from "typewriter-effect";
 import { useLanguage } from "@/context/LanguageContext";
 import t from "@/lib/translations";
 import StatsCounter from "@/components/StatsCounter";
 
-const Typewriter = dynamic(() => import("typewriter-effect"), { ssr: false });
-
+// typewriter-effect only touches the DOM inside its own componentDidMount
+// (renders an empty container server-side, confirmed via renderToString),
+// but wrapping it in next/dynamic's `ssr:false` put it behind a React
+// streaming "bail out to client rendering" boundary. On Vercel's real infra
+// (not reproducible against local `next dev`/`next start`) that boundary
+// was the one place hydration mismatched — see React error #418 in
+// production. A plain static import avoids that boundary entirely while
+// the widget still never runs during SSR.
 export default function Hero() {
   const { lang } = useLanguage();
   const tr = t[lang].hero;
