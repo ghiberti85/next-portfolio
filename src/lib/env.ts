@@ -28,3 +28,9 @@ export function vercelUrl(): string | undefined {
 export function githubToken(): string | undefined {
   return process.env["GITHUB_TOKEN"];
 }
+
+// Optional — used by scripts/psi.ts (`npm run psi`). The PageSpeed Insights
+// API works unauthenticated but 429s within a handful of requests/day.
+export function psiApiKey(): string | undefined {
+  return process.env["PSI_API_KEY"];
+}
