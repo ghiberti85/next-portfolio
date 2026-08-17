@@ -1,6 +1,6 @@
 # Fernando Ghiberti — Personal Portfolio
 
-A modern, performant personal portfolio built with **Next.js 15**, **TypeScript**, and **Tailwind CSS** — showcasing professional experience, technical skills, and personal projects in a clean, animated single-page application.
+A modern, performant personal portfolio built with **Next.js 16**, **TypeScript**, and **Tailwind CSS** — showcasing professional experience, technical skills, and personal projects in a clean, animated single-page application.
 
 **Live:** [fernando-ghiberti.vercel.app](https://fernando-ghiberti.vercel.app/) &nbsp;|&nbsp; **Author:** [Fernando Ghiberti](https://linkedin.com/in/fernando-ghiberti) &nbsp;|&nbsp; **License:** MIT
 
@@ -16,7 +16,7 @@ This portfolio gives recruiters and hiring managers a fast, clear view of Fernan
 
 | Layer | Technology | Version |
 |---|---|---|
-| Framework | Next.js (App Router) | 15.x |
+| Framework | Next.js (App Router, Turbopack) | 16.x |
 | Language | TypeScript | 5.x |
 | Styling | Tailwind CSS | 3.x |
 | Icons | Font Awesome (React) | 6.x |

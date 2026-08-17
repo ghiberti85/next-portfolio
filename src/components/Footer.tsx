@@ -52,7 +52,7 @@ export default function Footer() {
               hydrating right at a Dec 31 → Jan 1 rollover after the page was
               cached — React's documented case for this attribute. */}
           © <span suppressHydrationWarning>{new Date().getFullYear()}</span> Fernando Ghiberti · {tr.builtWith}{" "}
-          <span style={{ color: "var(--color-text)" }}>Next.js 15</span> · {tr.deployedOn}{" "}
+          <span style={{ color: "var(--color-text)" }}>Next.js 16</span> · {tr.deployedOn}{" "}
           <span style={{ color: "var(--color-text)" }}>Vercel</span>
         </p>
         <p className="text-xs mt-2 max-w-xl mx-auto" style={{ color: "var(--color-text-muted)", opacity: 0.55 }}>
