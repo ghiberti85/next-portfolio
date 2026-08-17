@@ -17,11 +17,20 @@ export default function GitHubActivity({ data }: GitHubActivityProps) {
 
   if (!data) return null;
 
+  // timeZone is pinned explicitly: Intl.DateTimeFormat defaults to the
+  // runtime's local zone, which is UTC on Vercel's servers but whatever the
+  // visitor's OS is set to in the browser. For a pushedAt timestamp close
+  // to a local-midnight boundary, that divergence can format to a
+  // different calendar day server-side vs client-side — a classic,
+  // request/visitor-dependent hydration text mismatch that wouldn't
+  // reproduce on every load, only when a repo's timestamp happens to fall
+  // in the boundary window for a given visitor's offset from UTC.
   const formatDate = (iso: string) =>
     new Intl.DateTimeFormat(lang === "pt" ? "pt-BR" : "en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
+      timeZone: "UTC",
     }).format(new Date(iso));
 
   const statItems = [
