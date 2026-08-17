@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 // Imported here (not in SkillsSlider.tsx, which loads via next/dynamic) so
 // this CSS shares the main stylesheet's precedence instead of being loaded
@@ -178,6 +179,10 @@ export default async function RootLayout({
             </MotionProvider>
           </LanguageProvider>
         </ThemeProvider>
+        {/* Privacy-friendly, cookieless visit counting — served from Vercel's
+            own /_vercel/insights/* same-origin routes, so it needs no CSP
+            changes and no consent banner. */}
+        <Analytics />
       </body>
     </html>
   );
