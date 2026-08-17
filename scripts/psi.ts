@@ -27,6 +27,7 @@ interface Audit {
   score: number | null;
   scoreDisplayMode: string;
   displayValue?: string;
+  details?: { items?: Array<Record<string, number>> };
 }
 
 interface PsiResponse {
@@ -56,7 +57,12 @@ function parseArgs(argv: string[]): { url: string } {
 
 async function runPsi(url: string, strategy: Strategy, apiKey: string | undefined): Promise<PsiResponse> {
   const endpoint = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
-  endpoint.searchParams.set("url", url);
+  // The PSI API caches results per exact URL for a while (observed: identical
+  // scores across repeated calls that should have been fresh runs). A unique
+  // query param forces a real, fresh audit every time this script runs.
+  const cacheBustedUrl = new URL(url);
+  cacheBustedUrl.searchParams.set("psi_cache_bust", Date.now().toString());
+  endpoint.searchParams.set("url", cacheBustedUrl.toString());
   endpoint.searchParams.set("strategy", strategy);
   for (const category of CATEGORIES) endpoint.searchParams.append("category", category);
   if (apiKey) endpoint.searchParams.set("key", apiKey);
@@ -83,6 +89,16 @@ function printReport(strategy: Strategy, result: PsiResponse): void {
   console.log(`\n=== ${strategy.toUpperCase()} ===`);
   for (const category of CATEGORIES) {
     console.log(`  ${category.padEnd(15)} ${scorePct(lh.categories[category]?.score)}`);
+  }
+
+  const m = lh.audits["metrics"]?.details?.items?.[0];
+  if (m) {
+    const ms = (n: number | undefined) => (n === undefined ? "?" : `${Math.round(n)}ms`);
+    console.log(
+      `  LCP ${ms(m["largestContentfulPaint"])}  TBT ${ms(m["totalBlockingTime"])}  ` +
+        `SI ${ms(m["speedIndex"])}  FCP ${ms(m["firstContentfulPaint"])}  ` +
+        `CLS ${m["cumulativeLayoutShift"]?.toFixed(3) ?? "?"}`
+    );
   }
 
   const failing = Object.values(lh.audits).filter(
