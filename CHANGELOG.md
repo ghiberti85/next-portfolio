@@ -53,10 +53,56 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Migrated
 - **Next.js 15.5.19 → 16.3.1** (Turbopack is now the default build tool). Fixes the 4 high-severity Next.js CVEs `npm audit` was flagging (DoS, SSRF, cache confusion — now 0 vulnerabilities) and removes the ~217KB of Next DevTools that 15.5.x bundled into every production page load: "Reduce unused JavaScript" dropped from ~270KiB to ~75KiB on both mobile and desktop. `src/middleware.ts` → `src/proxy.ts` via the official codemod (Next 16 renamed the convention; Proxy now defaults to the Node.js runtime, no config needed). Dropped `export const runtime = "edge"` from `opengraph-image.tsx` (deprecated) — bonus: that route went from dynamic to statically prerendered. `next lint` was fully removed in 16; migrated to plain `eslint .` via the official codemod, which also surfaced a new `react-hooks/set-state-in-effect` rule flagging six existing, intentional SSR-hydration-safe/reset-on-prop-change patterns — downgraded to warn rather than disabled outright. Fixed two test files against Next 16's updated TypeScript DOM lib.
 
-### Investigated, not fixed
-- **The React #418 hydration error kept getting flagged by `npm run psi`'s `errors-in-console` audit — the sole remaining Best Practices blocker (96/100 on both strategies) — after the Typewriter fix above.** Eliminated by process of elimination across five further attempts, each verified against production and each leaving the exact same error signature (same throw site inside React's hydration internals, same stack shape): (1) `SkillsSlider`'s `AnimatedSection` wrapper stacking framer-motion's client-only reveal on top of its own remaining `ssr:false` boundary; (2) the `useLayoutEffect` timing change described above; (3) a deliberate 50ms delay between mounting `SkillsSlider` and `TerminalIntro` to stop their async chunk-load and rapid-`setTimeout` re-renders from competing for the main thread; (4) **the full Next 16 migration above, webpack → Turbopack included** — this one was genuinely expected to fix it, since it fixed the DevTools-bundle-bloat issue via the same mechanism (newer Next internals), but the error survived unchanged. The error only reproduces under real Lighthouse CPU throttling — never locally, and never via a real-network headless repro against the live URL without throttling — pointing to a genuine timing-sensitive race inside React/Next's own hydration machinery rather than a static SSR/CSR content mismatch in app code, and it isn't specific to one Next.js version or bundler.
-- **Root-caused (not fixable in this repo).** React's own error catalog decodes error #418 with these args as *"Hydration failed because the server rendered **text** didn't match the client"* — confirming a text-content mismatch. Downloaded the exact chunk PSI's console report points at, together with its Turbopack source map, and listed all ~26 source files bundled into it: every one is a Next.js internal (`app-index.tsx`, `app-router.tsx`, `create-initial-router-state.ts`, `find-head-in-cache.ts`, `react-dom-client.production.js`, `on-recoverable-error.ts`) — zero files from this repo. This matches a still-open upstream issue, [vercel/next.js#43159](https://github.com/vercel/next.js/issues/43159) ("Random non-deterministic React hydration error 418 using appDir that only happens on prod Vercel," opened Nov 2022, ~2% of loads, never reproducible locally, no maintainer fix to date). Moved from an active roadmap priority to tracked technical debt in `docs/ROADMAP.md` — the bug is inside Next.js's own App Router hydration bootstrap, unreachable from application code; the exit condition is an upstream fix.
-- **Two more attempts, prompted by a fair question: why does this specific project show the error when other Next.js projects don't?** (1) Removed SkillsSlider's own remaining `ssr:false` boundary (kept from the `AnimatedSection` fix above) — `react-slick` renders fine server-side, so it wasn't required; this eliminated the *only other* `next/dynamic(ssr:false)` boundary still part of the initial hydration pass (`AskFernando`/`CommandPalette`/`InteractiveTerminal` mount well after hydration, gated behind a ready flag, so were never candidates the same way). (2) Temporarily swapped the CSP's `script-src` nonce for `unsafe-inline` in production for a few minutes — this app's one clearly unusual trait versus a typical Next.js project (most don't implement strict per-request CSP nonces at all), and the site of one already-confirmed nonce-related hydration bug earlier this session. Verified via `npm run psi` against the live change, then reverted. **Neither changed the outcome.** Every structural theory available from application code is now eliminated.
+### Fixed — the React #418 hydration error saga
+
+The `errors-in-console` audit (`npm run psi`) kept flagging a React error #418 hydration
+mismatch as the sole remaining Best Practices blocker (96/100 on both strategies) even
+after the Typewriter fix above. It took ten attempts, in this order, to actually resolve:
+
+1. `SkillsSlider`'s `AnimatedSection` wrapper stacking framer-motion's client-only reveal
+   on top of its own remaining `ssr:false` boundary — removed the wrapper. No change.
+2. The `useLayoutEffect` timing change described above, reverted back to `useEffect`.
+   No change.
+3. A deliberate 50ms delay between mounting `SkillsSlider` and `TerminalIntro`, to stop
+   their async chunk-load and rapid-`setTimeout` re-renders from competing for the main
+   thread. No change.
+4. **The full Next 16 migration** (webpack → Turbopack included) — genuinely expected to
+   fix it, since it fixed the DevTools-bundle-bloat issue via the same mechanism (newer
+   Next internals). No change.
+5. Source-map analysis of the exact chunk PSI's console report pointed at (all ~26 bundled
+   source files were Next.js internals — `app-index.tsx`, `app-router.tsx`,
+   `create-initial-router-state.ts`, `find-head-in-cache.ts`,
+   `react-dom-client.production.js`, `on-recoverable-error.ts` — zero files from this repo)
+   led to concluding this was an upstream Next.js bug matching a still-open issue,
+   [vercel/next.js#43159](https://github.com/vercel/next.js/issues/43159). **This
+   conclusion was wrong** — see below.
+6. Prompted by a fair challenge (other Next.js projects don't show this error — why would
+   this one?): removed SkillsSlider's own remaining `ssr:false` boundary (`react-slick`
+   renders fine server-side, confirmed via `renderToString`) — the only other
+   `next/dynamic(ssr:false)` boundary still part of the initial hydration pass. No change.
+7. Temporarily swapped the CSP's `script-src` nonce for `unsafe-inline` in production —
+   this app's one clearly unusual trait versus a typical Next.js project, and the site of
+   one already-confirmed nonce-related hydration bug earlier this session. Verified via
+   `npm run psi` against the live change, reverted within ~3 minutes. No change.
+8. **Root cause, found from two external articles the repo owner shared** on React error
+   #418 causes: both named non-deterministic server/client formatting — especially dates —
+   as the most common trigger. Audited every date-formatting call in the codebase.
+   `GitHubActivity.tsx`'s `formatDate` was the only one, and it called
+   `Intl.DateTimeFormat` without a `timeZone` option — which defaults to the runtime's
+   local zone: UTC on Vercel's servers, whatever the visitor's OS is set to in the browser.
+   For a repo's `pushedAt` timestamp near a local-midnight boundary in a given visitor's
+   UTC offset, that formats to a *different calendar day* server-side vs client-side —
+   a text-content hydration mismatch that only manifests for specific
+   visitor-timezone/timestamp combinations, explaining the error's stubborn
+   non-determinism (never reproducible locally, inconsistent even across repeated
+   production checks) far better than a generic upstream framework bug does. Pinned
+   `timeZone: "UTC"`. **Confirmed fixed**: `npm run psi` now reports Best Practices,
+   Accessibility, and SEO at 100/100 on both mobile and desktop.
+
+The lesson in step 5: a hydration mismatch's stack trace *always* bottoms out inside
+React/Next's own reconciler — that's simply where the comparison and throw happen, for
+every hydration error that has ever existed. It says nothing about where the actual data
+divergence originated, which was app code the whole time.
 
 ### Docs
 - `CHANGELOG.md` backfilled with everything from v1.5.0 through v2.1.1 (previously last updated 2026-06-04, 8 releases behind).
