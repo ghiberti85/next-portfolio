@@ -1,29 +1,27 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 import TerminalIntro from "@/components/TerminalIntro";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import AnimatedSection from "@/components/AnimatedSection";
+import SkillsSlider from "@/components/SkillsSlider";
+import ProjectsGrid from "@/components/ProjectsGrid";
+import Timeline from "@/components/Timeline";
+import GitHubActivity from "@/components/GitHubActivity";
+import Contact from "@/components/Contact";
 import type { GitHubStats } from "@/lib/github";
 
-// All below-the-fold sections are still server-rendered (no ssr:false
-// anywhere here — react-slick and framer-motion's layoutId both confirmed
-// SSR-safe earlier), so content, SEO, and no-JS all work exactly as if
-// these were plain imports. Splitting them into their own chunks purely
-// for JS code-splitting means the browser can parse/evaluate/hydrate the
-// LCP-critical Hero without first parsing every below-the-fold section's
-// JS as one giant synchronous chunk — PSI's "Reduce JavaScript execution
-// time"/"Minimize main-thread work" diagnostics pointed at that single
-// large chunk's Script Evaluation cost as the dominant remaining cost.
-const SkillsSlider = dynamic(() => import("@/components/SkillsSlider"));
-const ProjectsGrid = dynamic(() => import("@/components/ProjectsGrid"));
-const Timeline = dynamic(() => import("@/components/Timeline"));
-const GitHubActivity = dynamic(() => import("@/components/GitHubActivity"));
-const Contact = dynamic(() => import("@/components/Contact"));
+// PR #130 split these below-the-fold sections into next/dynamic() chunks to
+// cut main-thread script-evaluation time. That improved Lighthouse's raw
+// script-evaluation audits, but real-world PSI mobile runs afterward stayed
+// well under the required 90 floor with LCP/TBT/SI all oscillating badly —
+// consistent with the simulated-throttling network model penalizing more,
+// smaller chunks more than fewer, larger ones on mobile's slow-4G profile.
+// Reverted to plain static imports (single bundle, no extra network round
+// trips) to test that hypothesis against the previous split. See CHANGELOG.
 
 interface IntroGateProps {
   github?: GitHubStats | null;
