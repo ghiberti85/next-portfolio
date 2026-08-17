@@ -23,32 +23,7 @@ whenever a new baseline is measured — `npm run psi` prints them directly.
 
 ## Active priorities
 
-### 1. Get Best Practices to 100 (mobile + desktop)
-
-Currently 96/100 on both, and — confirmed by filtering `npm run psi`'s output by the
-category's actual `auditRefs`, not just any audit with score < 1 — `errors-in-console`
-(a React error #418 hydration mismatch) is the **only** failing audit in this category
-on either strategy. Nothing else to fix here.
-
-That error resisted **six** separate, targeted fixes across two sessions (see CHANGELOG
-"Fixed"/"Investigated, not fixed" entries and closed PRs #108, #110, #111, #112, #115
-for the full elimination trail): Typewriter's `ssr:false` boundary, SkillsSlider's
-`AnimatedSection` wrapper, the `useLayoutEffect` timing in `IntroGate`, a deliberate
-delay between SkillsSlider's chunk load and TerminalIntro's timer chain, and — the one
-that was expected to fix it, since it fixed the DevTools-bundle-bloat issue the same
-way — **the full Next.js 15.5.19 → 16.3.1 migration (webpack → Turbopack included)**.
-The error survived that too, same signature, just a different chunk hash.
-
-It only reproduces under real Lighthouse CPU throttling — never locally (`dev`,
-`next start`), nor via a real-network headless repro against the live URL without
-throttling — so it's a genuine timing-sensitive race inside React/Next's own hydration
-machinery, not a static SSR/CSR content mismatch in app code, and it isn't tied to a
-specific Next.js version or bundler. Given the volume of process-of-elimination already
-done, further blind attempts have low expected value — this needs either a real Chrome
-CPU-throttled trace (DevTools Performance panel, not PSI's summary) to see what's
-actually queued on the main thread when it fires, or acceptance that this is a
-known-but-unfixed characteristic of this app for now. Does not affect real users (React
-recovers automatically; this is a console-only, Best-Practices-score-only issue).
+None right now — see Technical debt below for the one known, deliberately-unfixed item.
 
 ---
 
@@ -66,5 +41,41 @@ then move the accepted ones to Active priorities.
 
 ## Technical debt
 
-- None tracked right now. When you incur debt deliberately (e.g. a temporary workaround),
-  record it here with the reason and the exit condition.
+### Best Practices stuck at 96/100 (mobile + desktop) — root-caused to an upstream Next.js bug, not fixable in app code
+
+`errors-in-console` (a React error #418 hydration mismatch) is the **only** failing audit
+in the Best Practices category on either strategy (confirmed by filtering `npm run psi`'s
+output against the category's actual `auditRefs`, not just any audit with score < 1).
+
+**Root cause, confirmed 2026-08-16:**
+- React's own error catalog (`https://react.dev/errors/418`) gives the unminified
+  message for this exact error+args combo: *"Hydration failed because the server
+  rendered **text** didn't match the client."* — a text-content mismatch specifically,
+  not a tag/attribute mismatch.
+- Downloaded the exact chunk PSI's console report points at
+  (`_next/static/immutable/chunks/<hash>.js`) together with its source map and listed
+  every one of its ~26 source files. **All of them are Next.js internals** —
+  `app-index.tsx`, `app-router.tsx`, `create-initial-router-state.ts`,
+  `find-head-in-cache.ts`, `react-dom-client.production.js`,
+  `on-recoverable-error.ts` — **zero files from this repo**. The mismatch is inside
+  Next's own App Router client bootstrap/hydration reconciliation, not in any component
+  we wrote.
+- This matches a long-standing, still-open upstream issue:
+  [vercel/next.js#43159](https://github.com/vercel/next.js/issues/43159) — "Random
+  non-deterministic React hydration error 418 using appDir that only happens on prod
+  Vercel," opened November 2022, ~2% of page loads, never reproducible locally, no
+  maintainer fix or explanation to date.
+
+**Six separate, targeted fixes were tried across two sessions before this root-cause was
+found** (see CHANGELOG "Fixed"/"Investigated, not fixed" entries and closed PRs #108,
+#110, #111, #112, #115): Typewriter's `ssr:false` boundary, SkillsSlider's
+`AnimatedSection` wrapper, the `useLayoutEffect` timing in `IntroGate`, a delay between
+SkillsSlider's chunk load and TerminalIntro's timer chain, and the full Next.js
+15.5.19 → 16.3.1 migration (webpack → Turbopack included). None changed the outcome —
+consistent with the bug living inside Next.js itself, unreachable from application code.
+
+**Exit condition:** a future Next.js release that fixes vercel/next.js#43159 (or a
+maintainer comment on that issue pointing at a workaround we haven't tried). Re-run
+`npm run psi` after any Next.js upgrade to check. Does not affect real users — React
+recovers automatically from the mismatch; this is a console-log/Best-Practices-score-only
+issue, not a functional bug.
