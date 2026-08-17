@@ -55,6 +55,9 @@ export default function Footer() {
           <span style={{ color: "var(--color-text)" }}>Next.js 15</span> · {tr.deployedOn}{" "}
           <span style={{ color: "var(--color-text)" }}>Vercel</span>
         </p>
+        <p className="text-xs mt-2 max-w-xl mx-auto" style={{ color: "var(--color-text-muted)", opacity: 0.55 }}>
+          {tr.analyticsNotice}
+        </p>
       </footer>
     </>
   );
