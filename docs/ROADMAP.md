@@ -11,7 +11,7 @@ add the CHANGELOG entry in the same PR.
 | Metric | Value | Source |
 |---|---|---|
 | Next.js version | **16.3.1** (Turbopack) | Migrated 2026-08-16, see CHANGELOG |
-| PageSpeed Insights — mobile Performance | **93** | Manual PSI run against production, 2026-08-16 |
+| PageSpeed Insights — mobile Performance | **87-96** (5-run range, avg ~93) | 5x cache-busted `npm run psi` against production, 2026-08-16 |
 | PageSpeed Insights — desktop Performance | **100** | Manual PSI run against production, 2026-08-16 |
 | PageSpeed Insights — Accessibility (mobile + desktop) | **100** | Manual PSI run against production, 2026-08-16 |
 | PageSpeed Insights — Best Practices (mobile + desktop) | **100** | Manual PSI run against production, 2026-08-16 |
@@ -20,6 +20,14 @@ add the CHANGELOG entry in the same PR.
 
 These numbers are the reference point for the performance work below. Update this table
 whenever a new baseline is measured — `npm run psi` prints them directly.
+
+Mobile Performance is reported as a range, not a single number: the PSI API caches results
+per exact URL, so `npm run psi` cache-busts every request with a `psi_cache_bust` query
+param to force fresh audits (see `scripts/psi.ts` and CHANGELOG — a single-URL repeated
+check previously and incorrectly looked "stable at 93" because it was serving the same
+cached report 5 times). Real, fresh runs show meaningful run-to-run variance under
+Lighthouse's simulated mobile throttling; treat the low end of the range, not the average,
+as the number that matters against the ≥90 floor requirement.
 
 ---
 
