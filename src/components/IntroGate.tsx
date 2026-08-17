@@ -4,25 +4,26 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import ProjectsGrid from "@/components/ProjectsGrid";
-import Timeline from "@/components/Timeline";
-import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import TerminalIntro from "@/components/TerminalIntro";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import GitHubActivity from "@/components/GitHubActivity";
 import AnimatedSection from "@/components/AnimatedSection";
 import type { GitHubStats } from "@/lib/github";
 
-// DIAGNOSTIC: ssr:false removed. react-slick renders fine server-side
-// (verified via renderToString), so this was never strictly required.
-// Testing whether this remaining next/dynamic(..., { ssr: false })
-// boundary — the last one in the tree still part of the initial
-// hydration pass — is what triggers the React #418 hydration error
-// PSI keeps flagging. AskFernando/CommandPalette/InteractiveTerminal
-// are also ssr:false but mount well after hydration (gated behind a
-// ready flag), so they were never candidates the same way this is.
+// All below-the-fold sections are still server-rendered (no ssr:false
+// anywhere here — react-slick and framer-motion's layoutId both confirmed
+// SSR-safe earlier), so content, SEO, and no-JS all work exactly as if
+// these were plain imports. Splitting them into their own chunks purely
+// for JS code-splitting means the browser can parse/evaluate/hydrate the
+// LCP-critical Hero without first parsing every below-the-fold section's
+// JS as one giant synchronous chunk — PSI's "Reduce JavaScript execution
+// time"/"Minimize main-thread work" diagnostics pointed at that single
+// large chunk's Script Evaluation cost as the dominant remaining cost.
 const SkillsSlider = dynamic(() => import("@/components/SkillsSlider"));
+const ProjectsGrid = dynamic(() => import("@/components/ProjectsGrid"));
+const Timeline = dynamic(() => import("@/components/Timeline"));
+const GitHubActivity = dynamic(() => import("@/components/GitHubActivity"));
+const Contact = dynamic(() => import("@/components/Contact"));
 
 interface IntroGateProps {
   github?: GitHubStats | null;
@@ -34,18 +35,7 @@ export default function IntroGate({ github = null }: IntroGateProps) {
 
   useEffect(() => {
     const seen = sessionStorage.getItem("portfolio-intro-seen");
-    if (seen) return;
-    // Mounting TerminalIntro schedules a rapid chain of its own setTimeout
-    // re-renders (character-by-character typing) starting immediately.
-    // SkillsSlider is still a next/dynamic(..., { ssr: false }) boundary
-    // whose chunk fetch+eval also kicks off around now — on a throttled
-    // CPU (real Lighthouse mobile runs, never a fast local dev machine)
-    // PSI intermittently flags a React #418 hydration error under this
-    // exact combination. A short delay here lets that async work get a
-    // head start before TerminalIntro starts churning, which is a cheap,
-    // safe mitigation regardless of the precise mechanism.
-    const timerId = setTimeout(() => setShowIntro(true), 50);
-    return () => clearTimeout(timerId);
+    if (!seen) setShowIntro(true);
   }, []);
 
   const handleIntroDone = () => {
@@ -74,11 +64,7 @@ export default function IntroGate({ github = null }: IntroGateProps) {
             animation, so it never sits at opacity:0 waiting on an
             IntersectionObserver before it counts as painted. */}
         <Hero />
-        {/* Not wrapped in AnimatedSection: kept losing this section's
-            scroll-in fade after ruling out the AnimatedSection+ssr:false
-            double-layering theory (see SkillsSlider's dynamic() import
-            above for the current experiment). */}
-        <ErrorBoundary><SkillsSlider /></ErrorBoundary>
+        <ErrorBoundary><AnimatedSection variant="stagger" delay={0.05}><SkillsSlider /></AnimatedSection></ErrorBoundary>
         <ErrorBoundary><AnimatedSection variant="launch"  delay={0.05}><ProjectsGrid /></AnimatedSection></ErrorBoundary>
         <ErrorBoundary><AnimatedSection variant="reveal"  delay={0.05}><Timeline /></AnimatedSection></ErrorBoundary>
         <ErrorBoundary><AnimatedSection variant="fadeUp"  delay={0.05}><GitHubActivity data={github} /></AnimatedSection></ErrorBoundary>
