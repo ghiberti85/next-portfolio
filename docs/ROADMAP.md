@@ -66,13 +66,26 @@ output against the category's actual `auditRefs`, not just any audit with score 
   Vercel," opened November 2022, ~2% of page loads, never reproducible locally, no
   maintainer fix or explanation to date.
 
-**Six separate, targeted fixes were tried across two sessions before this root-cause was
+**Eight separate, targeted fixes were tried across two sessions before this root-cause was
 found** (see CHANGELOG "Fixed"/"Investigated, not fixed" entries and closed PRs #108,
-#110, #111, #112, #115): Typewriter's `ssr:false` boundary, SkillsSlider's
-`AnimatedSection` wrapper, the `useLayoutEffect` timing in `IntroGate`, a delay between
-SkillsSlider's chunk load and TerminalIntro's timer chain, and the full Next.js
-15.5.19 → 16.3.1 migration (webpack → Turbopack included). None changed the outcome —
-consistent with the bug living inside Next.js itself, unreachable from application code.
+#110, #111, #112, #115, #122, #124/#125): Typewriter's `ssr:false` boundary, SkillsSlider's
+`AnimatedSection` wrapper *and*, separately, SkillsSlider's own remaining `ssr:false`
+boundary (react-slick renders fine server-side — confirmed via `renderToString` — so this
+wasn't required either), the `useLayoutEffect` timing in `IntroGate`, a delay between
+SkillsSlider's chunk load and TerminalIntro's timer chain, the full Next.js 15.5.19 →
+16.3.1 migration (webpack → Turbopack included), and — the most targeted test yet, aimed
+directly at "why does this app show it and other Next.js apps don't" — a temporary swap
+of the CSP's `script-src` nonce for `unsafe-inline` (this app's one clearly unusual trait
+vs. a typical Next.js project, and the site of one already-confirmed nonce-related
+hydration bug earlier this session). Deployed to production, verified via `npm run psi`,
+reverted within ~3 minutes. **None of the eight changed the outcome** — same error,
+same signature, every time.
+
+Every structural theory tested — every `ssr:false` boundary in the tree, and the app's
+one genuinely unusual trait (strict per-request CSP nonces) — has been eliminated. What's
+left unfalsified: something in Next's App Router hydration bootstrap that's sensitive to
+real network/CPU conditions this app's specific bundle size or composition crosses a
+threshold for, without any single app-code change being the "smoking gun."
 
 **Exit condition:** a future Next.js release that fixes vercel/next.js#43159 (or a
 maintainer comment on that issue pointing at a workaround we haven't tried). Re-run
