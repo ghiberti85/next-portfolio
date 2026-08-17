@@ -1,15 +1,17 @@
 import { render } from "@testing-library/react";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 
-jest.mock("framer-motion", () => ({
-  motion: {
-    div: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-      <div {...props}>{children}</div>
-    ),
-  },
-  useScroll: () => ({ scrollYProgress: { get: () => 0 } }),
-  useSpring: (v: unknown) => v,
-}));
+jest.mock("framer-motion", () => {
+  const div = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+    <div {...props}>{children}</div>
+  );
+  return {
+    motion: { div },
+    m: { div },
+    useScroll: () => ({ scrollYProgress: { get: () => 0 } }),
+    useSpring: (v: unknown) => v,
+  };
+});
 
 describe("ScrollProgressBar", () => {
   it("renders without crashing", () => {

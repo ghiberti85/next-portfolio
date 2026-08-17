@@ -2,14 +2,16 @@ import { render, screen } from "@testing-library/react";
 import AnimatedSection from "@/components/AnimatedSection";
 
 // Passthrough mock for framer-motion
-jest.mock("framer-motion", () => ({
-  motion: {
-    div: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-      <div {...props}>{children}</div>
-    ),
-  },
-  useReducedMotion: () => false,
-}));
+jest.mock("framer-motion", () => {
+  const div = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+    <div {...props}>{children}</div>
+  );
+  return {
+    motion: { div },
+    m: { div },
+    useReducedMotion: () => false,
+  };
+});
 
 describe("AnimatedSection", () => {
   it("renders children", () => {

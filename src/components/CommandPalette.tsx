@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { motion, MotionConfig } from "framer-motion";
+import { m, MotionConfig } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
@@ -142,7 +142,7 @@ export default function CommandPalette() {
         onClick={close}
         data-testid="palette-backdrop"
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.96, y: -12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
@@ -219,7 +219,7 @@ export default function CommandPalette() {
               {tr.hint}
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </MotionConfig>
   );

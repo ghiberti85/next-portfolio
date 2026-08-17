@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { m, useScroll, useSpring } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faGraduationCap, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "@/context/LanguageContext";
@@ -101,7 +101,7 @@ export default function Timeline() {
         {/* Vertical line on the left rail */}
         <div className="absolute top-0 bottom-0 left-6 w-0.5 overflow-hidden" aria-hidden="true"
           style={{ background: "var(--card-border)" }}>
-          <motion.div
+          <m.div
             className="w-full origin-top"
             style={{
               scaleY: lineProgress,
