@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { m, useReducedMotion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
 type SectionVariant = "fadeUp" | "stagger" | "launch" | "reveal" | "flip";
@@ -68,7 +68,7 @@ export default function AnimatedSection({
   const v = variants[variant];
 
   return (
-    <motion.div
+    <m.div
       variants={v}
       initial="hidden"
       whileInView="show"
@@ -78,6 +78,6 @@ export default function AnimatedSection({
       style={variant === "flip" ? { perspective: 800 } : undefined}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

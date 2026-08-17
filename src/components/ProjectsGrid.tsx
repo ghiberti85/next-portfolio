@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion, MotionConfig } from "framer-motion";
+import { m, MotionConfig } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -113,7 +113,7 @@ export default function ProjectsGrid() {
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedProject(project); } }}
             aria-label={`View details for ${project.title}`}
           >
-            <motion.div layoutId={`project-${project.title}`} className="relative">
+            <m.div layoutId={`project-${project.title}`} className="relative">
               <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
                   <span key={tag} className="px-2 py-1 text-xs bg-teal-700 text-white rounded-full">
@@ -138,7 +138,7 @@ export default function ProjectsGrid() {
                   {tr.viewMore}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         ))}
       </div>
@@ -159,7 +159,7 @@ export default function ProjectsGrid() {
           className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75 px-4"
           onClick={() => setSelectedProject(null)}
         >
-          <motion.div
+          <m.div
             layoutId={`project-${selectedProject.title}`}
             ref={dialogRef}
             role="dialog"
@@ -215,7 +215,7 @@ export default function ProjectsGrid() {
             >
               ✕
             </button>
-          </motion.div>
+          </m.div>
         </div>
       )}
     </section>

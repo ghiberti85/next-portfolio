@@ -6,6 +6,7 @@ import SkipLink from "@/components/SkipLink";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import PointerOnlyEffects from "@/components/PointerOnlyEffects";
 import DeferredOverlays from "@/components/DeferredOverlays";
+import MotionProvider from "@/components/MotionProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 
@@ -160,14 +161,16 @@ export default async function RootLayout({
       >
         <ThemeProvider>
           <LanguageProvider>
-            <ScrollProgressBar />
-            <SkipLink />
-            <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
-            <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
-            <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
-            <PointerOnlyEffects />
-            <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-hidden">{children}</div>
-            <DeferredOverlays />
+            <MotionProvider>
+              <ScrollProgressBar />
+              <SkipLink />
+              <div className="mesh-blob mesh-blob-1" aria-hidden="true" />
+              <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
+              <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
+              <PointerOnlyEffects />
+              <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-hidden">{children}</div>
+              <DeferredOverlays />
+            </MotionProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>
