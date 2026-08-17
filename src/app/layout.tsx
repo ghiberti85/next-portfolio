@@ -2,6 +2,11 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
+// Imported here (not in SkillsSlider.tsx, which loads via next/dynamic) so
+// this CSS shares the main stylesheet's precedence instead of being loaded
+// as a separate, sequentially-blocking stylesheet — see SkillsSlider.tsx.
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import SkipLink from "@/components/SkipLink";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import PointerOnlyEffects from "@/components/PointerOnlyEffects";

@@ -4,8 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// slick-carousel's CSS is imported in layout.tsx, not here — this file is
+// still loaded via next/dynamic() for JS code-splitting, and pulling a CSS
+// import through a dynamic import boundary makes Next assign it a separate
+// "dynamic" style precedence from the rest of the global stylesheet, which
+// React loads strictly *after* the main one instead of in parallel (a
+// cascade-order guarantee, not a bug) — that serial wait was the dominant
+// cost in PSI's render-blocking-requests audit for this ~4KB file.
 import { useLanguage } from "@/context/LanguageContext";
 import skillsText from "@/lib/translations/skills";
 import DecryptText from "@/components/DecryptText";
