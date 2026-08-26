@@ -25,6 +25,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - `.claude/commands/new-component.md` resynced with current conventions: `.glass-card` class instead of hand-rolled inline glassmorphism, `DecryptText` heading fed by `translations.ts`, section composition in `IntroGate.tsx` (was wrongly pointing at `page.tsx`), and the `ErrorBoundary`/`AnimatedSection` wrapper rule.
 - Downloadable CV (`public/fernando-ghiberti-cv-en.pdf`) refreshed with a newer revision. Same filename — no code changes required.
+- Downloadable CV refreshed again with a newer revision (now lists a new current role, Senior Software Engineer at Paramount/LTIMindTree, alongside the existing +A Educação/EBANX/freelance history). Same filename — no code changes required; Timeline cards not touched in this pass.
 - `robots.ts` now `disallow`s `/api/` so the chat and CSP-report endpoints are excluded from indexing.
 - Home `<meta name="description">` trimmed to 155 characters (from 175) for clean SERP display, still leading with name + stack.
 - **Timeline — professional experience cards synced with the updated CV** (EN and PT-BR): `+A Educação`'s period changed from "2022 – Present" to "2022 – 2026" (the CV lists it as ended) and its title/bullets now reflect the CMS migration, design system, and team-lead scope; EBANX's title gained the "(Mid-Senior)" qualifier; the freelance/personal-projects entry now lists the actual shipped projects (DevFactory, Ghiberti UI, DevInterviewLab, Interview Command Center, Finanças do Casal) instead of generic bullets.
