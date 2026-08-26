@@ -6,6 +6,18 @@ const timeline = {
     viewMore: "View more",
     items: [
       {
+        title: "Senior Software Engineer",
+        period: "2026 – Present",
+        type: "professional" as const,
+        institution: "Paramount — LTIMindTree",
+        details: [
+          "Engineering frontend and backend features for high-traffic entertainment and sports platforms serving CBS Sports, spanning CMS, advertising technology, and analytics systems.",
+          "Building CMS-driven content experiences and ad-tech integrations with React, Next.js, TypeScript/JavaScript, and Node.js.",
+          "Supporting analytics tooling, event tracking, and observability pipelines to monitor platform health and user engagement at scale.",
+          "Collaborating cross-functionally with engineering, marketing, analytics, and product teams on performance optimization, production operations, and frontend architecture, using AWS, Material UI, and REST APIs within CI/CD-driven workflows.",
+        ],
+      },
+      {
         title: "Senior Full-Stack Engineer & Tech Lead",
         period: "2022 – 2026",
         type: "professional" as const,
@@ -98,6 +110,18 @@ const timeline = {
     title: "Experiência & Formação",
     viewMore: "Ver mais",
     items: [
+      {
+        title: "Engenheiro de Software Sênior",
+        period: "2026 – Presente",
+        type: "professional" as const,
+        institution: "Paramount — LTIMindTree",
+        details: [
+          "Desenvolvo funcionalidades de frontend e backend para plataformas de entretenimento e esportes de alto tráfego da CBS Sports, atuando em CMS, tecnologia de publicidade (ad-tech) e sistemas de analytics.",
+          "Construo experiências de conteúdo orientadas por CMS e integrações de ad-tech com React, Next.js, TypeScript/JavaScript e Node.js.",
+          "Dou suporte a ferramentas de analytics, rastreamento de eventos e pipelines de observabilidade para monitorar a saúde da plataforma e o engajamento dos usuários em escala.",
+          "Colaboro de forma multifuncional com times de engenharia, marketing, analytics e produto em otimização de performance, operações de produção e arquitetura de frontend, usando AWS, Material UI e REST APIs em fluxos orientados a CI/CD.",
+        ],
+      },
       {
         title: "Engenheiro Full-Stack Sênior & Tech Lead",
         period: "2022 – 2026",
