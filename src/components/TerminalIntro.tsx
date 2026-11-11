@@ -19,20 +19,18 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
   const [phase, setPhase] = useState<"cmd" | "out" | "pause">("cmd");
   const bottomRef = useRef<HTMLDivElement>(null);
   // Mobile PageSpeed audits always simulate a first-time visit, so this
-  // animation's full duration counts directly against Speed Index/TBT on
-  // every run. Desktop is already scoring well, so only mobile gets the
-  // faster pacing — computed once at mount (this component never renders
-  // during SSR, so `window` is always available here).
+  // animation's duration counts against mobile Speed Index/TBT. An earlier
+  // pass made mobile ~2.4x faster than desktop (plus batching 3 characters
+  // per tick) to chase that, but real-device feedback was that it became
+  // too fast to read at all — readability wins over an unverified scoring
+  // edge, so mobile now matches desktop's pacing exactly.
   const [isMobile] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches
   );
-  const SPEED_CMD = isMobile ? 9 : 22;
-  const SPEED_OUT = isMobile ? 4 : 9;
-  const PAUSE_BETWEEN = isMobile ? 70 : 180;
-  // Characters advanced per timer tick. Batching on mobile cuts React
-  // re-renders ~3x during the intro (each tick is a state update), which
-  // matters because the whole animation runs inside the LCP/TBT window.
-  const CHARS_PER_TICK = isMobile ? 3 : 1;
+  const SPEED_CMD = 22;
+  const SPEED_OUT = 9;
+  const PAUSE_BETWEEN = 180;
+  const CHARS_PER_TICK = 1;
 
   useEffect(() => {
     setLines([]);

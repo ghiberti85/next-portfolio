@@ -81,7 +81,7 @@ describe("TerminalIntro", () => {
     jest.useRealTimers();
   });
 
-  it("completes faster on mobile viewports — PageSpeed always audits a first visit, so this animation's duration counts directly against Speed Index/TBT on mobile", () => {
+  it("completes in the same number of timer ticks on mobile and desktop viewports — mobile used to type faster, but that made it unreadable on real devices, so pacing is now identical on both", () => {
     jest.useFakeTimers();
 
     const onDoneDesktop = jest.fn();
@@ -112,7 +112,7 @@ describe("TerminalIntro", () => {
       act(() => { jest.advanceTimersByTime(30); });
     }
     expect(onDoneMobile).toHaveBeenCalled();
-    expect(mobileIterations).toBeLessThan(desktopIterations);
+    expect(mobileIterations).toBe(desktopIterations);
 
     window.matchMedia = originalMatchMedia;
     jest.useRealTimers();
