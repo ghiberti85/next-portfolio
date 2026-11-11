@@ -395,10 +395,11 @@ percentages, and **fails closed**: any error (network, non-2xx, thrown exception
 - Types out a fixed sequence of `{ cmd, out }` lines (from `t[lang].terminal.lines`) character by character.
 - `onDone` fires after the last line finishes (plus a short pause); `IntroGate` marks `sessionStorage["portfolio-intro-seen"]` and crossfades the overlay itself out, revealing the (already-painted) page underneath.
 - A "Skip intro" button calls `onDone` immediately.
-- `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN` are ~2.4x faster on mobile viewports (`matchMedia("(max-width: 1023px)")`, checked once at mount via a lazy `useState` initializer — this component only ever mounts client-side, never during SSR). Desktop keeps the original, slower pacing. Mobile PageSpeed audits always simulate a first-time visit, so this animation's full duration counts directly against Speed Index/TBT on every run; desktop was already scoring well and didn't need it.
+- `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN`/`CHARS_PER_TICK` are the same on mobile and desktop. An earlier pass made mobile ~2.4x faster (plus batching 3 characters per timer tick) to chase mobile Speed Index/TBT, but real-device feedback was that it became too fast to read — the `isMobile` detection (`matchMedia("(max-width: 1023px)")`, checked once at mount via a lazy `useState` initializer) is kept only because the mobile/desktop scroll behavior below still differs, not for pacing.
+- The intro's scroll-to-bottom effect skips the smooth-scroll animation on mobile (`behavior: "auto"` vs `"smooth"`) — unrelated to typing speed, this just avoids stacking dozens of overlapping smooth-scrolls as lines complete.
 
 ### Do not
-- Slow down the desktop `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN` values, or the mobile ones back toward the desktop pace — both were tuned to fix LCP/Speed-Index regressions (see CHANGELOG 1.9.0 and the mobile-performance pass), and this is now the second time the same class of regression (this animation's duration counting against paint/visual-completeness metrics) has needed a fix.
+- Reintroduce a mobile/desktop pacing difference here without re-confirming on a real device first — this is the second time this animation's speed caused a regression (the first was too slow, hurting Speed Index; this one was too fast, hurting readability). A Lighthouse/PSI score is not sufficient justification on its own if it comes at the cost of the content being legible.
 
 ---
 
@@ -416,6 +417,19 @@ percentages, and **fails closed**: any error (network, non-2xx, thrown exception
 - Animate non-`transform`/`opacity` properties — keeps every entrance at 60fps.
 - Wrap `<Hero>` (or any other LCP candidate) with this — `whileInView`'s `initial="hidden"` renders `opacity: 0` in the SSR output until an `IntersectionObserver` fires client-side, which delays LCP. Reserve this for below-the-fold sections only.
 - Import this with `dynamic(..., { ssr: false })` again — it previously wrapped the entire page tree that way, which meant *nothing* rendered server-side. Keep it a plain static import so its children stay in the SSR output.
+- Make `MotionProvider`'s feature bundle load lazily again (see below) — `whileInView` depends on it, and a below-the-fold section stuck at `opacity: 0` forever looks identical to this component simply not rendering.
+
+---
+
+## MotionProvider
+
+**File:** `src/components/MotionProvider.tsx`
+**Type:** Client Component, wraps the app in `layout.tsx`
+**Responsibility:** Provides Framer Motion's `domMax` feature set to every `m.*` component (`AnimatedSection`, `ProjectsGrid`'s modal `layoutId` transition, `ScrollProgressBar`, etc.) via `LazyMotion`.
+
+### Do not
+- Pass `features` a loader function (`() => import("framer-motion").then(...)`) instead of the imported `domMax` value directly. That lazy-loads the feature bundle as a separate chunk fetched after mount — on a throttled mobile connection, `AnimatedSection`'s `whileInView` could fail to attach its `IntersectionObserver` before the user scrolled a below-the-fold section past the viewport, permanently stranding it at `opacity: 0` (reported as "sections stop appearing on mobile after the first two"). `domMax` must be imported eagerly so there's no window where it isn't ready.
+- Remove `strict` — it's what makes an accidental `motion.div` (instead of `m.div`) elsewhere in the codebase throw immediately instead of silently working outside `LazyMotion`'s control.
 
 ---
 

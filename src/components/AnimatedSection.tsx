@@ -1,7 +1,7 @@
 "use client";
 
 import { m, useReducedMotion, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type SectionVariant = "fadeUp" | "stagger" | "launch" | "reveal" | "flip";
 
@@ -53,6 +53,14 @@ interface Props {
   variant?: SectionVariant;
 }
 
+// How long to wait for the section to scroll into view before showing it
+// anyway. Protects against any failure mode that could otherwise leave a
+// section permanently at `opacity: 0` — an async-loaded animation engine
+// not ready yet, a degenerate margin calculation on a short section,
+// anything not foreseen here. Content must never depend on a single
+// mechanism to become visible at all.
+const SAFETY_NET_MS = 2500;
+
 export default function AnimatedSection({
   children,
   delay = 0,
@@ -60,19 +68,50 @@ export default function AnimatedSection({
   variant = "fadeUp",
 }: Props) {
   const prefersReducedMotion = useReducedMotion();
+  const [shown, setShown] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (shown) return;
+
+    const el = ref.current;
+    const reveal = () => setShown(true);
+
+    let observer: IntersectionObserver | undefined;
+    if (el) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) reveal();
+        },
+        { rootMargin: "-80px" }
+      );
+      observer.observe(el);
+    }
+
+    const timer = setTimeout(reveal, SAFETY_NET_MS);
+
+    return () => {
+      observer?.disconnect();
+      clearTimeout(timer);
+    };
+  }, [shown]);
 
   if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    );
   }
 
   const v = variants[variant];
 
   return (
     <m.div
+      ref={ref}
       variants={v}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
+      animate={shown ? "show" : "hidden"}
       transition={{ delay }}
       className={className}
       style={variant === "flip" ? { perspective: 800 } : undefined}

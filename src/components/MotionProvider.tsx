@@ -1,22 +1,26 @@
 "use client";
 
-import { LazyMotion } from "framer-motion";
+import { LazyMotion, domMax } from "framer-motion";
 import type { ReactNode } from "react";
 
-// Importing `motion` directly bakes in framer-motion's full feature set
-// (drag, pan, gestures, layout projection) into the main bundle regardless
-// of which components actually use them — most of ours only need basic
-// opacity/transform animations. LazyMotion + the `m` component (used
-// throughout instead of `motion`) defers loading the feature bundle to a
-// separate chunk fetched after mount, and `domMax` (rather than the
-// smaller `domAnimation`) is required because ProjectsGrid's expand-to-
-// modal transition uses `layoutId`, which needs the layout-projection
-// feature only `domMax` includes.
-const loadFeatures = () => import("framer-motion").then((res) => res.domMax);
-
+// `domMax` is imported eagerly (not via a dynamic import()) on purpose.
+// The previous lazy-loaded version fetched the feature bundle as a separate
+// chunk after mount; on throttled mobile connections, AnimatedSection's
+// `whileInView` (which depends on this bundle to attach its
+// IntersectionObserver) could fail to register before the user scrolled a
+// below-the-fold section past the viewport, permanently stranding it at
+// `opacity: 0` (the `hidden` variant) — reported as "sections stop
+// appearing on mobile after the first two." Bundling `domMax` eagerly here
+// guarantees it's available the instant any `m.*` component mounts, so
+// there's no timing window where the observer isn't live. This gives up the
+// code-splitting win LazyMotion existed for (domMax is now part of the main
+// bundle, same as importing `motion` directly would be) — reliability wins
+// over that marginal, never-conclusively-measured bundle-size saving.
+// `strict` is kept so any future `motion.*` usage (vs. `m.*`) still errors
+// instead of silently reintroducing the full API a second way.
 export default function MotionProvider({ children }: { children: ReactNode }) {
   return (
-    <LazyMotion features={loadFeatures} strict>
+    <LazyMotion features={domMax} strict>
       {children}
     </LazyMotion>
   );
