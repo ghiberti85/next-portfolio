@@ -17,19 +17,12 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
   const [cmdChars, setCmdChars] = useState(0);
   const [outChars, setOutChars] = useState(0);
   const [phase, setPhase] = useState<"cmd" | "out" | "pause">("cmd");
-  const bottomRef = useRef<HTMLDivElement>(null);
-  // Mobile PageSpeed audits always simulate a first-time visit, so this
-  // animation's duration counts against mobile Speed Index/TBT. An earlier
-  // pass made mobile ~2.4x faster than desktop (plus batching 3 characters
-  // per tick) to chase that, but real-device feedback was that it became
-  // too fast to read at all — readability wins over an unverified scoring
-  // edge, so mobile now matches desktop's pacing exactly.
-  const [isMobile] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches
-  );
-  const SPEED_CMD = 22;
-  const SPEED_OUT = 9;
-  const PAUSE_BETWEEN = 180;
+  const bodyRef = useRef<HTMLDivElement>(null);
+  // Paced for reading on a real phone: the previous 9 ms/char output
+  // (~110 chars/s) was still reported as unreadably fast on iPhone.
+  const SPEED_CMD = 40;
+  const SPEED_OUT = 20;
+  const PAUSE_BETWEEN = 300;
   const CHARS_PER_TICK = 1;
 
   useEffect(() => {
@@ -82,17 +75,19 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
     }
   }, [currentLine, phase, cmdChars, outChars, tr.lines, onDone, SPEED_CMD, SPEED_OUT, PAUSE_BETWEEN, CHARS_PER_TICK]);
 
-  // Scroll only when a line completes (not per character) and skip the
-  // smooth-scroll animation on mobile — hundreds of overlapping smooth
-  // scrolls during the intro were pure main-thread churn.
+  // Scrolls only the terminal box. scrollIntoView() is avoided on purpose:
+  // it scrolls every scrollable ancestor, and iOS Safari can apply that to
+  // the document behind this position:fixed overlay.
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: isMobile ? "auto" : "smooth" });
-  }, [lines.length, isMobile]);
+    const body = bodyRef.current;
+    if (body) body.scrollTop = body.scrollHeight;
+  }, [lines.length]);
 
   const activeLine = currentLine < tr.lines.length ? (tr.lines[currentLine] ?? null) : null;
 
   return (
     <div
+      data-terminal-intro=""
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{
         background: "linear-gradient(135deg, #0f172a, #1e293b)",
@@ -118,6 +113,7 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
 
         {/* Terminal body */}
         <div
+          ref={bodyRef}
           className="font-mono text-xs sm:text-sm p-4 sm:p-5 space-y-1 overflow-y-auto overflow-x-hidden"
           style={{ background: "rgba(0,0,0,0.6)", minHeight: "220px", maxHeight: "340px" }}
         >
@@ -145,7 +141,6 @@ export default function TerminalIntro({ onDone, exiting = false }: TerminalIntro
               )}
             </div>
           )}
-          <div ref={bottomRef} />
         </div>
       </div>
 

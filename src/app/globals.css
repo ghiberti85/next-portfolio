@@ -85,11 +85,26 @@ body {
   background-attachment: fixed;
   color: var(--color-text);
   transition: background 0.4s ease, color 0.4s ease;
-  overflow-x: hidden;
+  /* `clip`, not `hidden`: hidden on both html and body turns body into its
+     own scroll container, a known cause of stuck scrolling on iOS Safari.
+     clip cuts horizontal overflow without creating a scroll container. */
+  overflow-x: clip;
 }
 
-html {
-  overflow-x: hidden;
+/* Touch devices: iOS never supported fixed backgrounds, and they force
+   main-thread repaints on scroll elsewhere. Also, scroll-reveal sections
+   must never depend on JS animation to become visible on a phone —
+   `!important` beats both framer-motion's inline styles and its WAAPI
+   animations, so content shows even if the animation never runs. */
+@media (hover: none) and (pointer: coarse) {
+  body {
+    background-attachment: scroll;
+  }
+
+  [data-scroll-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* ── Light mode text overrides ──────────────────────────────────── */

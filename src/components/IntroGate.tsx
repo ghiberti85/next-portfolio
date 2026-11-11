@@ -12,6 +12,7 @@ import ProjectsGrid from "@/components/ProjectsGrid";
 import Timeline from "@/components/Timeline";
 import GitHubActivity from "@/components/GitHubActivity";
 import Contact from "@/components/Contact";
+import DebugOverlay from "@/components/DebugOverlay";
 import type { GitHubStats } from "@/lib/github";
 
 // PR #130 split these below-the-fold sections into next/dynamic() chunks to
@@ -70,6 +71,7 @@ export default function IntroGate({ github = null }: IntroGateProps) {
       </main>
       <AnimatedSection variant="fadeUp"  delay={0.05}><Footer /></AnimatedSection>
       {showIntro && <TerminalIntro onDone={handleIntroDone} exiting={exiting} />}
+      <DebugOverlay />
     </>
   );
 }

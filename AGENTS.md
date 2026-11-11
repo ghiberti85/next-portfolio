@@ -209,7 +209,8 @@ src/
 │   ├── MouseSpotlight.tsx      # Mouse-following radial spotlight overlay
 │   ├── ScrollProgressBar.tsx   # Fixed top reading-progress bar
 │   ├── SkipLink.tsx            # Accessibility skip-to-content link
-│   └── ErrorBoundary.tsx       # React class ErrorBoundary for per-section failure isolation
+│   ├── ErrorBoundary.tsx       # React class ErrorBoundary for per-section failure isolation
+│   └── DebugOverlay.tsx        # Opt-in (?debug=1) on-device diagnostics panel for real-phone bugs
 ├── context/
 │   ├── LanguageContext.tsx     # EN / PT-BR language state (React Context + document.lang sync)
 │   └── ThemeContext.tsx        # Dark / light theme state (React Context)

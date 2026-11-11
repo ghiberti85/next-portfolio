@@ -45,6 +45,15 @@ describe("AnimatedSection", () => {
     });
   });
 
+  it("marks the animated wrapper with data-scroll-reveal so the touch-device CSS override can force it visible", () => {
+    const { container } = render(
+      <AnimatedSection>
+        <span>marked</span>
+      </AnimatedSection>
+    );
+    expect(container.querySelector("[data-scroll-reveal]")).toContainElement(screen.getByText("marked"));
+  });
+
   it("renders a plain div when reduced motion is preferred", () => {
     jest.resetModules();
     jest.doMock("framer-motion", () => ({
