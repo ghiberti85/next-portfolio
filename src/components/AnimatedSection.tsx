@@ -109,6 +109,7 @@ export default function AnimatedSection({
   return (
     <m.div
       ref={ref}
+      data-scroll-reveal=""
       variants={v}
       initial="hidden"
       animate={shown ? "show" : "hidden"}

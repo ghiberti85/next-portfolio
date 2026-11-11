@@ -395,10 +395,12 @@ percentages, and **fails closed**: any error (network, non-2xx, thrown exception
 - Types out a fixed sequence of `{ cmd, out }` lines (from `t[lang].terminal.lines`) character by character.
 - `onDone` fires after the last line finishes (plus a short pause); `IntroGate` marks `sessionStorage["portfolio-intro-seen"]` and crossfades the overlay itself out, revealing the (already-painted) page underneath.
 - A "Skip intro" button calls `onDone` immediately.
-- `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN`/`CHARS_PER_TICK` are the same on mobile and desktop. An earlier pass made mobile ~2.4x faster (plus batching 3 characters per timer tick) to chase mobile Speed Index/TBT, but real-device feedback was that it became too fast to read — the `isMobile` detection (`matchMedia("(max-width: 1023px)")`, checked once at mount via a lazy `useState` initializer) is kept only because the mobile/desktop scroll behavior below still differs, not for pacing.
-- The intro's scroll-to-bottom effect skips the smooth-scroll animation on mobile (`behavior: "auto"` vs `"smooth"`) — unrelated to typing speed, this just avoids stacking dozens of overlapping smooth-scrolls as lines complete.
+- `SPEED_CMD`/`SPEED_OUT`/`PAUSE_BETWEEN` (40 ms / 20 ms / 300 ms, one character per tick) are the same on every viewport, so the whole sequence takes roughly 8 seconds. The previous 22 ms / 9 ms / 180 ms pacing (~110 output characters per second) was still reported as unreadable on a real iPhone.
+- As each line completes, only the terminal box itself is scrolled to the bottom (`scrollTop = scrollHeight`). `scrollIntoView()` is not used: it scrolls every scrollable ancestor, and iOS Safari can apply that to the document behind this `position: fixed` overlay.
+- The overlay root carries `data-terminal-intro`, which `DebugOverlay` uses to report whether the intro is still mounted.
 
 ### Do not
+- Use `scrollIntoView()` here again (see Behavior).
 - Reintroduce a mobile/desktop pacing difference here without re-confirming on a real device first — this is the second time this animation's speed caused a regression (the first was too slow, hurting Speed Index; this one was too fast, hurting readability). A Lighthouse/PSI score is not sufficient justification on its own if it comes at the cost of the content being legible.
 
 ---
@@ -412,11 +414,16 @@ percentages, and **fails closed**: any error (network, non-2xx, thrown exception
 ### Variants
 `fadeUp`, `stagger`, `launch`, `reveal`, `flip` — see the `variants` map in the file for exact transforms/easing.
 
+### Visibility guarantees
+- Visibility is driven by the component's own `IntersectionObserver`, plus a 2.5 s safety-net timeout that reveals the section regardless.
+- On touch devices (`(hover: none) and (pointer: coarse)`), `globals.css` forces every `[data-scroll-reveal]` wrapper to `opacity: 1; transform: none` with `!important`. That beats both framer-motion's inline styles and its WAAPI animations, so on phones the content is visible from first paint and never depends on JS animation. The trade-off is that phones get no entrance animation.
+
 ### Do not
 - Add a new variant without also respecting `useReducedMotion()` — every variant renders as a plain `<div>` (no animation) when the user prefers reduced motion.
 - Animate non-`transform`/`opacity` properties — keeps every entrance at 60fps.
 - Wrap `<Hero>` (or any other LCP candidate) with this — `whileInView`'s `initial="hidden"` renders `opacity: 0` in the SSR output until an `IntersectionObserver` fires client-side, which delays LCP. Reserve this for below-the-fold sections only.
 - Import this with `dynamic(..., { ssr: false })` again — it previously wrapped the entire page tree that way, which meant *nothing* rendered server-side. Keep it a plain static import so its children stay in the SSR output.
+- Remove the `data-scroll-reveal` attribute from the animated wrapper — it's what the touch-device CSS override targets.
 - Make `MotionProvider`'s feature bundle load lazily again (see below) — `whileInView` depends on it, and a below-the-fold section stuck at `opacity: 0` forever looks identical to this component simply not rendering.
 
 ---
@@ -486,6 +493,23 @@ percentages, and **fails closed**: any error (network, non-2xx, thrown exception
 
 ### Do not
 - Wrap the entire page in a single `ErrorBoundary` — each data-dependent section gets its own instance so one section's failure doesn't take down the rest.
+
+---
+
+## DebugOverlay
+
+**File:** `src/components/DebugOverlay.tsx`
+**Type:** Client Component, mounted in `IntroGate`
+**Responsibility:** On-device diagnostics for bugs that only reproduce on real phones, where no devtools are available.
+
+### Behavior
+- Off by default and renders nothing. Opening the site with `?debug=1` turns it on for the tab session (`sessionStorage["portfolio-debug"]`), so it stays on through reloads. `?debug=0` or the "close" button turns it off.
+- Every 500 ms it shows: user agent, viewport and visual-viewport size, `window.scrollY` vs `document.scrollingElement` vs `body.scrollTop`, document height, intro state (seen and still mounted), the element at the screen center (catches invisible overlays swallowing touches), and touch counts. The touch counts include how many `touchmove` events reached `window` with `defaultPrevented`, which catches a listener blocking native scroll. It also lists each section's position, height and opacity, and the last five uncaught errors and unhandled rejections.
+- "reset intro" clears `portfolio-intro-seen` and reloads, to reproduce a first visit.
+- The strings are English-only on purpose: this is a developer tool, not site UI, so it doesn't use `translations/`.
+
+### Do not
+- Make it on by default, or add anything that changes page behavior. All of its listeners are passive and read-only.
 
 ---
 

@@ -174,7 +174,7 @@ export default async function RootLayout({
               <div className="mesh-blob mesh-blob-2" aria-hidden="true" />
               <div className="mesh-blob mesh-blob-3" aria-hidden="true" />
               <PointerOnlyEffects />
-              <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-hidden">{children}</div>
+              <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 relative z-10 overflow-x-clip">{children}</div>
               <DeferredOverlays />
             </MotionProvider>
           </LanguageProvider>

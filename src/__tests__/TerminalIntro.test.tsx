@@ -58,9 +58,8 @@ describe("TerminalIntro", () => {
 
     // Each act() flushes exactly one React state update + its useEffect,
     // which registers the next timer. Advancing 30 ms per iteration covers
-    // cmd (22 ms), out (9 ms), and pause (180 ms / 6 iters) timers.
-    // 500 iterations >> the ~225 timers in the 4-line English animation.
-    for (let i = 0; i < 500 && onDone.mock.calls.length === 0; i++) {
+    // cmd (40 ms / 2 iters), out (20 ms), and pause (300 ms / 10 iters).
+    for (let i = 0; i < 1000 && onDone.mock.calls.length === 0; i++) {
       act(() => { jest.advanceTimersByTime(30); });
     }
 
@@ -87,7 +86,7 @@ describe("TerminalIntro", () => {
     const onDoneDesktop = jest.fn();
     const { unmount } = renderWithProviders(<TerminalIntro onDone={onDoneDesktop} />);
     let desktopIterations = 0;
-    for (; desktopIterations < 500 && onDoneDesktop.mock.calls.length === 0; desktopIterations++) {
+    for (; desktopIterations < 1000 && onDoneDesktop.mock.calls.length === 0; desktopIterations++) {
       act(() => { jest.advanceTimersByTime(30); });
     }
     expect(onDoneDesktop).toHaveBeenCalled();
@@ -108,13 +107,38 @@ describe("TerminalIntro", () => {
     const onDoneMobile = jest.fn();
     renderWithProviders(<TerminalIntro onDone={onDoneMobile} />);
     let mobileIterations = 0;
-    for (; mobileIterations < 500 && onDoneMobile.mock.calls.length === 0; mobileIterations++) {
+    for (; mobileIterations < 1000 && onDoneMobile.mock.calls.length === 0; mobileIterations++) {
       act(() => { jest.advanceTimersByTime(30); });
     }
     expect(onDoneMobile).toHaveBeenCalled();
     expect(mobileIterations).toBe(desktopIterations);
 
     window.matchMedia = originalMatchMedia;
+    jest.useRealTimers();
+  });
+
+  it("is paced slowly enough to read — still typing after 5 seconds (regression: 9 ms/char was unreadable on iPhone)", () => {
+    jest.useFakeTimers();
+    const onDone = jest.fn();
+    renderWithProviders(<TerminalIntro onDone={onDone} />);
+    for (let i = 0; i < 1000; i++) {
+      act(() => { jest.advanceTimersByTime(5); });
+    }
+    expect(onDone).not.toHaveBeenCalled();
+    jest.useRealTimers();
+  });
+
+  it("never calls scrollIntoView, which can scroll the page behind the overlay on iOS Safari", () => {
+    jest.useFakeTimers();
+    const scrollIntoView = window.HTMLElement.prototype.scrollIntoView as jest.Mock;
+    scrollIntoView.mockClear();
+    const onDone = jest.fn();
+    renderWithProviders(<TerminalIntro onDone={onDone} />);
+    for (let i = 0; i < 1000 && onDone.mock.calls.length === 0; i++) {
+      act(() => { jest.advanceTimersByTime(30); });
+    }
+    expect(onDone).toHaveBeenCalled();
+    expect(scrollIntoView).not.toHaveBeenCalled();
     jest.useRealTimers();
   });
 });
